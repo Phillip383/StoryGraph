@@ -14,6 +14,11 @@ config/name="StoryQuest"
 run/main_scene="uid://bjq3ex5xqh4to"
 config/features=PackedStringArray("4.5", "Forward Plus")
 
+[display]
+
+window/size/viewport_width=1980
+window/size/viewport_height=1080
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/filesystem_drawer/plugin.cfg")

@@ -1,7 +1,67 @@
-[gd_scene load_steps=2 format=3 uid="uid://bjq3ex5xqh4to"]
+[gd_scene load_steps=3 format=3 uid="uid://bjq3ex5xqh4to"]
 
 [ext_resource type="PackedScene" uid="uid://c8qxe00r5a84q" path="res://scenes/UI/graph.tscn" id="1_ot8g1"]
+[ext_resource type="PackedScene" uid="uid://dlquk3hpta50p" path="res://scenes/UI/inspector_base.tscn" id="2_n4xq1"]
 
 [node name="GraphEditor" type="CanvasLayer"]
 
-[node name="Graph" parent="." instance=ExtResource("1_ot8g1")]
+[node name="Main_C" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 1
+
+[node name="MenuBar" type="MenuBar" parent="Main_C"]
+custom_minimum_size = Vector2(0, 33.785)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+language = "en"
+
+[node name="File_B" type="Button" parent="Main_C/MenuBar"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -15.500001
+offset_right = 35.0
+offset_bottom = 15.500001
+grow_vertical = 2
+text = "File"
+
+[node name="VSplitContainer" type="VSplitContainer" parent="Main_C"]
+layout_mode = 2
+theme_override_constants/separation = 3
+theme_override_constants/minimum_grab_thickness = 3
+
+[node name="StoryLines_Graph_C" type="HSplitContainer" parent="Main_C/VSplitContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 3
+theme_override_constants/minimum_grab_thickness = 3
+
+[node name="StoryLines" parent="Main_C/VSplitContainer/StoryLines_Graph_C" instance=ExtResource("2_n4xq1")]
+custom_minimum_size = Vector2(350, 632)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Graph" parent="Main_C/VSplitContainer/StoryLines_Graph_C" instance=ExtResource("1_ot8g1")]
+layout_mode = 2
+size_flags_horizontal = 3
+scroll_offset = Vector2(-636, -6)
+
+[node name="HSplitContainer" type="HSplitContainer" parent="Main_C/VSplitContainer"]
+layout_mode = 2
+theme_override_constants/separation = 3
+theme_override_constants/minimum_grab_thickness = 3
+
+[node name="NodeDetails" parent="Main_C/VSplitContainer/HSplitContainer" instance=ExtResource("2_n4xq1")]
+custom_minimum_size = Vector2(350, 400)
+layout_mode = 2
+
+[node name="ValueEditor" parent="Main_C/VSplitContainer/HSplitContainer" instance=ExtResource("2_n4xq1")]
+custom_minimum_size = Vector2(350, 400)
+layout_mode = 2
