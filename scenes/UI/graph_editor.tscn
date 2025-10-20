@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://bjq3ex5xqh4to"]
+
+[ext_resource type="PackedScene" uid="uid://c8qxe00r5a84q" path="res://scenes/UI/graph.tscn" id="1_ot8g1"]
+
+[node name="GraphEditor" type="CanvasLayer"]
+
+[node name="Graph" parent="." instance=ExtResource("1_ot8g1")]
