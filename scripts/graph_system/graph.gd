@@ -19,5 +19,4 @@ func _on_popup_request(location : Vector2):
 
 func _on_add_node(node : GraphNode):
 	node.position_offset = (get_local_mouse_position() + scroll_offset) / zoom + - node.size / 2
-	print(node.position_offset)
 	add_child(node)
