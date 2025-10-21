@@ -10,9 +10,10 @@ config_version=5
 
 [application]
 
-config/name="StoryQuest"
+config/name="StoryGraph"
 run/main_scene="uid://bjq3ex5xqh4to"
 config/features=PackedStringArray("4.5", "Forward Plus")
+config/icon="uid://t40ppoa0ky75"
 
 [display]
 
@@ -22,3 +23,8 @@ window/size/viewport_height=1080
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/filesystem_drawer/plugin.cfg")
+
+[gui]
+
+theme/custom="uid://wro5ncgxmqmq"
+theme/custom_font="uid://cmodsej65usp8"
