@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://c8qxe00r5a84q"]
+
+[ext_resource type="Script" uid="uid://duh4yccltdvp" path="res://scripts/graph_system/graph.gd" id="1_rqtha"]
+[ext_resource type="PackedScene" uid="uid://c7xdg8k5bdgco" path="res://scenes/UI/Graph/Menus/graph_node_menu.tscn" id="2_pehdu"]
+
+[node name="Graph" type="GraphEdit"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_rqtha")
+context_menu_offset = Vector2i(320, 0)
+
+[node name="GraphNodeMenu" parent="." instance=ExtResource("2_pehdu")]
+initial_position = 0
+position = Vector2i(940, 490)
