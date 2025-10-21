@@ -13,7 +13,7 @@ config_version=5
 config/name="StoryGraph"
 run/main_scene="uid://bjq3ex5xqh4to"
 config/features=PackedStringArray("4.5", "Forward Plus")
-config/icon="uid://t40ppoa0ky75"
+config/icon="uid://duqsok6xitndw"
 
 [display]
 

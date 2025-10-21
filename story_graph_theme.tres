@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=8 format=3 uid="uid://wro5ncgxmqmq"]
+[gd_resource type="Theme" load_steps=12 format=3 uid="uid://wro5ncgxmqmq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4r8t8"]
 corner_radius_top_left = 4
@@ -7,20 +7,19 @@ corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ygryb"]
-bg_color = Color(0.1764706, 0.1764706, 0.1764706, 1)
+bg_color = Color(0.12941177, 0.12941177, 0.12941177, 1)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w4sxx"]
-bg_color = Color(1, 1, 0.3254902, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j0ssf"]
-bg_color = Color(0.1764706, 0.1764706, 0.1764706, 1)
+bg_color = Color(0.12941177, 0.12941177, 0.12941177, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bwp5n"]
-bg_color = Color(0.21770102, 0.21770108, 0.21770096, 1)
+bg_color = Color(0.12941177, 0.12941177, 0.12941177, 1)
 border_color = Color(0.8205395, 0.8205401, 7.70092e-07, 1)
 border_blend = true
 corner_radius_top_left = 4
@@ -30,7 +29,16 @@ corner_radius_bottom_left = 4
 shadow_color = Color(0, 0, 0, 0.84313726)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_orwo5"]
-bg_color = Color(0.1764706, 0.1764706, 0.1764706, 1)
+bg_color = Color(0.12941177, 0.12941177, 0.12941177, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7t4tq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m3263"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r4dba"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_60gl5"]
+bg_color = Color(0.12941177, 0.12941177, 0.12941177, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2n2lm"]
 bg_color = Color(0.21568628, 0.21568628, 0.21568628, 1)
@@ -40,11 +48,16 @@ border_width_right = 2
 border_width_bottom = 2
 
 [resource]
-HBoxContainer/constants/separation = 2
-HSplitContainer/constants/minimum_grab_thickness = 3
-HSplitContainer/constants/separation = 3
-MenuBar/colors/font_color = Color(0.37254903, 0.8039216, 0.89411765, 1)
-MenuBar/colors/font_hover_color = Color(0.9843137, 0.9490196, 0.21176471, 1)
+HBoxContainer/constants/separation = 1
+HSplitContainer/constants/minimum_grab_thickness = 1
+HSplitContainer/constants/separation = 1
+MarginContainer/constants/margin_bottom = 4
+MarginContainer/constants/margin_left = 4
+MarginContainer/constants/margin_right = 4
+MarginContainer/constants/margin_top = 4
+MenuBar/colors/font_color = Color(0, 0.6901961, 1, 1)
+MenuBar/colors/font_hover_color = Color(1, 0.99215686, 0, 1)
+MenuBar/constants/h_separation = 6
 MenuBar/constants/outline_size = 3
 MenuBar/styles/hover = SubResource("StyleBoxFlat_4r8t8")
 MenuBar/styles/normal = SubResource("StyleBoxFlat_ygryb")
@@ -56,10 +69,10 @@ PopupMenu/colors/font_color = Color(0.37254903, 0.8039216, 0.89411765, 1)
 PopupMenu/colors/font_hover_color = Color(0.9843137, 0.9490196, 0.21176471, 1)
 PopupMenu/font_sizes/font_size = 25
 PopupMenu/styles/panel = SubResource("StyleBoxFlat_orwo5")
-TabBar/styles/button_highlight = null
-TabBar/styles/button_pressed = null
-TabBar/styles/tab_hovered = null
-TabBar/styles/tab_selected = null
+TabBar/styles/button_highlight = SubResource("StyleBoxFlat_7t4tq")
+TabBar/styles/button_pressed = SubResource("StyleBoxFlat_m3263")
+TabBar/styles/tab_hovered = SubResource("StyleBoxFlat_r4dba")
+TabBar/styles/tab_selected = SubResource("StyleBoxFlat_60gl5")
 TabBar/styles/tab_unselected = SubResource("StyleBoxFlat_2n2lm")
 VBoxContainer/constants/separation = 6
 VSplitContainer/constants/minimum_grab_thickness = 3
