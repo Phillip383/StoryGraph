@@ -4,7 +4,6 @@
 [ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="2_vh0of"]
 
 [node name="InspectorList" instance=ExtResource("1_11h7a")]
-custom_minimum_size = Vector2(300, 500)
 
 [node name="List_MC" type="MarginContainer" parent="VBoxContainer" index="1"]
 layout_mode = 2

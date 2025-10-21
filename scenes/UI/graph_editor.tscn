@@ -51,6 +51,7 @@ size_flags_vertical = 3
 theme = ExtResource("1_wjrqj")
 
 [node name="StoryLines_Graph_C" type="HSplitContainer" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer"]
+custom_minimum_size = Vector2(0, 500)
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_wjrqj")
@@ -69,11 +70,13 @@ text = "Story Lines"
 label_settings = SubResource("LabelSettings_6ntp7")
 
 [node name="Graph" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C" instance=ExtResource("1_ot8g1")]
+custom_minimum_size = Vector2(1500, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-scroll_offset = Vector2(-208, 0)
+scroll_offset = Vector2(-308, 0)
 
 [node name="HSplitContainer" type="HSplitContainer" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer"]
+custom_minimum_size = Vector2(0, 300)
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_wjrqj")
@@ -81,6 +84,7 @@ theme_override_constants/separation = 3
 theme_override_constants/minimum_grab_thickness = 3
 
 [node name="InspectorList" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer" instance=ExtResource("5_nxgem")]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 
 [node name="Inspector_name" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/InspectorList/VBoxContainer/Name_MC" index="0"]

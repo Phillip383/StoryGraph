@@ -2,12 +2,15 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k8px2"]
 bg_color = Color(0.019607844, 0.019607844, 0.019607844, 0.8352941)
+border_color = Color(0, 0.6901961, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xok6d"]
 bg_color = Color(0, 0.6901961, 1, 0.48235294)
+border_color = Color(0, 0.6901961, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c1dav"]
 bg_color = Color(0, 0.6901961, 1, 1)
+border_color = Color(0, 0.6901961, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4r8t8"]
 corner_radius_top_left = 4
