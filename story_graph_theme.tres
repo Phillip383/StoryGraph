@@ -1,4 +1,66 @@
-[gd_resource type="Theme" load_steps=17 format=3 uid="uid://wro5ncgxmqmq"]
+[gd_resource type="Theme" load_steps=24 format=3 uid="uid://wro5ncgxmqmq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kvpkt"]
+bg_color = Color(0, 0, 0, 0.6784314)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0.6901961, 1, 1)
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+shadow_color = Color(1, 0.99215686, 0, 0.58431375)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_77wbm"]
+bg_color = Color(0, 0, 0, 0.6784314)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0.6901961, 1, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+shadow_color = Color(0, 0, 0, 0.85490197)
+shadow_size = 100
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ogctm"]
+bg_color = Color(0, 0, 0, 0.6784314)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0.6901961, 1, 1)
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+shadow_color = Color(1, 0.99215686, 0, 0.13333334)
+shadow_size = 50
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nln28"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_feld4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s6qwp"]
+bg_color = Color(0, 0, 0, 0.6784314)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_color = Color(0, 0.6901961, 1, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+shadow_color = Color(1, 0.99215686, 0, 0.58431375)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2xla8"]
+bg_color = Color(0, 0, 0, 0.6784314)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_color = Color(0, 0.6901961, 1, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+shadow_color = Color(1, 0.99215686, 0, 0.13333334)
+shadow_size = 50
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k8px2"]
 bg_color = Color(0.019607844, 0.019607844, 0.019607844, 0.8352941)
@@ -86,6 +148,14 @@ corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
 [resource]
+GraphNode/colors/resizer_color = Color(0.875, 0.875, 0.875, 1)
+GraphNode/styles/panel = SubResource("StyleBoxFlat_kvpkt")
+GraphNode/styles/panel_focus = SubResource("StyleBoxFlat_77wbm")
+GraphNode/styles/panel_selected = SubResource("StyleBoxFlat_ogctm")
+GraphNode/styles/slot = SubResource("StyleBoxFlat_nln28")
+GraphNode/styles/slot_selected = SubResource("StyleBoxFlat_feld4")
+GraphNode/styles/titlebar = SubResource("StyleBoxFlat_s6qwp")
+GraphNode/styles/titlebar_selected = SubResource("StyleBoxFlat_2xla8")
 HBoxContainer/constants/separation = 1
 HSplitContainer/constants/minimum_grab_thickness = 1
 HSplitContainer/constants/separation = 1
