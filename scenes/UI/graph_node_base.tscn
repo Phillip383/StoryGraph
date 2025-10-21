@@ -3,6 +3,7 @@
 [ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="1_6nrn1"]
 
 [node name="GraphNodeBase" type="GraphNode"]
+editor_description = "The base node to derive other types of nodes from."
 custom_minimum_size = Vector2(200, 100)
 offset_right = 122.0
 offset_bottom = 41.0
@@ -10,4 +11,4 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("1_6nrn1")
 resizable = true
-title = "Base Node"
+title = " Base Node"

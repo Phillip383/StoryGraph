@@ -74,13 +74,12 @@ label_settings = SubResource("LabelSettings_6ntp7")
 custom_minimum_size = Vector2(1500, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-scroll_offset = Vector2(-108, 0)
 
 [node name="GraphNodeBase" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Graph" instance=ExtResource("7_t3iyb")]
 layout_mode = 1
-offset_left = 549.0
+offset_left = 441.0
 offset_top = 218.0
-offset_right = 749.0
+offset_right = 641.0
 offset_bottom = 318.0
 mouse_filter = 1
 position_offset = Vector2(441, 218)
