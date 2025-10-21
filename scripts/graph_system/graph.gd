@@ -8,6 +8,7 @@ extends GraphEdit
 func _ready() -> void:
 	popup_request.connect(_on_popup_request)
 	context_menu.connect("_on_add_node", _on_add_node)
+	connection_request.connect(_on_connection)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -20,3 +21,6 @@ func _on_popup_request(location : Vector2):
 func _on_add_node(node : GraphNode):
 	node.position_offset = (get_local_mouse_position() + scroll_offset) / zoom + - node.size / 2
 	add_child(node)
+
+func _on_connection(from_node: StringName, from_port: int, to_node: StringName, to_port: int):
+	connect_node(from_node, from_port, to_node, to_port)
