@@ -20,13 +20,15 @@ bg_color = Color(0.12941177, 0.12941177, 0.12941177, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bwp5n"]
 bg_color = Color(0.12941177, 0.12941177, 0.12941177, 1)
-border_color = Color(0.8205395, 0.8205401, 7.70092e-07, 1)
-border_blend = true
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.99215686, 0, 1)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
-shadow_color = Color(0, 0, 0, 0.84313726)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_orwo5"]
 bg_color = Color(0.12941177, 0.12941177, 0.12941177, 1)
@@ -59,6 +61,7 @@ MenuBar/colors/font_color = Color(0, 0.6901961, 1, 1)
 MenuBar/colors/font_hover_color = Color(1, 0.99215686, 0, 1)
 MenuBar/constants/h_separation = 6
 MenuBar/constants/outline_size = 3
+MenuBar/font_sizes/font_size = 35
 MenuBar/styles/hover = SubResource("StyleBoxFlat_4r8t8")
 MenuBar/styles/normal = SubResource("StyleBoxFlat_ygryb")
 MenuButton/colors/font_color = Color(0.37254903, 0.8039216, 0.89411765, 1)

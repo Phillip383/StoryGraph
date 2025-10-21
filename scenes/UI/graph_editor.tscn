@@ -1,64 +1,71 @@
-[gd_scene load_steps=5 format=3 uid="uid://bjq3ex5xqh4to"]
+[gd_scene load_steps=6 format=3 uid="uid://bjq3ex5xqh4to"]
 
 [ext_resource type="PackedScene" uid="uid://du7x8jpfvub1w" path="res://scenes/UI/menu_bar.tscn" id="1_fgo7h"]
 [ext_resource type="PackedScene" uid="uid://c8qxe00r5a84q" path="res://scenes/UI/graph.tscn" id="1_ot8g1"]
 [ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="1_wjrqj"]
 [ext_resource type="PackedScene" uid="uid://dlquk3hpta50p" path="res://scenes/UI/inspector_base.tscn" id="2_n4xq1"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fgo7h"]
+bg_color = Color(0.019607844, 0.019607844, 0.019607844, 0.8352941)
+
 [node name="GraphEditor" type="CanvasLayer"]
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_wjrqj")
+theme_override_styles/panel = SubResource("StyleBoxFlat_fgo7h")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
 theme = ExtResource("1_wjrqj")
 
-[node name="Main_C" type="VBoxContainer" parent="MarginContainer"]
+[node name="Main_C" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("1_wjrqj")
 
-[node name="MenuBar" parent="MarginContainer/Main_C" instance=ExtResource("1_fgo7h")]
+[node name="MenuBar" parent="PanelContainer/MarginContainer/Main_C" instance=ExtResource("1_fgo7h")]
 layout_mode = 2
-size_flags_vertical = 3
-theme_override_font_sizes/font_size = 25
 
-[node name="VSplitContainer" type="VSplitContainer" parent="MarginContainer/Main_C"]
+[node name="VSplitContainer" type="VSplitContainer" parent="PanelContainer/MarginContainer/Main_C"]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_wjrqj")
 
-[node name="StoryLines_Graph_C" type="HSplitContainer" parent="MarginContainer/Main_C/VSplitContainer"]
+[node name="StoryLines_Graph_C" type="HSplitContainer" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_wjrqj")
 theme_override_constants/separation = 3
 theme_override_constants/minimum_grab_thickness = 3
 
-[node name="StoryLines" parent="MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C" instance=ExtResource("2_n4xq1")]
+[node name="StoryLines" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C" instance=ExtResource("2_n4xq1")]
 custom_minimum_size = Vector2(350, 632)
 layout_mode = 2
-size_flags_vertical = 0
 
-[node name="Graph" parent="MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C" instance=ExtResource("1_ot8g1")]
+[node name="Graph" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C" instance=ExtResource("1_ot8g1")]
 layout_mode = 2
 size_flags_horizontal = 3
-scroll_offset = Vector2(-358, -168)
+scroll_offset = Vector2(-350, -168)
 
-[node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer/Main_C/VSplitContainer"]
+[node name="HSplitContainer" type="HSplitContainer" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_wjrqj")
 theme_override_constants/separation = 3
 theme_override_constants/minimum_grab_thickness = 3
 
-[node name="NodeDetails" parent="MarginContainer/Main_C/VSplitContainer/HSplitContainer" instance=ExtResource("2_n4xq1")]
+[node name="NodeDetails" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer" instance=ExtResource("2_n4xq1")]
 custom_minimum_size = Vector2(350, 400)
 layout_mode = 2
 
-[node name="ValueEditor" parent="MarginContainer/Main_C/VSplitContainer/HSplitContainer" instance=ExtResource("2_n4xq1")]
+[node name="ValueEditor" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer" instance=ExtResource("2_n4xq1")]
 custom_minimum_size = Vector2(350, 400)
 layout_mode = 2

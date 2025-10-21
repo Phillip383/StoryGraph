@@ -2,18 +2,26 @@
 
 [ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="1_ohdrm"]
 
-[node name="MenuBar" type="MenuBar"]
+[node name="PanelContainer" type="PanelContainer"]
+custom_minimum_size = Vector2(0, 25)
 anchors_preset = -1
-anchor_left = 0.0050000004
-anchor_right = 0.989
-anchor_bottom = 0.028
-offset_left = 0.09999943
-offset_right = 1.7799072
-offset_bottom = -0.24000168
+anchor_right = 1.0
+anchor_bottom = 0.012
+offset_bottom = 12.04
+grow_horizontal = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+
+[node name="MenuBar" type="MenuBar" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 theme = ExtResource("1_ohdrm")
 language = "en"
 
-[node name="File" type="PopupMenu" parent="."]
+[node name="File" type="PopupMenu" parent="MarginContainer/MenuBar"]
 oversampling_override = 1.0
 size = Vector2i(100, 116)
 theme = ExtResource("1_ohdrm")
@@ -27,7 +35,7 @@ item_2/id = 2
 item_3/text = "Export"
 item_3/id = 3
 
-[node name="Help" type="PopupMenu" parent="."]
+[node name="Help" type="PopupMenu" parent="MarginContainer/MenuBar"]
 theme = ExtResource("1_ohdrm")
 item_count = 1
 item_0/text = "Documentation"
