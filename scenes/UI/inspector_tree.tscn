@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://b1ruqpcnl1fhv"]
+
+[ext_resource type="PackedScene" uid="uid://dlquk3hpta50p" path="res://scenes/UI/inspector_base.tscn" id="1_4ct5r"]
+[ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="2_kbgnl"]
+
+[node name="InspectorBase" instance=ExtResource("1_4ct5r")]
+
+[node name="Tree_MC" type="MarginContainer" parent="VBoxContainer" index="1"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("2_kbgnl")
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Tree" type="Tree" parent="VBoxContainer/Tree_MC" index="0"]
+layout_mode = 2
+theme = ExtResource("2_kbgnl")

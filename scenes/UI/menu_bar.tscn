@@ -35,6 +35,10 @@ item_2/id = 2
 item_3/text = "Export"
 item_3/id = 3
 
+[node name="Menu" type="PopupMenu" parent="MarginContainer/MenuBar"]
+
+[node name="View" type="PopupMenu" parent="MarginContainer/MenuBar"]
+
 [node name="Help" type="PopupMenu" parent="MarginContainer/MenuBar"]
 theme = ExtResource("1_ohdrm")
 item_count = 1

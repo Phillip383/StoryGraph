@@ -1,12 +1,23 @@
-[gd_scene load_steps=6 format=3 uid="uid://bjq3ex5xqh4to"]
+[gd_scene load_steps=9 format=3 uid="uid://bjq3ex5xqh4to"]
 
 [ext_resource type="PackedScene" uid="uid://du7x8jpfvub1w" path="res://scenes/UI/menu_bar.tscn" id="1_fgo7h"]
 [ext_resource type="PackedScene" uid="uid://c8qxe00r5a84q" path="res://scenes/UI/graph.tscn" id="1_ot8g1"]
 [ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="1_wjrqj"]
-[ext_resource type="PackedScene" uid="uid://dlquk3hpta50p" path="res://scenes/UI/inspector_base.tscn" id="2_n4xq1"]
+[ext_resource type="PackedScene" uid="uid://b1ruqpcnl1fhv" path="res://scenes/UI/inspector_tree.tscn" id="4_tixvr"]
+[ext_resource type="PackedScene" uid="uid://cb26resk8d7gq" path="res://scenes/UI/inspector_list.tscn" id="5_nxgem"]
+[ext_resource type="PackedScene" uid="uid://cfhnqaiw8smg4" path="res://scenes/UI/inspector_editor.tscn" id="6_nxgem"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fgo7h"]
 bg_color = Color(0.019607844, 0.019607844, 0.019607844, 0.8352941)
+
+[sub_resource type="LabelSettings" id="LabelSettings_6ntp7"]
+font_size = 35
+font_color = Color(0, 0.6901961, 1, 1)
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 4
+shadow_color = Color(0, 0, 0, 0.85490197)
+shadow_offset = Vector2(2.58, 2.46)
 
 [node name="GraphEditor" type="CanvasLayer"]
 
@@ -46,14 +57,21 @@ theme = ExtResource("1_wjrqj")
 theme_override_constants/separation = 3
 theme_override_constants/minimum_grab_thickness = 3
 
-[node name="StoryLines" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C" instance=ExtResource("2_n4xq1")]
-custom_minimum_size = Vector2(350, 632)
+[node name="InspectorTree" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C" instance=ExtResource("4_tixvr")]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
+
+[node name="Name_MC" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/InspectorTree/VBoxContainer" index="0"]
+theme = null
+
+[node name="Inspector_name" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/InspectorTree/VBoxContainer/Name_MC" index="0"]
+text = "Story Lines"
+label_settings = SubResource("LabelSettings_6ntp7")
 
 [node name="Graph" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C" instance=ExtResource("1_ot8g1")]
 layout_mode = 2
 size_flags_horizontal = 3
-scroll_offset = Vector2(-350, -168)
+scroll_offset = Vector2(-208, 0)
 
 [node name="HSplitContainer" type="HSplitContainer" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer"]
 layout_mode = 2
@@ -62,10 +80,20 @@ theme = ExtResource("1_wjrqj")
 theme_override_constants/separation = 3
 theme_override_constants/minimum_grab_thickness = 3
 
-[node name="NodeDetails" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer" instance=ExtResource("2_n4xq1")]
-custom_minimum_size = Vector2(350, 400)
+[node name="InspectorList" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer" instance=ExtResource("5_nxgem")]
 layout_mode = 2
 
-[node name="ValueEditor" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer" instance=ExtResource("2_n4xq1")]
-custom_minimum_size = Vector2(350, 400)
+[node name="Inspector_name" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/InspectorList/VBoxContainer/Name_MC" index="0"]
+text = "Node Details"
+
+[node name="InspectorEditor" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer" instance=ExtResource("6_nxgem")]
+custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Inspector_name" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/InspectorEditor/VBoxContainer/Name_MC" index="0"]
+text = "Property Editor"
+
+[editable path="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/InspectorTree"]
+[editable path="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/InspectorList"]
+[editable path="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/InspectorEditor"]
