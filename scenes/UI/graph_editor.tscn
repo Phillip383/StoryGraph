@@ -55,7 +55,9 @@ theme_override_constants/minimum_grab_thickness = 3
 
 [node name="InspectorContainer" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C" instance=ExtResource("4_h0swr")]
 layout_mode = 2
-current_tab = 0
+
+[node name="Name_MC" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/InspectorTree/VBoxContainer" index="0"]
+theme = null
 
 [node name="Story Lines" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/InspectorContainer" instance=ExtResource("4_tixvr")]
 layout_mode = 2
@@ -90,8 +92,6 @@ current_tab = 0
 
 [node name="Node Details" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/InspectorContainer" instance=ExtResource("5_nxgem")]
 layout_mode = 2
-theme = ExtResource("1_wjrqj")
-metadata/_tab_index = 0
 
 [node name="InspectorContainer2" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer" instance=ExtResource("4_h0swr")]
 layout_mode = 2
