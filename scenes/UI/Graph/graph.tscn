@@ -12,7 +12,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_rqtha")
-context_menu_offset = Vector2i(320, 0)
+context_menu_offset = Vector2(320, 0)
 
 [node name="GraphNodeMenu" parent="." instance=ExtResource("2_pehdu")]
 initial_position = 0

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dhrg7t8ktb4jq"]
+[gd_scene load_steps=3 format=3 uid="uid://dhrg7t8ktb4jq"]
 
 [ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="1_6nrn1"]
+[ext_resource type="Script" uid="uid://g4pu8n7nwddi" path="res://scripts/graph_system/graph_node_base.gd" id="2_oiw82"]
 
 [node name="GraphNodeBase" type="GraphNode"]
 editor_description = "The base node to derive other types of nodes from."
@@ -16,8 +17,9 @@ offset_right = 100.0
 offset_bottom = 50.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_horizontal = 0
+size_flags_vertical = 0
 theme = ExtResource("1_6nrn1")
 resizable = true
 title = " Base Node"
+script = ExtResource("2_oiw82")
