@@ -17,5 +17,5 @@ func _on_selection(id : int):
 		ADD_NODE_ID:
 			var graph = get_parent() as GraphEdit
 			var new_node = GraphNodeTypes[0].instantiate() as GraphElement
-			new_node.position_offset = graph.get_local_mouse_position()
+			new_node.position_offset = Vector2i(graph.get_local_mouse_position()) - graph.context_menu_offset
 			graph.add_child(new_node)

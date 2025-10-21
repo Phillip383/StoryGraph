@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bjq3ex5xqh4to"]
+[gd_scene load_steps=10 format=3 uid="uid://bjq3ex5xqh4to"]
 
 [ext_resource type="PackedScene" uid="uid://du7x8jpfvub1w" path="res://scenes/UI/Editor/menu_bar.tscn" id="1_fgo7h"]
 [ext_resource type="Script" uid="uid://dl0tutpbikpck" path="res://scripts/editor/graph_editor.gd" id="1_h0swr"]
@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://b1ruqpcnl1fhv" path="res://scenes/UI/Inspectors/inspector_tree.tscn" id="4_tixvr"]
 [ext_resource type="PackedScene" uid="uid://cb26resk8d7gq" path="res://scenes/UI/Inspectors/inspector_list.tscn" id="5_nxgem"]
 [ext_resource type="PackedScene" uid="uid://cfhnqaiw8smg4" path="res://scenes/UI/Inspectors/inspector_editor.tscn" id="6_nxgem"]
-[ext_resource type="PackedScene" uid="uid://dhrg7t8ktb4jq" path="res://scenes/UI/Graph/graph_node_base.tscn" id="7_t3iyb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fgo7h"]
 bg_color = Color(0.019607844, 0.019607844, 0.019607844, 0.8352941)
@@ -64,16 +63,6 @@ metadata/_tab_index = 0
 [node name="Graph" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C" instance=ExtResource("1_ot8g1")]
 custom_minimum_size = Vector2(1500, 0)
 layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="GraphNodeBase" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Graph" instance=ExtResource("7_t3iyb")]
-layout_mode = 1
-offset_left = 441.0
-offset_top = 218.0
-offset_right = 641.0
-offset_bottom = 318.0
-mouse_filter = 1
-position_offset = Vector2(441, 218)
 
 [node name="HSplitContainer" type="HSplitContainer" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer"]
 custom_minimum_size = Vector2(0, 300)
