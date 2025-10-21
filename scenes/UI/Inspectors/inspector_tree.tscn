@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://b1ruqpcnl1fhv"]
+
+[ext_resource type="PackedScene" uid="uid://dlquk3hpta50p" path="res://scenes/UI/Inspectors/inspector_base.tscn" id="1_4ct5r"]
+[ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="2_kbgnl"]
+
+[node name="InspectorTree" instance=ExtResource("1_4ct5r")]
+
+[node name="Tree" type="Tree" parent="." index="0"]
+layout_mode = 2
+theme = ExtResource("2_kbgnl")

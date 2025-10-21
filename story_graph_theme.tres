@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=24 format=3 uid="uid://wro5ncgxmqmq"]
+[gd_resource type="Theme" load_steps=28 format=3 uid="uid://wro5ncgxmqmq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kvpkt"]
 bg_color = Color(0, 0, 0, 0.6784314)
@@ -135,6 +135,34 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jqocd"]
+bg_color = Color(0.12941177, 0.12941177, 0.12941177, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.99215686, 0, 1)
+border_blend = true
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xorjr"]
+bg_color = Color(0, 0.6901961, 1, 0.27058825)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vlxvr"]
+bg_color = Color(0.12941177, 0.12941177, 0.12941177, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_86bdu"]
+bg_color = Color(0.12941177, 0.12941177, 0.12941177, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wiokl"]
 bg_color = Color(0.054142185, 0.05414217, 0.05414217, 1)
 border_width_left = 2
@@ -199,6 +227,17 @@ TabBar/styles/button_pressed = SubResource("StyleBoxFlat_m3263")
 TabBar/styles/tab_hovered = SubResource("StyleBoxFlat_r4dba")
 TabBar/styles/tab_selected = SubResource("StyleBoxFlat_60gl5")
 TabBar/styles/tab_unselected = SubResource("StyleBoxFlat_2n2lm")
+TabContainer/colors/font_hovered_color = Color(0, 0.6901961, 1, 0.32941177)
+TabContainer/colors/font_selected_color = Color(0, 0.6901961, 1, 1)
+TabContainer/colors/font_unselected_color = Color(1, 0.99215686, 0, 1)
+TabContainer/constants/outline_size = 4
+TabContainer/constants/tab_separation = 4
+TabContainer/font_sizes/font_size = 25
+TabContainer/styles/panel = SubResource("StyleBoxFlat_jqocd")
+TabContainer/styles/tab_hovered = SubResource("StyleBoxFlat_xorjr")
+TabContainer/styles/tab_selected = SubResource("StyleBoxFlat_vlxvr")
+TabContainer/styles/tab_unselected = SubResource("StyleBoxFlat_86bdu")
+TabContainer/styles/tabbar_background = null
 Tree/styles/panel = SubResource("StyleBoxFlat_wiokl")
 Tree/styles/selected = null
 Tree/styles/selected_focus = null
