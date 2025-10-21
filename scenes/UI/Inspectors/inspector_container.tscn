@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://bsdca22cutwdk"]
+
+[ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="1_5lhxr"]
+
+[node name="InspectorContainer" type="TabContainer"]
+custom_minimum_size = Vector2(300, 0)
+offset_right = 40.0
+offset_bottom = 40.0
+theme = ExtResource("1_5lhxr")

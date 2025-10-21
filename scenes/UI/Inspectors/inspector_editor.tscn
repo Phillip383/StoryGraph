@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://cfhnqaiw8smg4"]
 
-[ext_resource type="PackedScene" uid="uid://dlquk3hpta50p" path="res://scenes/UI/inspector_base.tscn" id="1_we54b"]
+[ext_resource type="PackedScene" uid="uid://dlquk3hpta50p" path="res://scenes/UI/Inspectors/inspector_base.tscn" id="1_we54b"]
 [ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="2_2ut7c"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ut7c"]
@@ -17,15 +17,7 @@ corner_radius_bottom_left = 4
 
 [node name="InspectorEditor" instance=ExtResource("1_we54b")]
 
-[node name="Editor_MC" type="MarginContainer" parent="VBoxContainer" index="1"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 8
-
-[node name="Value_Editor_C" type="PanelContainer" parent="VBoxContainer/Editor_MC" index="0"]
+[node name="Value_Editor_C" type="PanelContainer" parent="." index="0"]
 editor_description = "This container will be the parent of the type of editor spawned based on the data type of the selected node property.
 
 IE. for StringName it'll be a text block, or for String it'll be Text Edit. Booleans will be a radio box, etc..."
