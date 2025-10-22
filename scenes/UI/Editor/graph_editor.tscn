@@ -52,18 +52,23 @@ theme = ExtResource("1_wjrqj")
 theme_override_constants/separation = 3
 theme_override_constants/minimum_grab_thickness = 3
 
-[node name="InspectorContainer" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C" instance=ExtResource("4_h0swr")]
+[node name="Inspector_Left_Top_C" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C" instance=ExtResource("4_h0swr")]
 layout_mode = 2
 current_tab = 0
 
-[node name="Story Lines" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/InspectorContainer" instance=ExtResource("4_tixvr")]
+[node name="Story Lines" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Inspector_Left_Top_C" instance=ExtResource("4_tixvr")]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="Graph" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C" instance=ExtResource("1_ot8g1")]
+[node name="Graphs_C" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C" instance=ExtResource("4_h0swr")]
+layout_mode = 2
+current_tab = 0
+
+[node name="Graph" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Graphs_C" instance=ExtResource("1_ot8g1")]
 custom_minimum_size = Vector2(1500, 0)
 layout_mode = 2
-scroll_offset = Vector2(-308, 0)
+scroll_offset = Vector2(-1662, -477)
+metadata/_tab_index = 0
 
 [node name="HSplitContainer" type="HSplitContainer" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer"]
 custom_minimum_size = Vector2(0, 300)
@@ -73,24 +78,24 @@ theme = ExtResource("1_wjrqj")
 theme_override_constants/separation = 3
 theme_override_constants/minimum_grab_thickness = 3
 
-[node name="InspectorContainer" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer" instance=ExtResource("4_h0swr")]
+[node name="Inspector_Left_Bottom_C" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer" instance=ExtResource("4_h0swr")]
 layout_mode = 2
 current_tab = 0
 
-[node name="Node Details" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/InspectorContainer" instance=ExtResource("5_nxgem")]
+[node name="Node Details" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Left_Bottom_C" instance=ExtResource("5_nxgem")]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="InspectorContainer2" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer" instance=ExtResource("4_h0swr")]
+[node name="Inspector_Bottom_C" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer" instance=ExtResource("4_h0swr")]
 layout_mode = 2
 current_tab = 0
 
-[node name="Property Editor" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/InspectorContainer2" instance=ExtResource("6_nxgem")]
+[node name="Property Editor" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Bottom_C" instance=ExtResource("6_nxgem")]
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_wjrqj")
 metadata/_tab_index = 0
 
-[editable path="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/InspectorContainer/Node Details"]
-[editable path="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/InspectorContainer2/Property Editor"]
+[editable path="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Left_Bottom_C/Node Details"]
+[editable path="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Bottom_C/Property Editor"]
