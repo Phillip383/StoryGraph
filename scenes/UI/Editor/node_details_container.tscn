@@ -1,0 +1,46 @@
+[gd_scene load_steps=3 format=3 uid="uid://d2eujlaoqe32p"]
+
+[ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="1_7csry"]
+[ext_resource type="Texture2D" uid="uid://bt5b2dj1m6c88" path="res://assets/Textures/Icons/128/plus.png" id="1_l2lpm"]
+
+[node name="NodeDetailsContainer" type="MarginContainer"]
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 298.0
+offset_bottom = 498.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="AddPropertyButton" type="Button" parent="VBoxContainer/HBoxContainer/MarginContainer"]
+modulate = Color(0.6235599, 0.62355983, 0.62355983, 1)
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+tooltip_text = "Add property to selected node."
+theme = ExtResource("1_7csry")
+icon = ExtResource("1_l2lpm")
+icon_alignment = 1
+expand_icon = true
+
+[node name="ItemList_SC" type="ScrollContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ItemList" type="ItemList" parent="VBoxContainer/ItemList_SC"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+item_count = 4
+item_0/text = "Item 1"
+item_1/text = "Item 2"
+item_2/text = "Item 3"
+item_3/text = "Item 4"
