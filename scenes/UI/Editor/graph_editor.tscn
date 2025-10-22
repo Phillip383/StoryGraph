@@ -97,4 +97,7 @@ size_flags_horizontal = 3
 theme = ExtResource("1_wjrqj")
 metadata/_tab_index = 0
 
+[connection signal="node_deselected" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Graphs_C/Graph" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Left_Bottom_C/Node Details" method="_on_graph_node_deselected"]
+[connection signal="node_selected" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Graphs_C/Graph" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Left_Bottom_C/Node Details" method="_on_graph_node_selected"]
+
 [editable path="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Bottom_C/Property Editor"]
