@@ -7,15 +7,18 @@
 
 [sub_resource type="Resource" id="Resource_ukg2s"]
 script = ExtResource("3_qbq32")
-quest_title = &"Hello world"
-description = "Is this going to work?"
-rewards = Dictionary[StringName, Variant]({
-&"experience": 1200.0
+data = Dictionary[StringName, Variant]({
+&"Description": "Print(\"Hello World\")",
+&"Name": &"Hello World",
+&"Prerequisties": [0, 1],
+&"Rewards": [{}],
+&"Status": 0
 })
 metadata/_custom_type_script = "uid://cukwuvgwafjof"
 
 [sub_resource type="Resource" id="Resource_qbq32"]
 script = ExtResource("3_p0nie")
+node_type = 1
 metadata/_custom_type_script = "uid://bibkbqwmh1qfi"
 
 [node name="StoryNodeBase" type="GraphNode" groups=["Story Node"]]
@@ -36,7 +39,7 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 theme = ExtResource("1_ma2pr")
 resizable = true
-title = " Base Node"
+title = "Base Node"
 slot/0/left_enabled = true
 slot/0/left_type = 0
 slot/0/left_color = Color(1, 1, 1, 1)

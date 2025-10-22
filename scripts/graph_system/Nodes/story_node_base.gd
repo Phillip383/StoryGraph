@@ -18,5 +18,8 @@ signal on_data_changed(data) ## Emitted when a property is added, removed, or it
 func get_node_data():
 	return node_data
 
-func get_story_data():
-	return story_data
+func get_story_data() -> Dictionary[StringName, Variant]:
+	return story_data.data
+
+func get_story_data_key() -> Array[StringName]:
+	return story_data.data.keys()

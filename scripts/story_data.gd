@@ -10,11 +10,7 @@ enum Status {
 	FAILED
 }
 
-# ACTUAL DATA
+## TODO [SCRUM-4]: Ensure when customizing node data that I implement a system to accommodate this structure
 @export_category("Quest Data")
-var quest_id : int
-@export var status : Status
-@export var quest_title : StringName
-@export var description : String
-@export var prerequisites : Dictionary[StringName, Array] ## Using a dict{string, array} format for this so it's flexible 
-@export var rewards : Dictionary[StringName, Variant] ## Using a dict{string, Variant} format for this so it's flexible "{name}{reward}", IE. "experience: 1400"
+var quest_id : int 
+@export var data : Dictionary[StringName, Variant]

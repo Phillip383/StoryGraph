@@ -39,4 +39,4 @@ func _on_graph_node_deselected(_node: Node) -> void:
 	clear_node_properties()
 
 func _on_graph_node_selected(node: Node) -> void:
-	set_node_properties(node.get_properties_keys())
+	set_node_properties(node.get_story_data_key())
