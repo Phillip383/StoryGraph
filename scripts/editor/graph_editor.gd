@@ -12,10 +12,6 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	pass
 
-func init_connections(node : Node) -> void:
-	for i in inspectors:
-		node.on_changed.connect(Callable(i, "update_children"))
-
 func increment_node_id():
 	_nodeID += 1
 

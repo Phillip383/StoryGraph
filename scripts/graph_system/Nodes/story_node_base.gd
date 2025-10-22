@@ -9,6 +9,7 @@ the _properties dictionary access methods are heavily restrictive, this is inten
 the data clean, and with debugging.
 """
 
+## TODO: Change to a Resource Class
 @export_category("Node Data")
 @export var _properties : Dictionary[StringName, Variant] ## The properties of this node. A dictionary of type variant so various forms of data can be stored with a key name.
 

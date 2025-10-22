@@ -5,18 +5,6 @@ class_name StoryGraph
 ## EXPORTS
 @export var tab_name : StringName = "(unsaved)*" ## Use the file name when saved, default to "unsaved"
 
-## SIGNALS
-"""
-When any change occurs this is emitted.
-When the event is emitted a context array of the event is created and provided.
-The context can contain anything, but the best is: [EventType, self : Node, InstigatingObject : Node, Description : String]
-The object that emitted the signal as well as any target can be sent as well.
-To connect the signal to all of the containers call the static GraphEditor.init_connections(Node) method in _ready, pass the node needing to be connected (self).
-The method binds the signal to the change_children() method of the containers.
-This was done so the application wouldn't have to search the scene tree for every child of the inspectors.
-"""
-signal on_changed(context : Array[Variant])
-
 @onready var context_menu = $"GraphNodeMenu"
 
 # Called when the node enters the scene tree for the first time.
@@ -27,17 +15,8 @@ func _ready() -> void:
 	node_selected.connect(_on_node_selected)
 	node_deselected.connect(_on_node_deselected)
 
-
-	GraphEditor.init_connections(self) ## Setup on_changed signal with the various active inspectors.
-
 func get_tab_name():
 	return tab_name
-
-"""
-This method is called by the parent node InspectorContainer when the container receives a request to change.
-"""
-func on_change_request(context : Variant):
-	print(self, "Context of event: ", context)
 
 """
 Listens for the popup request of the graph. Used primarily to make the context menu visible at the mouse location
@@ -45,8 +24,6 @@ Listens for the popup request of the graph. Used primarily to make the context m
 func _on_popup_request(_location : Vector2):
 	context_menu.position = get_viewport().get_mouse_position()
 	context_menu.show()
-	var context : Array[Variant] = [EventType.Type.UPDATE, self, context_menu, "Context Menu Open"]
-	on_changed.emit(context) ## Emit for the popup request. ## TODO: Use this to change the state of the application eventually.
 
 """
 Listens for the add node request from the context menu.
@@ -65,9 +42,7 @@ func _on_connection(from_node: StringName, from_port: int, to_node: StringName, 
 Listens for node selection
 """
 func _on_node_selected(node : Node):
-	var context : Array[Variant] = [EventType.Type.SELECTION, self, node, "Node Selected"]
-	on_changed.emit(context)
+	pass
 
 func _on_node_deselected(node : Node):
-	var context : Array[Variant] = [EventType.Type.DESELECTION, self, node, "Node Deselected"]
-	on_changed.emit(context)
+	pass
