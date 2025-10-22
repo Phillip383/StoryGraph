@@ -6,7 +6,7 @@ class_name StoryGraph
 """
 When any change occurs this is emitted.
 When the event is emitted a context array of the event is created and provided.
-The context can contain anything, but index 0 should be EventType
+The context can contain anything, but the best is: [EventType, self : Node, InstigatingObject : Node, Description : String]
 The object that emitted the signal as well as any target can be sent as well.
 To connect the signal to all of the containers call the static GraphEditor.init_connections(Node) method in _ready, pass the node needing to be connected (self).
 The method binds the signal to the change_children() method of the containers.

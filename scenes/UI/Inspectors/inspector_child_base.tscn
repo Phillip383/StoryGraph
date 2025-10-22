@@ -1,7 +1,10 @@
-[gd_scene format=3 uid="uid://dlquk3hpta50p"]
+[gd_scene load_steps=2 format=3 uid="uid://dlquk3hpta50p"]
+
+[ext_resource type="Script" uid="uid://d3p7u8wh4v0b3" path="res://scripts/editor/widget_components/inspectors/inspector_child_base.gd" id="1_fp5k5"]
 
 [node name="inspector_child_base" type="MarginContainer"]
 offset_left = 2.0
 offset_top = 2.0
 offset_right = 298.0
 offset_bottom = 498.0
+script = ExtResource("1_fp5k5")
