@@ -20,7 +20,13 @@ func _process(_delta: float) -> void:
 This method is called by the parent node InspectorContainer when the container receives a request to change.
 """
 func on_change_request(context : Variant):
-	print(self, " Context of event: ", context)
+	## TODO: Don't do this too much...
+	if context[0] == EventType.Type.SELECTION:
+		var active_node = context[2] as BaseStoryNode
+		set_node_properties(active_node.get_properties_keys())
+	elif context[0] == EventType.Type.DESELECTION:
+		print("clearing properties")
+		clear_node_properties()
 
 """
 Returns the current list of node properties currently held in this widget.

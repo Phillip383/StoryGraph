@@ -42,7 +42,8 @@ slot/1/right_icon = null
 slot/1/draw_stylebox = true
 script = ExtResource("2_p0nie")
 _properties = Dictionary[StringName, Variant]({
-&"name": &"Test"
+&"Test": true,
+&"Test2": 40
 })
 
 [node name="Slot1" type="Control" parent="."]

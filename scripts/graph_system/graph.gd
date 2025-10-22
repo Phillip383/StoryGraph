@@ -24,6 +24,10 @@ func _ready() -> void:
 	popup_request.connect(_on_popup_request)
 	context_menu.connect("_on_add_node", _on_add_node)
 	connection_request.connect(_on_connection)
+	node_selected.connect(_on_node_selected)
+	node_deselected.connect(_on_node_deselected)
+
+
 	GraphEditor.init_connections(self) ## Setup on_changed signal with the various active inspectors.
 
 func get_tab_name():
@@ -56,3 +60,14 @@ Listens for the connection request of the graph.
 """
 func _on_connection(from_node: StringName, from_port: int, to_node: StringName, to_port: int):
 	connect_node(from_node, from_port, to_node, to_port)
+
+"""
+Listens for node selection
+"""
+func _on_node_selected(node : Node):
+	var context : Array[Variant] = [EventType.Type.SELECTION, self, node, "Node Selected"]
+	on_changed.emit(context)
+
+func _on_node_deselected(node : Node):
+	var context : Array[Variant] = [EventType.Type.DESELECTION, self, node, "Node Deselected"]
+	on_changed.emit(context)
