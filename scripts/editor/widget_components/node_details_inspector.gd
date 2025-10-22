@@ -6,7 +6,14 @@ class_name NodeDetailsInspector
 This acts as a container for the properties of a selected node within the current graph.
 """
 
+## SIGNALS
+
+## this is emitted when a item in the list is selected, and passes the data of the selected item.
+signal item_selected(data : Variant)
+
 @onready var _property_list : ItemList = $VBoxContainer/PropertyList_SC/PropertyList 
+
+var _active_node : BaseStoryNode
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -39,4 +46,10 @@ func _on_graph_node_deselected(_node: Node) -> void:
 	clear_node_properties()
 
 func _on_graph_node_selected(node: Node) -> void:
+	_active_node = node
 	set_node_properties(node.get_story_data_key())
+
+
+func on_list_item_selected(index: int) -> void:
+	var item = _property_list.get_item_text(index)
+	item_selected.emit(item)

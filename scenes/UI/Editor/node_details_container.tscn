@@ -45,3 +45,5 @@ size_flags_vertical = 3
 item_count = 2
 item_0/text = "Item 1"
 item_1/text = "Item 2"
+
+[connection signal="item_selected" from="VBoxContainer/PropertyList_SC/PropertyList" to="." method="on_list_item_selected"]
