@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cb26resk8d7gq"]
 
-[ext_resource type="PackedScene" uid="uid://dlquk3hpta50p" path="res://scenes/UI/Inspectors/inspector_base.tscn" id="1_11h7a"]
+[ext_resource type="PackedScene" uid="uid://dlquk3hpta50p" path="res://scenes/UI/Inspectors/inspector_child_base.tscn" id="1_11h7a"]
 
 [node name="InspectorList" instance=ExtResource("1_11h7a")]
 

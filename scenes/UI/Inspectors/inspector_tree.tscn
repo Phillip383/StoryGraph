@@ -1,9 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://b1ruqpcnl1fhv"]
+[gd_scene load_steps=4 format=3 uid="uid://b1ruqpcnl1fhv"]
 
-[ext_resource type="PackedScene" uid="uid://dlquk3hpta50p" path="res://scenes/UI/Inspectors/inspector_base.tscn" id="1_4ct5r"]
+[ext_resource type="PackedScene" uid="uid://dlquk3hpta50p" path="res://scenes/UI/Inspectors/inspector_child_base.tscn" id="1_4ct5r"]
+[ext_resource type="Script" uid="uid://y7m5e5mlr3u5" path="res://scripts/editor/widget_components/inspectors/inspector_tree.gd" id="2_g2rpe"]
 [ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="2_kbgnl"]
 
 [node name="InspectorTree" instance=ExtResource("1_4ct5r")]
+script = ExtResource("2_g2rpe")
 
 [node name="Tree" type="Tree" parent="." index="0"]
 layout_mode = 2

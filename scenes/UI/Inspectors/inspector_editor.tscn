@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://cfhnqaiw8smg4"]
+[gd_scene load_steps=5 format=3 uid="uid://cfhnqaiw8smg4"]
 
-[ext_resource type="PackedScene" uid="uid://dlquk3hpta50p" path="res://scenes/UI/Inspectors/inspector_base.tscn" id="1_we54b"]
+[ext_resource type="PackedScene" uid="uid://dlquk3hpta50p" path="res://scenes/UI/Inspectors/inspector_child_base.tscn" id="1_we54b"]
 [ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="2_2ut7c"]
+[ext_resource type="Script" uid="uid://er2gvecqy6lp" path="res://scripts/editor/widget_components/inspectors/inspector_editor.gd" id="2_ls5qa"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ut7c"]
 bg_color = Color(0, 0, 0, 0.85490197)
@@ -16,6 +17,7 @@ corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
 [node name="InspectorEditor" instance=ExtResource("1_we54b")]
+script = ExtResource("2_ls5qa")
 
 [node name="Value_Editor_C" type="PanelContainer" parent="." index="0"]
 editor_description = "This container will be the parent of the type of editor spawned based on the data type of the selected node property.

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://c7xdg8k5bdgco"]
 
 [ext_resource type="Script" uid="uid://b7d4weic6eoos" path="res://scripts/graph_system/graph_node_menu.gd" id="1_l675i"]
-[ext_resource type="PackedScene" uid="uid://dhrg7t8ktb4jq" path="res://scenes/UI/Graph/Nodes/graph_node_base.tscn" id="2_72gc7"]
+[ext_resource type="PackedScene" uid="uid://dhrg7t8ktb4jq" path="res://scenes/UI/Graph/Nodes/story_node_base.tscn" id="2_72gc7"]
 
 [node name="GraphNodeMenu" type="PopupMenu"]
 oversampling_override = 1.0

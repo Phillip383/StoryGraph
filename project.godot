@@ -15,6 +15,10 @@ run/main_scene="uid://bjq3ex5xqh4to"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="uid://duqsok6xitndw"
 
+[autoload]
+
+GraphEditor="*res://scripts/editor/graph_editor.gd"
+
 [display]
 
 window/size/viewport_width=1980
@@ -24,6 +28,11 @@ window/size/mode=2
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/filesystem_drawer/plugin.cfg")
+
+[global_group]
+
+"Story Node"="Used within the code to check types of change requests to up date different inspectors."
+Inspectors=""
 
 [gui]
 

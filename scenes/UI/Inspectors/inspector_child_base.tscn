@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dlquk3hpta50p"]
 
-[node name="inspector_base" type="MarginContainer"]
+[node name="inspector_child_base" type="MarginContainer"]
 offset_left = 2.0
 offset_top = 2.0
 offset_right = 298.0

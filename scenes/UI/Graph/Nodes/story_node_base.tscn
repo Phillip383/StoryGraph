@@ -1,9 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://dhrg7t8ktb4jq"]
 
-[ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="1_6nrn1"]
-[ext_resource type="Script" uid="uid://g4pu8n7nwddi" path="res://scripts/graph_system/graph_node_base.gd" id="2_oiw82"]
+[ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="1_ma2pr"]
+[ext_resource type="Script" uid="uid://g4pu8n7nwddi" path="res://scripts/graph_system/Nodes/story_node_base.gd" id="2_p0nie"]
 
-[node name="GraphNodeBase" type="GraphNode"]
+[node name="StoryNodeBase" type="GraphNode" groups=["Story Node"]]
 editor_description = "The base node to derive other types of nodes from."
 custom_minimum_size = Vector2(200, 100)
 anchors_preset = 8
@@ -19,7 +19,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
-theme = ExtResource("1_6nrn1")
+theme = ExtResource("1_ma2pr")
 resizable = true
 title = " Base Node"
 slot/0/left_enabled = true
@@ -40,7 +40,10 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
-script = ExtResource("2_oiw82")
+script = ExtResource("2_p0nie")
+_properties = Dictionary[StringName, Variant]({
+&"name": &"Test"
+})
 
 [node name="Slot1" type="Control" parent="."]
 layout_mode = 2
