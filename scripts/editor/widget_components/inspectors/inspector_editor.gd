@@ -1,7 +1,8 @@
 extends InspectorChildBase
 
-@onready var editor = $Value_Editor_C
+@onready var editor_container = $Value_Editor_C
 
+var editor
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	super._ready()
@@ -12,9 +13,12 @@ func _process(_delta: float) -> void:
 	pass
 
 func _on_node_details_item_selected(data: Variant) -> void:
-	var child
 	match typeof(data):
 		TYPE_STRING:
-			child = TextEdit.new()
-			child.text = data
-			editor.add_child(child)
+			editor = TextEdit.new()
+			editor.text = data
+			editor_container.add_child(editor)
+
+func _on_graph_node_deselected(_node: Node) -> void:
+	## TODO: Save the value before closing
+	editor_container.remove_child(editor)
