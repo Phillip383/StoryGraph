@@ -1,7 +1,22 @@
-[gd_scene load_steps=3 format=3 uid="uid://dhrg7t8ktb4jq"]
+[gd_scene load_steps=7 format=3 uid="uid://dhrg7t8ktb4jq"]
 
 [ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="1_ma2pr"]
 [ext_resource type="Script" uid="uid://g4pu8n7nwddi" path="res://scripts/graph_system/Nodes/story_node_base.gd" id="2_p0nie"]
+[ext_resource type="Script" uid="uid://bibkbqwmh1qfi" path="res://scripts/node_data.gd" id="3_p0nie"]
+[ext_resource type="Script" uid="uid://cukwuvgwafjof" path="res://scripts/story_data.gd" id="3_qbq32"]
+
+[sub_resource type="Resource" id="Resource_ukg2s"]
+script = ExtResource("3_qbq32")
+quest_title = &"Hello world"
+description = "Is this going to work?"
+rewards = Dictionary[StringName, Variant]({
+&"experience": 1200.0
+})
+metadata/_custom_type_script = "uid://cukwuvgwafjof"
+
+[sub_resource type="Resource" id="Resource_qbq32"]
+script = ExtResource("3_p0nie")
+metadata/_custom_type_script = "uid://bibkbqwmh1qfi"
 
 [node name="StoryNodeBase" type="GraphNode" groups=["Story Node"]]
 editor_description = "The base node to derive other types of nodes from."
@@ -41,10 +56,8 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 script = ExtResource("2_p0nie")
-_properties = Dictionary[StringName, Variant]({
-&"Test": true,
-&"Test2": 40
-})
+story_data = SubResource("Resource_ukg2s")
+node_data = SubResource("Resource_qbq32")
 
 [node name="Slot1" type="Control" parent="."]
 layout_mode = 2
