@@ -9,7 +9,7 @@ This acts as a container for the properties of a selected node within the curren
 ## SIGNALS
 
 ## this is emitted when a item in the list is selected, and passes the data of the selected item.
-signal item_selected(data : Variant)
+signal item_selected(key : Variant, data : Variant)
 
 @onready var _property_list : ItemList = $VBoxContainer/PropertyList_SC/PropertyList 
 
@@ -49,7 +49,6 @@ func _on_graph_node_selected(node: Node) -> void:
 	_active_node = node
 	set_node_properties(node.get_story_data_key())
 
-
 func on_list_item_selected(index: int) -> void:
 	var item = _property_list.get_item_text(index)
-	item_selected.emit(_active_node.get_story_data()[item])
+	item_selected.emit(item, _active_node.get_story_data())
