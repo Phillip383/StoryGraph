@@ -56,7 +56,7 @@ theme_override_constants/minimum_grab_thickness = 3
 layout_mode = 2
 current_tab = 0
 
-[node name="Story Lines" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Inspector_Left_Top_C" instance=ExtResource("4_tixvr")]
+[node name="Levels" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Inspector_Left_Top_C" instance=ExtResource("4_tixvr")]
 layout_mode = 2
 metadata/_tab_index = 0
 
