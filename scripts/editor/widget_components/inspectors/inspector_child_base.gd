@@ -2,6 +2,9 @@ extends MarginContainer
 
 class_name InspectorChildBase
 
+## EXPORTS
+@export var tab_name := ""
+
 ## SIGNALS
 """
 When any change occurs this is emitted.
@@ -21,3 +24,6 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	pass
+
+func get_tab_name():
+	return tab_name

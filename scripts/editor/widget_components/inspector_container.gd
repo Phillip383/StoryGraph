@@ -9,7 +9,7 @@ The class manages change and update requests for it's children.
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	set_tabs_name()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -26,3 +26,12 @@ and it's up to the child to make the change.
 func update_children(context : Array[Variant]):
 	for child in get_children():
 		child.on_change_request(context)
+
+"""
+This method is called in _ready, it sets the tab names to something other than the children's top-level node name.
+"""
+func set_tabs_name():
+	var i = 0
+	for child in get_children():
+		set_tab_title(i, child.get_tab_name())
+		i += 1

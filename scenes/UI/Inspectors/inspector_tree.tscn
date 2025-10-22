@@ -6,6 +6,7 @@
 
 [node name="InspectorTree" instance=ExtResource("1_4ct5r")]
 script = ExtResource("2_g2rpe")
+tab_name = "Levels"
 
 [node name="Tree" type="Tree" parent="." index="0"]
 layout_mode = 2

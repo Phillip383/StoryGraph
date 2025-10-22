@@ -18,6 +18,7 @@ corner_radius_bottom_left = 4
 
 [node name="InspectorEditor" instance=ExtResource("1_we54b")]
 script = ExtResource("2_ls5qa")
+tab_name = "Property Editor"
 
 [node name="Value_Editor_C" type="PanelContainer" parent="." index="0"]
 editor_description = "This container will be the parent of the type of editor spawned based on the data type of the selected node property.

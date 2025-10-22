@@ -2,6 +2,9 @@ extends GraphEdit
 
 class_name StoryGraph
 
+## EXPORTS
+@export var tab_name : StringName = "(unsaved)*" ## Use the file name when saved, default to "unsaved"
+
 ## SIGNALS
 """
 When any change occurs this is emitted.
@@ -22,6 +25,9 @@ func _ready() -> void:
 	context_menu.connect("_on_add_node", _on_add_node)
 	connection_request.connect(_on_connection)
 	GraphEditor.init_connections(self) ## Setup on_changed signal with the various active inspectors.
+
+func get_tab_name():
+	return tab_name
 
 """
 This method is called by the parent node InspectorContainer when the container receives a request to change.
