@@ -16,4 +16,5 @@ func _on_node_details_item_selected(data: Variant) -> void:
 	match typeof(data):
 		TYPE_STRING:
 			child = TextEdit.new()
+			child.text = data
 			editor.add_child(child)

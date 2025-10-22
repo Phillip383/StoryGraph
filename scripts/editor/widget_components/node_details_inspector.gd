@@ -52,4 +52,4 @@ func _on_graph_node_selected(node: Node) -> void:
 
 func on_list_item_selected(index: int) -> void:
 	var item = _property_list.get_item_text(index)
-	item_selected.emit(item)
+	item_selected.emit(_active_node.get_story_data()[item])
