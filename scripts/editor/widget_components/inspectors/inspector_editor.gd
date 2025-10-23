@@ -15,6 +15,9 @@ func _process(_delta: float) -> void:
 	pass
 
 func _on_node_details_item_selected(item : Variant, m_data) -> void:
+	if editor:
+		editor.queue_free()
+
 	key = item
 	data = m_data
 	match typeof(data[item]):
@@ -22,11 +25,23 @@ func _on_node_details_item_selected(item : Variant, m_data) -> void:
 			editor = TextEdit.new()
 			editor.text = data[item]
 			editor_container.add_child(editor)
+		TYPE_STRING_NAME:
+			editor = TextEdit.new()
+			editor.text = data[item]
+			editor_container.add_child(editor)
 
 func _on_graph_node_deselected(_node: Node) -> void:
-	## TODO: Save the value before closing
 	save_value()
-	editor_container.remove_child(editor)
+	if editor:
+		editor_container.remove_child(editor)
 
 func save_value():
-	data[key] = editor.text
+	if editor:
+		data[key] = editor.text
+
+func _on_add_property_button_pressed(node : Node) -> void:
+	var menu : PackedScene = load("res://scenes/UI/Popups/add_node_property_widget.tscn")
+	if editor:
+		save_value()
+		editor_container.remove_child(editor)
+	editor_container.add_child(menu.instantiate())
