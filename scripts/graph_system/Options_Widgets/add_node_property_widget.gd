@@ -22,13 +22,14 @@ var CONTAINER_VALUE_SCENE : PackedScene = load("res://scenes/UI/Popups/Add_Prope
 var current_type
 var previous_value_editor
 
+## The node we are adding a property too.
+var active_node
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	add_button.pressed.connect(on_add_request)
 	container_size.value_changed.connect(on_container_size_change)
 	type_options.item_selected.connect(on_type_select)
-
-## CONTAINER RELATED CONTROL METHODS
 
 ## Updates the number of visible default values for the container type property.
 func on_container_size_change(value : float):
@@ -50,6 +51,8 @@ func on_container_size_change(value : float):
 func on_type_select(item : int):
 	if previous_value_editor:
 		clear_previous_value()
+	if not add_button.visible:
+		add_button.visible = true ## I would make this more robust, but I want to allow empty default values.
 
 	current_type = item
 	match item:
@@ -89,7 +92,7 @@ func _on_close_button_pressed() -> void:
 
 func on_add_request():
 	## TODO: Add validity checks.
-	print("Adding Property")
+	print("Adding Property to: ", active_node)
 	pass
 
 func add_array():

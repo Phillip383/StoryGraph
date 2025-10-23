@@ -40,8 +40,9 @@ func save_value():
 		data[key] = editor.text
 
 func _on_add_property_button_pressed(node : Node) -> void:
-	var menu : PackedScene = load("res://scenes/UI/Popups/Add_Property/add_node_property_widget.tscn")
+	var menu = load("res://scenes/UI/Popups/Add_Property/add_node_property_widget.tscn").instantiate()
+	menu.active_node = node
 	if editor:
 		save_value()
 		editor_container.remove_child(editor)
-	editor_container.add_child(menu.instantiate())
+	editor_container.add_child(menu)
