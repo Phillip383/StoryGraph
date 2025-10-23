@@ -47,24 +47,24 @@ func on_container_size_change(value : float):
 
 ## Listens for the current selected type, this method will update visibility of the widgets.
 func on_type_select(item : int):
+	## TODO: Clear previous types
+
 	current_type = item
-	## TODO: Add a TextEdit for type text, will make it easier for blocks of text.
-	## TODO: Add a SpinBox for float and int types
-	## TODO: Add a Options with true or false for bool's
 	match item:
 		Types.ARRAY:
 			container_options.visible = true
 			container_values.visible = true
 		Types.DICTIONARY:
-			pass
+			container_options.visible = true
+			container_values.visible = true
 		Types.BOOL:
-			pass
+			$VBoxContainer/BooleanValue.visible = true
 		Types.TEXT:
-			pass
+			$VBoxContainer/TextValue.visible = true
 		Types.INT:
-			pass
+			$VBoxContainer/IntValue.visible = true
 		Types.FLOAT:
-			pass
+			$VBoxContainer/FloatValue.visible = true
 
 ## Checks the entered value if it is valid for the selected data type.
 func check_value_input_type(_text: String):

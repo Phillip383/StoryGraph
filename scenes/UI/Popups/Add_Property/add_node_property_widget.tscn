@@ -75,13 +75,43 @@ custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="DefaultValue" type="LineEdit" parent="VBoxContainer"]
+[node name="TextValue" type="TextEdit" parent="VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(700, 500)
+layout_mode = 2
+size_flags_vertical = 3
+placeholder_text = "Default Value"
+
+[node name="IntValue" type="SpinBox" parent="VBoxContainer"]
 visible = false
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-placeholder_text = "Default Value"
+allow_greater = true
+allow_lesser = true
+
+[node name="FloatValue" type="SpinBox" parent="VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+step = 0.001
+allow_greater = true
+allow_lesser = true
+
+[node name="BooleanValue" type="OptionButton" parent="VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+item_count = 2
+popup/item_0/text = "false"
+popup/item_0/id = 0
+popup/item_1/text = "true"
+popup/item_1/id = 1
 
 [node name="Values" type="VBoxContainer" parent="VBoxContainer"]
 visible = false
