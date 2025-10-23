@@ -102,5 +102,6 @@ metadata/_tab_index = 0
 [connection signal="node_selected" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Graphs_C/Graph" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Left_Bottom_C/Node Details" method="_on_graph_node_selected"]
 [connection signal="add_property" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Left_Bottom_C/Node Details" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Bottom_C/Property Editor" method="_on_add_property_button_pressed"]
 [connection signal="item_selected" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Left_Bottom_C/Node Details" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Bottom_C/Property Editor" method="_on_node_details_item_selected"]
+[connection signal="property_added" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Bottom_C/Property Editor" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Left_Bottom_C/Node Details" method="_on_property_added"]
 
 [editable path="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Bottom_C/Property Editor"]

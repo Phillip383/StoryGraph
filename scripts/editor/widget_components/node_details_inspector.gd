@@ -55,3 +55,6 @@ func on_list_item_selected(index: int) -> void:
 
 func _on_add_property_button_pressed() -> void:
 	add_property.emit(_active_node)
+
+func _on_property_added(active_node: Node) -> void:
+	set_node_properties(active_node.get_story_data_key())

@@ -1,5 +1,8 @@
 extends CenterContainer
 
+
+
+## TYPES for internal checking
 enum Types {
 	BOOL,
 	TEXT,
@@ -9,7 +12,11 @@ enum Types {
 	DICTIONARY
 }
 
+## This widget is used for container types values
 var CONTAINER_VALUE_SCENE : PackedScene = load("res://scenes/UI/Popups/Add_Property/add_property_default_values_widget.tscn")
+
+## SIGNALS
+signal property_added(active_node : Node) ## Emitted when a property is successfully added to the active node.
 
 @onready var property_name = $VBoxContainer/HBoxContainer/Name
 @onready var type_options = $VBoxContainer/HBoxContainer/TypeOption
@@ -21,11 +28,11 @@ var CONTAINER_VALUE_SCENE : PackedScene = load("res://scenes/UI/Popups/Add_Prope
 const REQUIRED_NAME_LENGTH = 2
 
 ## Cached value for the currently selected type.
-var current_type
-var previous_value_editor
+var _current_type
+var _current_value_editor
 
 ## The node we are adding a property too.
-var active_node
+var _active_node
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -52,16 +59,16 @@ func on_container_size_change(value : float):
 		var diff = value - current_count ## Only add values for the difference of existing values and new ones.
 		for i in range(diff):
 			var new_value = CONTAINER_VALUE_SCENE.instantiate()
-			if current_type == Types.ARRAY: ## If it's an array value, hide the separator and key value.
+			if _current_type == Types.ARRAY: ## If it's an array value, hide the separator and key value.
 				new_value.is_array(true)
 			container_values.add_child(new_value)
 
 ## Listens for the current selected type, this method updates visibility of the value widgets.
 func on_type_select(item : int):
-	if previous_value_editor:
-		clear_previous_value()
+	if _current_value_editor:
+		remove_previous_value_editor()
 
-	current_type = item
+	_current_type = item
 	match item:
 		Types.ARRAY:
 			container_options.visible = true
@@ -70,20 +77,20 @@ func on_type_select(item : int):
 			container_options.visible = true
 			container_values.visible = true
 		Types.BOOL:
-			previous_value_editor = $VBoxContainer/BooleanValue
+			_current_value_editor = $VBoxContainer/BooleanValue
 			$VBoxContainer/BooleanValue.visible = true
 		Types.TEXT:
-			previous_value_editor = $VBoxContainer/TextValue
+			_current_value_editor = $VBoxContainer/TextValue
 			$VBoxContainer/TextValue.visible = true
 		Types.INT:
-			previous_value_editor = $VBoxContainer/IntValue
+			_current_value_editor = $VBoxContainer/IntValue
 			$VBoxContainer/IntValue.visible = true
 		Types.FLOAT:
-			previous_value_editor = $VBoxContainer/FloatValue
+			_current_value_editor = $VBoxContainer/FloatValue
 			$VBoxContainer/FloatValue.visible = true
 
-func clear_previous_value():
-	match current_type:
+func remove_previous_value_editor():
+	match _current_type:
 		Types.ARRAY:
 			container_options.visible = false
 			container_values.visible = false
@@ -92,30 +99,47 @@ func clear_previous_value():
 			container_options.visible = false
 			container_values.visible = false
 			return
-	previous_value_editor.visible = false
+	_current_value_editor.visible = false
 
 func _on_close_button_pressed() -> void:
 	queue_free()
 
 func on_add_request():
-	## TODO: Add validity checks.
-	print("Adding Property to: ", active_node)
-	pass
+	match _current_type:
+		Types.ARRAY:
+			add_array()
+		Types.DICTIONARY:
+			add_dict()
+		Types.BOOL:
+			add_bool()
+		Types.INT:
+			add_int()
+		Types.FLOAT:
+			add_float()
+		Types.TEXT:
+			add_text()
+
+	property_added.emit(_active_node)
 
 func add_array():
+	## TODO: Add the ability to select types for values in the GUI do this on ContainerValue scene.
+	## TODO: parse all of the value's constructing an array and add it to the node
 	pass
 
 func add_dict():
+	## TODO: Add the ability to select types for values in the GUI do this on ContainerValue scene.
+	## TODO: parse all of the value's constructing a dictionary and add it to the node
 	pass
 
 func add_text():
-	pass
+	_active_node.add_data(property_name.text, _current_value_editor.text)
 
 func add_bool():
-	pass
+	var selected = true if _current_value_editor.selected == 1 else false
+	_active_node.add_data(property_name.text, selected)
 
 func add_int():
-	pass
+	_active_node.add_data(property_name.text, _current_value_editor.value)
 
 func add_float():
-	pass
+	_active_node.add_data(property_name.text, _current_value_editor.value)

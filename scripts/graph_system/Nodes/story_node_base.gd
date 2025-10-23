@@ -23,3 +23,6 @@ func get_story_data() -> Dictionary[StringName, Variant]:
 
 func get_story_data_key() -> Array[StringName]:
 	return story_data.data.keys()
+
+func add_data(key : StringName, data : Variant):
+	story_data.data.get_or_add(key, data)
