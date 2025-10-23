@@ -12,7 +12,8 @@ This acts as a container for the properties of a selected node within the curren
 signal item_selected(key : Variant, data : Variant)
 signal add_property(active_node : Node)
 
-@onready var _property_list : ItemList = $VBoxContainer/PropertyList_SC/PropertyList 
+@onready var _property_list : ItemList = $VBoxContainer/PropertyList_SC/PropertyList
+@onready var _add_property_button : Button = $VBoxContainer/HBoxContainer/Buttons/AddPropertyButton
 
 var _active_node : BaseStoryNode
 
@@ -45,10 +46,12 @@ func clear_node_properties():
 
 func _on_graph_node_deselected(_node: Node) -> void:
 	clear_node_properties()
+	_add_property_button.disabled = true
 
 func _on_graph_node_selected(node: Node) -> void:
 	_active_node = node
 	set_node_properties(node.get_story_data_key())
+	_add_property_button.disabled = false
 
 func on_list_item_selected(index: int) -> void:
 	var item = _property_list.get_item_text(index)

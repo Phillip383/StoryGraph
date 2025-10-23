@@ -14,7 +14,6 @@ var CONTAINER_VALUE_SCENE : PackedScene = load("res://scenes/UI/Popups/Add_Prope
 @onready var type_options = $VBoxContainer/HBoxContainer/TypeOption
 @onready var add_button = $VBoxContainer/Buttons/AddButton
 @onready var container_options = $VBoxContainer/ContainerTypesOptions
-@onready var value_box = $VBoxContainer/DefaultValue
 @onready var container_values = $VBoxContainer/Values
 @onready var container_size = $VBoxContainer/ContainerTypesOptions/SpinBox
 

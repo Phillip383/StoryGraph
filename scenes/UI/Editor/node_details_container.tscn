@@ -30,6 +30,7 @@ custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 tooltip_text = "Add property to selected node."
 theme = ExtResource("1_7csry")
+disabled = true
 icon = ExtResource("3_ae8gc")
 icon_alignment = 1
 expand_icon = true
