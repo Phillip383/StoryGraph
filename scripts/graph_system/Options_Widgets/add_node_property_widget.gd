@@ -42,7 +42,7 @@ func _ready() -> void:
 	property_name.text_changed.connect(on_property_named)
 
 func on_property_named(text : String):
-	if not add_button.visible and text.length() >= REQUIRED_NAME_LENGTH:
+	if text.length() >= REQUIRED_NAME_LENGTH:
 		add_button.visible = true ## I would make this more robust, but I want to allow empty default values.
 	else: 
 		add_button.visible = false
