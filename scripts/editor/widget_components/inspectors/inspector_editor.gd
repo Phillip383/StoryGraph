@@ -36,7 +36,7 @@ func _on_graph_node_deselected(_node: Node) -> void:
 		editor_container.remove_child(editor)
 
 func save_value():
-	if editor:
+	if editor and data: ## Only save data changes if we were changing data.
 		data[key] = editor.text
 
 func _on_add_property_button_pressed(node : Node) -> void:
@@ -45,4 +45,5 @@ func _on_add_property_button_pressed(node : Node) -> void:
 	if editor:
 		save_value()
 		editor_container.remove_child(editor)
+	editor = menu
 	editor_container.add_child(menu)
