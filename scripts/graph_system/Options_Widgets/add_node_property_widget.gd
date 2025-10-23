@@ -20,6 +20,7 @@ var CONTAINER_VALUE_SCENE : PackedScene = load("res://scenes/UI/Popups/Add_Prope
 
 ## Cached value for the currently selected type.
 var current_type
+var previous_value_editor
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -45,9 +46,10 @@ func on_container_size_change(value : float):
 				new_value.is_array(true)
 			container_values.add_child(new_value)
 
-## Listens for the current selected type, this method will update visibility of the widgets.
+## Listens for the current selected type, this method updates visibility of the value widgets.
 func on_type_select(item : int):
-	## TODO: Clear previous types
+	if previous_value_editor:
+		clear_previous_value()
 
 	current_type = item
 	match item:
@@ -58,17 +60,29 @@ func on_type_select(item : int):
 			container_options.visible = true
 			container_values.visible = true
 		Types.BOOL:
+			previous_value_editor = $VBoxContainer/BooleanValue
 			$VBoxContainer/BooleanValue.visible = true
 		Types.TEXT:
+			previous_value_editor = $VBoxContainer/TextValue
 			$VBoxContainer/TextValue.visible = true
 		Types.INT:
+			previous_value_editor = $VBoxContainer/IntValue
 			$VBoxContainer/IntValue.visible = true
 		Types.FLOAT:
+			previous_value_editor = $VBoxContainer/FloatValue
 			$VBoxContainer/FloatValue.visible = true
 
-## Checks the entered value if it is valid for the selected data type.
-func check_value_input_type(_text: String):
-	pass
+func clear_previous_value():
+	match current_type:
+		Types.ARRAY:
+			container_options.visible = false
+			container_values.visible = false
+			return
+		Types.DICTIONARY:
+			container_options.visible = false
+			container_values.visible = false
+			return
+	previous_value_editor.visible = false
 
 func _on_close_button_pressed() -> void:
 	queue_free()
