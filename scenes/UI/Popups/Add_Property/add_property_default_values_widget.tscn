@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0suhsdjwlhik"]
+
+[ext_resource type="Script" uid="uid://c2igoqjw1imug" path="res://scripts/graph_system/Options_Widgets/add_property_default_values_widget.gd" id="1_3tifu"]
+
+[node name="DefaultValues" type="HBoxContainer"]
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_3tifu")
+
+[node name="DefaultKey" type="LineEdit" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+placeholder_text = "value name"
+expand_to_text_length = true
+
+[node name="VSeparator" type="VSeparator" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="DefaultValue" type="LineEdit" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+placeholder_text = "default value"
+expand_to_text_length = true
