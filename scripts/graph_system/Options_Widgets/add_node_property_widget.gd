@@ -122,13 +122,14 @@ func on_add_request():
 
 	property_added.emit(_active_node)
 
+## Need a recursive design to get all the values...
 func add_array():
-	## TODO: Add the ability to select types for values in the GUI do this on ContainerValue scene.
+	# Will need to start at the top level, checking for children, will need to construct any nested containers.
 	## TODO: parse all of the value's constructing an array and add it to the node
 	pass
 
+## Need a recursive design to get all the values...
 func add_dict():
-	## TODO: Add the ability to select types for values in the GUI do this on ContainerValue scene.
 	## TODO: parse all of the value's constructing a dictionary and add it to the node
 	pass
 

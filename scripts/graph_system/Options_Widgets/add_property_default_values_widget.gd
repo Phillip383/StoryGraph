@@ -60,7 +60,6 @@ func clear_container_values():
 	for i in range(values.size()):
 		values[i].queue_free()
 
-
 func on_container_size_change(value : float):
 		
 	var current_count = value_editor_container.get_child_count()

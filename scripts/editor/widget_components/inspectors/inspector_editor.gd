@@ -48,9 +48,9 @@ func _on_add_property_button_pressed(node : Node) -> void:
 	var menu = load("res://scenes/UI/Popups/Add_Property/add_node_property_widget.tscn").instantiate()
 	menu._active_node = node
 	menu.property_added.connect(on_property_added)
-	if editor:
+	if is_instance_valid(editor):
 		save_value()
-		editor_container.remove_child(editor)
+		editor.queue_free()
 	editor = menu
 	editor_container.add_child(menu)
 
