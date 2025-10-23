@@ -80,7 +80,6 @@ func on_type_select(item : int):
 			$VBoxContainer/FloatValue.visible = true
 
 func remove_previous_value_editor():
-	clear_container_values()
 	match _current_type:
 		Types.ARRAY:
 			container_options.visible = false
