@@ -67,15 +67,19 @@ func on_type_select(item : int):
 			container_values.visible = true
 			# TODO: Remove the old Dictionary values
 		Types.BOOL:
+			container_options.visible = false
 			_current_value_editor = $VBoxContainer/BooleanValue
 			$VBoxContainer/BooleanValue.visible = true
 		Types.TEXT:
+			container_options.visible = false
 			_current_value_editor = $VBoxContainer/TextValue
 			$VBoxContainer/TextValue.visible = true
 		Types.INT:
+			container_options.visible = false
 			_current_value_editor = $VBoxContainer/IntValue
 			$VBoxContainer/IntValue.visible = true
 		Types.FLOAT:
+			container_options.visible = false
 			_current_value_editor = $VBoxContainer/FloatValue
 			$VBoxContainer/FloatValue.visible = true
 

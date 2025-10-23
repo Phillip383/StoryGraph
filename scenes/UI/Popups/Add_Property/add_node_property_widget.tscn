@@ -57,6 +57,7 @@ expand_to_text_length = true
 [node name="ContainerTypesOptions" type="HBoxContainer" parent="VBoxContainer"]
 visible = false
 layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 4
 
 [node name="Label" type="Label" parent="VBoxContainer/ContainerTypesOptions"]
@@ -116,6 +117,7 @@ popup/item_1/id = 1
 [node name="Values" type="VBoxContainer" parent="VBoxContainer"]
 visible = false
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="Buttons" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
