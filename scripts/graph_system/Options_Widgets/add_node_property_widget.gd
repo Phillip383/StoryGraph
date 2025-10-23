@@ -1,17 +1,5 @@
 extends CenterContainer
 
-
-
-## TYPES for internal checking
-enum Types {
-	BOOL,
-	TEXT,
-	INT,
-	FLOAT,
-	ARRAY,
-	DICTIONARY
-}
-
 ## This widget is used for container types values
 var CONTAINER_VALUE_SCENE : PackedScene = load("res://scenes/UI/Popups/Add_Property/add_property_default_values_widget.tscn")
 
@@ -67,15 +55,17 @@ func on_container_size_change(value : float):
 func on_type_select(item : int):
 	if _current_value_editor:
 		remove_previous_value_editor()
-
+	clear_container_values()
 	_current_type = item
 	match item:
 		Types.ARRAY:
 			container_options.visible = true
 			container_values.visible = true
+			# TODO: Remove the old array values
 		Types.DICTIONARY:
 			container_options.visible = true
 			container_values.visible = true
+			# TODO: Remove the old Dictionary values
 		Types.BOOL:
 			_current_value_editor = $VBoxContainer/BooleanValue
 			$VBoxContainer/BooleanValue.visible = true
@@ -90,6 +80,7 @@ func on_type_select(item : int):
 			$VBoxContainer/FloatValue.visible = true
 
 func remove_previous_value_editor():
+	clear_container_values()
 	match _current_type:
 		Types.ARRAY:
 			container_options.visible = false
@@ -100,6 +91,12 @@ func remove_previous_value_editor():
 			container_values.visible = false
 			return
 	_current_value_editor.visible = false
+
+func clear_container_values():
+	var values = container_values.get_children()
+	for i in range(values.size()):
+		values[i].queue_free()
+	container_size.value = 0
 
 func _on_close_button_pressed() -> void:
 	queue_free()
