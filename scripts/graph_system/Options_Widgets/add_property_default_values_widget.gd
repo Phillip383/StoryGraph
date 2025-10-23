@@ -25,8 +25,6 @@ func is_array(value : bool):
 func on_type_change(type : int):
 	current_type = type
 	clear_container_values()
-	if current_editor:
-		value_editor_container.remove_child(current_editor)
 	match type:
 		Types.ARRAY:
 			container_size_container.visible = true
@@ -69,7 +67,7 @@ func on_container_size_change(value : float):
 
 	if value < current_count:
 		var diff = current_count - value
-		for i in range(diff):
+		for i in range(diff - 1, -1, -1):
 			value_editor_container.remove_child(value_editor_container.get_child(i))
 	else:
 		var diff = value - current_count ## Only add values for the difference of existing values and new ones.

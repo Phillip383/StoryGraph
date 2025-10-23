@@ -41,8 +41,9 @@ func on_container_size_change(value : float):
 
 	if value < current_count:
 		var diff = current_count - value
-		for i in range(diff):
-			container_values.remove_child(container_values.get_child(i))
+		for i in range(diff - 1, -1, -1):
+			if container_values.get_child(i):
+				container_values.remove_child(container_values.get_child(i))
 	else:
 		var diff = value - current_count ## Only add values for the difference of existing values and new ones.
 		for i in range(diff):
