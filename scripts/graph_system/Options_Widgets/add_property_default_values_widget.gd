@@ -5,17 +5,42 @@ extends HBoxContainer
 @onready var value_editor_container = $ValueContainer/ValueList
 @onready var container_size_container = $ContainerSize
 @onready var container_size = $ContainerSize/SpinBox
-
-
-
+@onready var key_name = $DefaultKey
 var current_editor
 var current_type
+
+## Tracks the current editor open for this value widget so accessing it's data is achievable.
+var editor
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	type_options.item_selected.connect(on_type_change)
 	container_size.value = 1
 	container_size.value_changed.connect(on_container_size_change)
+
+## Returns the cached data from this node.
+func get_input_data():
+	match current_type:
+		Types.ARRAY:
+			var arr = []
+			for child in value_editor_container.get_children():
+				if child.has_method("get_input_data"):
+					arr.append(child.get_input_data())
+			return arr
+		Types.DICTIONARY:
+			var dict = {}
+			for child in value_editor_container.get_children():
+				if child.has_method("get_input_data"):
+					dict[child.key_name.text] = child.get_input_data()
+			return dict
+		Types.INT:
+			return editor.value
+		Types.FLOAT:
+			return editor.value
+		Types.BOOL:
+			return editor.selected
+		Types.TEXT:
+			return editor.text
 
 func is_array(value : bool):
 	if value:
@@ -69,35 +94,35 @@ func on_container_size_change(value : float):
 			value_editor_container.add_child(new_value)
 
 func create_text_editor():
-	var text_edit = TextEdit.new()
-	text_edit.custom_minimum_size = Vector2(400, 300)
-	text_edit.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
+	editor = TextEdit.new()
+	editor.custom_minimum_size = Vector2(400, 300)
+	editor.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
 	container_size_container.visible = false
-	value_editor_container.add_child(text_edit)
+	value_editor_container.add_child(editor)
 
 func create_bool_editor():
-	var bool_editor = OptionButton.new()
-	bool_editor.add_item("false", 0)
-	bool_editor.add_item("true", 1)
-	bool_editor.selected = -1
-	bool_editor.custom_minimum_size = Vector2(100, 10)
+	editor = OptionButton.new()
+	editor.add_item("false", 0)
+	editor.add_item("true", 1)
+	editor.selected = -1
+	editor.custom_minimum_size = Vector2(100, 10)
 	container_size_container.visible = false
-	value_editor_container.add_child(bool_editor)
+	value_editor_container.add_child(editor)
 
 func create_int_editor():
-	var int_editor = SpinBox.new()
-	int_editor.step = 1
-	int_editor.allow_greater = true
-	int_editor.allow_lesser = true
-	int_editor.custom_minimum_size = Vector2(100, 20)
+	editor = SpinBox.new()
+	editor.step = 1
+	editor.allow_greater = true
+	editor.allow_lesser = true
+	editor.custom_minimum_size = Vector2(100, 20)
 	container_size_container.visible = false
-	value_editor_container.add_child(int_editor)
+	value_editor_container.add_child(editor)
 
 func create_float_editor():
-	var float_editor = SpinBox.new()
-	float_editor.step = 0.01
-	float_editor.allow_greater = true
-	float_editor.allow_lesser = true
-	float_editor.custom_minimum_size = Vector2(100, 20)
+	editor = SpinBox.new()
+	editor.step = 0.01
+	editor.allow_greater = true
+	editor.allow_lesser = true
+	editor.custom_minimum_size = Vector2(100, 20)
 	container_size_container.visible = false
-	value_editor_container.add_child(float_editor)
+	value_editor_container.add_child(editor)

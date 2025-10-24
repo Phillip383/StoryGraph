@@ -123,14 +123,14 @@ func on_add_request():
 	property_added.emit(_active_node)
 	reset()
 
-## Need a recursive design to get all the values...
 func add_array():
-	# Will need to start at the top level, checking for children, will need to construct any nested containers.
-	var result = []
-	## TODO: parse all of the value's constructing an array and add it to the node
-	pass
+	var arr : Array[Variant]
+	for child in container_values.get_children():
+		var _input_data = child.get_input_data()
+		arr.append(_input_data)
 
-## Need a recursive design to get all the values...
+	_active_node.add_data(property_name.text, arr)
+
 func add_dict():
 	## TODO: parse all of the value's constructing a dictionary and add it to the node
 	pass
