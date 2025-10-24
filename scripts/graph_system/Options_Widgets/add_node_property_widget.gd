@@ -30,6 +30,7 @@ func _ready() -> void:
 	property_name.text_changed.connect(on_property_named)
 
 func on_property_named(text : String):
+	## TODO [SCRUM-5]: Validate that a property with the given name doesn't already exist.
 	if text.length() >= REQUIRED_NAME_LENGTH:
 		add_button.visible = true ## I would make this more robust, but I want to allow empty default values.
 	else: 
