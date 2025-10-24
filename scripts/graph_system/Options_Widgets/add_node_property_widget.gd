@@ -126,6 +126,7 @@ func on_add_request():
 ## Need a recursive design to get all the values...
 func add_array():
 	# Will need to start at the top level, checking for children, will need to construct any nested containers.
+	var result = []
 	## TODO: parse all of the value's constructing an array and add it to the node
 	pass
 
@@ -148,7 +149,6 @@ func add_float():
 	_active_node.add_data(property_name.text, _current_value_editor.value)
 
 func reset():
-	##TODO: Reset the property editor.
 	clear_container_values()
 	remove_previous_value_editor()
 	property_name.text = ""

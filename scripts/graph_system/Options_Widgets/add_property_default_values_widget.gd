@@ -37,21 +37,13 @@ func on_type_change(type : int):
 			current_editor.is_array(false)
 			value_editor_container.add_child(current_editor)
 		Types.FLOAT:
-			current_editor = SpinBox.new()
-			container_size_container.visible = false
-			value_editor_container.add_child(current_editor)
+			create_float_editor()
 		Types.INT:
-			current_editor = SpinBox.new()
-			container_size_container.visible = false
-			value_editor_container.add_child(current_editor)
+			create_int_editor()
 		Types.TEXT:
-			current_editor = TextEdit.new()
-			container_size_container.visible = false
-			value_editor_container.add_child(current_editor)
+			create_text_editor()
 		Types.BOOL:
-			current_editor = OptionButton.new()
-			container_size_container.visible = false
-			value_editor_container.add_child(current_editor)
+			create_bool_editor()
 
 func clear_container_values():
 	container_size_container.visible = false
@@ -75,3 +67,37 @@ func on_container_size_change(value : float):
 			if current_type == Types.ARRAY: ## If it's an array value, hide the separator and key value.
 				new_value.is_array(true)
 			value_editor_container.add_child(new_value)
+
+func create_text_editor():
+	var text_edit = TextEdit.new()
+	text_edit.custom_minimum_size = Vector2(400, 300)
+	text_edit.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
+	container_size_container.visible = false
+	value_editor_container.add_child(text_edit)
+
+func create_bool_editor():
+	var bool_editor = OptionButton.new()
+	bool_editor.add_item("false", 0)
+	bool_editor.add_item("true", 1)
+	bool_editor.selected = -1
+	bool_editor.custom_minimum_size = Vector2(100, 10)
+	container_size_container.visible = false
+	value_editor_container.add_child(bool_editor)
+
+func create_int_editor():
+	var int_editor = SpinBox.new()
+	int_editor.step = 1
+	int_editor.allow_greater = true
+	int_editor.allow_lesser = true
+	int_editor.custom_minimum_size = Vector2(100, 20)
+	container_size_container.visible = false
+	value_editor_container.add_child(int_editor)
+
+func create_float_editor():
+	var float_editor = SpinBox.new()
+	float_editor.step = 0.01
+	float_editor.allow_greater = true
+	float_editor.allow_lesser = true
+	float_editor.custom_minimum_size = Vector2(100, 20)
+	container_size_container.visible = false
+	value_editor_container.add_child(float_editor)
