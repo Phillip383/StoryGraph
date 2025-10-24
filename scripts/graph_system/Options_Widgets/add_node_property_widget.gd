@@ -108,9 +108,15 @@ func _on_close_button_pressed() -> void:
 func on_add_request():
 	match _current_type:
 		Types.ARRAY:
-			add_array()
+			var _arr = []
+			for child in container_values.get_children():
+				_arr.append(child.get_value())
+			_active_node.add_data(property_name.text, _arr)
 		Types.DICTIONARY:
-			add_dict()
+			var _dict = {}
+			for child in container_values.get_children():
+				_dict[child.get_key_name()] = child.get_value()
+			_active_node.add_data(property_name.text, _dict)
 		Types.BOOL:
 			add_bool()
 		Types.INT:
@@ -123,17 +129,6 @@ func on_add_request():
 	property_added.emit(_active_node)
 	reset()
 
-func add_array():
-	var arr : Array[Variant]
-	for child in container_values.get_children():
-		var _input_data = child.get_input_data()
-		arr.append(_input_data)
-
-	_active_node.add_data(property_name.text, arr)
-
-func add_dict():
-	## TODO: parse all of the value's constructing a dictionary and add it to the node
-	pass
 
 func add_text():
 	_active_node.add_data(property_name.text, _current_value_editor.text)
