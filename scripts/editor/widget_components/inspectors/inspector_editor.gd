@@ -7,6 +7,7 @@ signal property_added(active_node : Node)
 
 
 @onready var editor_container = $Value_Editor_C
+@onready var customize_property_widget = $Value_Editor_C/CustomizeProperty
 
 var editor
 var key
@@ -22,21 +23,13 @@ func _process(_delta: float) -> void:
 func _on_node_details_item_selected(item : Variant, m_data) -> void:
 	if editor:
 		editor.queue_free()
-
-	key = item
-	data = m_data
-	match typeof(data[item]):
-		TYPE_STRING:
-			editor = TextEdit.new()
-			editor.text = data[item]
-			editor_container.add_child(editor)
-		TYPE_STRING_NAME:
-			editor = TextEdit.new()
-			editor.text = data[item]
-			editor_container.add_child(editor)
+	
+	customize_property_widget.visible = true
+	customize_property_widget.populate_values(item, m_data)
 
 func _on_graph_node_deselected(_node: Node) -> void:
 	save_value()
+	customize_property_widget.clear_widget() ## Clear and make the customize widget invisible.
 	if editor:
 		editor_container.remove_child(editor)
 
@@ -45,6 +38,7 @@ func save_value():
 		data[key] = editor.text
 
 func _on_add_property_button_pressed(node : Node) -> void:
+	customize_property_widget.clear_widget()
 	var menu = load("res://scenes/UI/Popups/Add_Property/add_node_property_widget.tscn").instantiate()
 	menu._active_node = node
 	menu.property_added.connect(on_property_added)

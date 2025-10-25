@@ -58,4 +58,3 @@ func _on_add_property_button_pressed() -> void:
 
 func _on_property_added(active_node: Node) -> void:
 	set_node_properties(active_node.get_story_data_key())
-	print("LN 61: Node_Details ", active_node.get_story_data()) ## TODO: delete this later...
