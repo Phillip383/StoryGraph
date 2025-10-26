@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://c0ng6gf8elp2h"]
+[gd_scene load_steps=4 format=3 uid="uid://c0ng6gf8elp2h"]
 
 [ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="1_2iog6"]
 [ext_resource type="Script" uid="uid://5f2rdnh54i77" path="res://scripts/graph_system/Options_Widgets/customize_properties_widgets/customize_property.gd" id="1_j24oq"]
-[ext_resource type="Texture2D" uid="uid://bcpiroq0lfn5v" path="res://assets/Icons/Control Icons/minus.png" id="2_cdu8p"]
-[ext_resource type="Texture2D" uid="uid://72qceuth8ixa" path="res://assets/Icons/Control Icons/plus.png" id="3_cjd8k"]
+[ext_resource type="PackedScene" uid="uid://ca1n3r2xqkoun" path="res://scenes/UI/Popups/container_size_widget.tscn" id="2_cdu8p"]
 
 [node name="CustomizeProperty" type="CenterContainer"]
 offset_top = 192.0
@@ -27,32 +26,8 @@ layout_mode = 2
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="ElementControls" type="HBoxContainer" parent="VBoxContainer"]
+[node name="ContainerSizeWidget" parent="VBoxContainer" instance=ExtResource("2_cdu8p")]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 8
-
-[node name="Delete" type="TextureButton" parent="VBoxContainer/ElementControls"]
-modulate = Color(1, 0.99215686, 0, 1)
-custom_minimum_size = Vector2(20, 20)
-layout_mode = 2
-theme = ExtResource("1_2iog6")
-texture_normal = ExtResource("2_cdu8p")
-ignore_texture_size = true
-stretch_mode = 0
-
-[node name="VSeparator" type="VSeparator" parent="VBoxContainer/ElementControls"]
-layout_mode = 2
-theme_override_constants/separation = 20
-
-[node name="New" type="TextureButton" parent="VBoxContainer/ElementControls"]
-modulate = Color(1, 0.99215686, 0, 1)
-custom_minimum_size = Vector2(20, 20)
-layout_mode = 2
-theme = ExtResource("1_2iog6")
-texture_normal = ExtResource("3_cjd8k")
-ignore_texture_size = true
-stretch_mode = 0
 
 [node name="CancelUpdateButtons" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2

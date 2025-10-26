@@ -23,7 +23,7 @@ icon_alignment = 1
 expand_icon = true
 
 [node name="SizeLabel" type="Label" parent="."]
-custom_minimum_size = Vector2(30, 0)
+custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 
 [node name="Increment" type="Button" parent="."]

@@ -5,8 +5,8 @@ signal value_changed(value)
 
 @onready var type_options = $TypeOption
 @onready var value_editor_container = $ValueContainer/ValueList
-@onready var container_size_container = $ContainerSize
-@onready var container_size = $ContainerSize/SpinBox
+@onready var container_size_container = $ContainerSizeWidget
+@onready var container_size : Label = $ContainerSizeWidget/SizeLabel
 @onready var key_name = $DefaultKey
 
 var current_type
@@ -17,8 +17,8 @@ var editor
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	type_options.item_selected.connect(on_type_change)
-	container_size.value = 1
-	container_size.value_changed.connect(on_container_size_change)
+	container_size.text = str(0)
+	container_size_container.on_size_change.connect(on_container_size_change)
 	value_changed.connect(on_value_changed)
 
 func on_value_changed(_value):
@@ -71,6 +71,9 @@ func set_data_in_editor(data):
 		TYPE_STRING:
 			editor.text = data
 
+func set_container_size(_size : int):
+	container_size.text = str(_size)
+
 ## Adds a editor widget to the foldable value container on this widget
 func add_value_editor(widget):
 	value_editor_container.add_child(widget)
@@ -106,7 +109,7 @@ func init_container_type(b_show_key_name : bool):
 # Clears the container elements from the GUI when the type changes.
 func clear_container_values():
 	container_size_container.visible = false
-	container_size.value = 1
+	container_size.text = str(1)
 	var values = value_editor_container.get_children()
 	for i in range(values.size()):
 		values[i].queue_free()
