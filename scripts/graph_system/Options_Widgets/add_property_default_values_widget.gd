@@ -206,8 +206,7 @@ Creates a container element.
 """
 func create_element(data = null, _key = "", is_dict_element = false):
 	var _type = get_type(data)
-	if _type == Types.DICTIONARY or _type == Types.ARRAY:
-		container_size_container.visible = true
+	container_size_container.visible = true
 	var element = load(scene_file_path).instantiate()
 	element.key_and_separator_visibility(is_dict_element)
 	add_value_editor(element)
