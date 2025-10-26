@@ -62,14 +62,14 @@ func set_info(_name, _type):
 
 func set_data_in_editor(data):
 	match typeof(data):
-		Types.INT:
+		TYPE_INT:
 			editor.value = data
-		Types.FLOAT:
+		TYPE_FLOAT:
 			editor.value = data
-		Types.TEXT:
-			editor.text = data
-		Types.BOOL:
+		TYPE_BOOL:
 			editor.selected = data
+		TYPE_STRING:
+			editor.text = data
 
 ## Adds a editor widget to the foldable value container on this widget
 func add_value_editor(widget):

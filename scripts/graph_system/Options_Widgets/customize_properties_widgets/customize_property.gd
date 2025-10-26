@@ -30,15 +30,19 @@ func create_widget(widget, data, _key = ""):
 		TYPE_INT:
 			widget.create_int_editor()
 			widget.set_info("", Types.INT)
+			widget.set_data_in_editor(data)
 		TYPE_FLOAT:
 			widget.create_float_editor()
 			widget.set_info("", Types.FLOAT)
+			widget.set_data_in_editor(data)
 		TYPE_BOOL:
 			widget.create_bool_editor()
 			widget.set_info("", Types.BOOL)
+			widget.set_data_in_editor(data)
 		TYPE_STRING:
 			widget.create_text_editor()
 			widget.set_info("", Types.TEXT)
+			widget.set_data_in_editor(data)
 
 func clear_widget(retain_visibility = false):
 	property_name.text = ""
