@@ -20,11 +20,13 @@ func create_widget(widget, data, _key = ""):
 	match typeof(data):
 		TYPE_ARRAY:
 			widget.set_info(_key, Types.ARRAY)
+			widget.set_container_size(data.size())
 			for ele in data:
 				var element = widget.create_element(ele, _key)
 				create_widget(element, ele) ## Recursively call this method on the elements of the container, this will get any nested containers and their values.
 		TYPE_DICTIONARY:
 			widget.set_info(_key, Types.DICTIONARY)
+			widget.set_container_size(data.size())
 			for ele in data:
 				var element =  widget.create_element(data[ele], ele, true)
 				create_widget(element, data[ele], ele) ## Recursively call this method on the elements of the container, this will get any nested containers and their values.
