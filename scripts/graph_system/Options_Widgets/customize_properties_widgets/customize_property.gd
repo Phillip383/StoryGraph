@@ -12,30 +12,42 @@ func populate_values(key, data : Variant):
 	var contents = data[key]
 	## Create the top level value widget, then create the widget's for the children.
 	var value_editor = load(VALUE_EDITOR_RESOURCE).instantiate()
-	value_editor.key_and_separator_visibility(false) ## This doesn't necessarily do what it says, and thats bad, refactor it.
+	value_editor.key_and_separator_visibility(false)
 	element_container.add_child(value_editor)
-	if contents is Array or contents is Dictionary:
+	if contents is Array:
 		for content in contents:
 			create_widget(value_editor, content)
+	elif contents is Dictionary:
+		for content in contents:
+			create_widget(value_editor, [content, contents[content]]) ## Passes the key name and content in an array.
 	else:
 		create_widget(value_editor, data[key])
 
 ## Create a widget for the type of data.
 func create_widget(widget, content):
 	print(content)
+	var editor
 	match typeof(content):
 		TYPE_ARRAY:
-			widget.create_array_editor()
+			editor = widget.create_array_editor()
 		TYPE_DICTIONARY:
-			widget.create_dict_editor()
+			editor = widget.create_dict_editor()
 		TYPE_INT:
-			widget.create_int_editor()
+			editor = widget.create_int_editor()
+			widget.set_info("", Types.INT)
+			editor.value = content as int
 		TYPE_FLOAT:
-			widget.create_float_editor()
+			editor = widget.create_float_editor()
+			widget.set_info("", Types.FLOAT)
+			editor.value = content as float
 		TYPE_BOOL:
-			widget.create_bool_editor()
+			editor = widget.create_bool_editor()
+			widget.set_info("", Types.BOOL)
+			editor.selected = content
 		TYPE_STRING:
-			widget.create_text_editor()
+			editor = widget.create_text_editor()
+			widget.set_info("", Types.TEXT)
+			editor.text = content
 
 func clear_widget(retain_visibility = false):
 	property_name.text = ""

@@ -50,6 +50,16 @@ func get_value():
 func get_key_name():
 	return key_name.text
 
+func set_key_name(_name):
+	key_name.text = _name
+
+func set_type(_type):
+	type_options.selected = _type
+
+func set_info(_name, _type):
+	set_type(_type)
+	set_key_name(_name)
+
 ## Simple method to set the state between a dictionary or array container type.
 func key_and_separator_visibility(value : bool):
 	$"DefaultKey".visible = value
@@ -106,6 +116,7 @@ func create_text_editor():
 	editor.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
 	container_size_container.visible = false
 	value_editor_container.add_child(editor)
+	return editor
 
 func create_bool_editor():
 	editor = OptionButton.new()
@@ -116,6 +127,7 @@ func create_bool_editor():
 	editor.item_selected.connect(on_value_changed)
 	container_size_container.visible = false
 	value_editor_container.add_child(editor)
+	return editor
 
 func create_int_editor():
 	editor = SpinBox.new()
@@ -126,6 +138,7 @@ func create_int_editor():
 	editor.value_changed.connect(on_value_changed)
 	container_size_container.visible = false
 	value_editor_container.add_child(editor)
+	return editor
 
 func create_float_editor():
 	editor = SpinBox.new()
@@ -136,6 +149,7 @@ func create_float_editor():
 	editor.value_changed.connect(on_value_changed)
 	container_size_container.visible = false
 	value_editor_container.add_child(editor)
+	return editor
 
 func create_array_editor():
 	container_size_container.visible = true
