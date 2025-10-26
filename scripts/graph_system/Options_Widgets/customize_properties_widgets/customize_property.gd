@@ -24,11 +24,9 @@ func create_widget(widget, data, _key = ""):
 				widget.create_element(ele, _key)
 
 		TYPE_DICTIONARY:
-			var new_dict = widget.create_dict_editor()
 			widget.set_info("", Types.DICTIONARY)
-
 			for ele in data:
-				create_widget(new_dict, data[ele], ele)
+				widget.create_element(data[ele], ele)
 		TYPE_INT:
 			widget.create_int_editor()
 			widget.set_info("", Types.INT)

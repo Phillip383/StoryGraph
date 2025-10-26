@@ -215,7 +215,7 @@ func create_element(data = null, key = ""):
 		container_size_container.visible = true
 
 	var element = load(scene_file_path).instantiate()
-	var show_key = false if _type != Types.DICTIONARY else true
+	var show_key = true if key.length() > 0 else false
 	element.key_and_separator_visibility(show_key)
 	add_value_editor(element)
 	element.create_editor_from_data(data)
