@@ -202,25 +202,15 @@ func create_editor_from_data(data):
 			return create_text_editor()
 
 """
-Creates a value widget with a type selection and value box, and adds it the widget's value list calling this method.
-The widget will be populated with the passed in data.
-
-@ data - the data contained in the editor.
-@ key - the optional key for dictionary types.
-@ returns - the constructed widget.
+Creates a container element.
 """
-func create_element(data = null, key = ""):
+func create_element(data = null, _key = "", is_dict_element = false):
 	var _type = get_type(data)
 	if _type == Types.DICTIONARY or _type == Types.ARRAY:
 		container_size_container.visible = true
-
 	var element = load(scene_file_path).instantiate()
-	var show_key = true if key.length() > 0 else false
-	element.key_and_separator_visibility(show_key)
+	element.key_and_separator_visibility(is_dict_element)
 	add_value_editor(element)
-	# element.create_editor_from_data(data) ## Commenting this out, as in order to have a recursive function in Customize_Property I don't think I can use this.
-	#element.set_info(key, _type)
-	#element.set_data_in_editor(data)
 	return element
 
 """

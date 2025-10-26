@@ -26,7 +26,7 @@ func create_widget(widget, data, _key = ""):
 		TYPE_DICTIONARY:
 			widget.set_info(_key, Types.DICTIONARY)
 			for ele in data:
-				var element =  widget.create_element(data[ele], ele)
+				var element =  widget.create_element(data[ele], ele, true)
 				create_widget(element, data[ele], ele) ## Recursively call this method on the elements of the container, this will get any nested containers and their values.
 		TYPE_INT:
 			widget.create_int_editor()
