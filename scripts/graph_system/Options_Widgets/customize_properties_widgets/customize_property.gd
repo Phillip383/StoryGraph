@@ -7,6 +7,7 @@ const VALUE_EDITOR_RESOURCE = "res://scenes/UI/Popups/Add_Property/add_property_
 
 ## When a property is selected we call this and parse the property data passed in creating the correct GUI elements for the data types.
 func populate_values(key, data : Variant):
+	clear_widget(true)
 	property_name.text = key ## Set the name of the currently selected property
 	var contents = data[key]
 	if contents is Array or contents is Dictionary:
@@ -32,8 +33,8 @@ func create_widget(content):
 		TYPE_STRING:
 			pass
 
-func clear_widget():
+func clear_widget(retain_visibility = false):
 	property_name.text = ""
 	for child in element_container.get_children():
 		child.queue_free()
-	visible = false
+	visible = retain_visibility
