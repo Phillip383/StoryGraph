@@ -52,9 +52,8 @@ func get_key_name():
 
 ## Simple method to set the state between a dictionary or array container type.
 func is_array(value : bool):
-	if value:
-		$"DefaultKey".visible = false
-		$"VSeparator".visible = false
+	$"DefaultKey".visible = !value
+	$"VSeparator".visible = !value
 
 # Updates the type of editor depending on the data type selected.
 func on_type_change(type : int):
