@@ -60,6 +60,21 @@ func set_info(_name, _type):
 	set_type(_type)
 	set_key_name(_name)
 
+func set_data_in_editor(data):
+	match typeof(data):
+		Types.INT:
+			editor.value = data
+		Types.FLOAT:
+			editor.value = data
+		Types.TEXT:
+			editor.text = data
+		Types.BOOL:
+			editor.selected = data
+
+## Adds a editor widget to the foldable value container on this widget
+func add_value_editor(widget):
+	value_editor_container.add_child(widget)
+
 ## Simple method to set the state between a dictionary or array container type.
 func key_and_separator_visibility(value : bool):
 	$"DefaultKey".visible = value
@@ -82,6 +97,11 @@ func on_type_change(type : int):
 			create_text_editor()
 		Types.BOOL:
 			create_bool_editor()
+
+# Setups a container type, such as the size setting of the container.
+func init_container_type(b_show_key_name : bool):
+	key_and_separator_visibility(b_show_key_name)
+	container_size_container.visible = true
 
 # Clears the container elements from the GUI when the type changes.
 func clear_container_values():
@@ -156,9 +176,68 @@ func create_array_editor():
 	var array = load(scene_file_path).instantiate()
 	array.key_and_separator_visibility(false)
 	value_editor_container.add_child(array)
+	return array
 
 func create_dict_editor():
 	container_size_container.visible = true
 	var dict = load(scene_file_path).instantiate()
 	dict.key_and_separator_visibility(true)
 	value_editor_container.add_child(dict)
+	return dict
+
+## Method creates and returns a widget for editing the given data type.
+func create_editor_from_data(data):
+	match typeof(data):
+		TYPE_ARRAY:
+			return create_array_editor()
+		TYPE_DICTIONARY:
+			return create_dict_editor()
+		TYPE_INT:
+			return create_int_editor()
+		TYPE_FLOAT:
+			return create_float_editor()
+		TYPE_BOOL:
+			return create_bool_editor()
+		TYPE_STRING:
+			return create_text_editor()
+
+"""
+Creates a value widget with a type selection and value box, and adds it the widget's value list calling this method.
+The widget will be populated with the passed in data.
+
+@ data - the data contained in the editor.
+@ key - the optional key for dictionary types.
+@ returns - the constructed widget.
+"""
+func create_element(data = null, key = ""):
+	var _type = get_type(data)
+	if _type == Types.DICTIONARY or _type == Types.ARRAY:
+		container_size_container.visible = true
+
+	var element = load(scene_file_path).instantiate()
+	var show_key = false if _type != Types.DICTIONARY else true
+	element.key_and_separator_visibility(show_key)
+	add_value_editor(element)
+	element.create_editor_from_data(data)
+	element.set_info(key, _type)
+	element.set_data_in_editor(data)
+	return element
+
+"""
+	TODO:
+	Checks the incoming data against built in types and returns my Enum type. Will refactor this out, and switch to just using the built in type. Once I get to a point of functionality working as intended. I do not want to refactor this and break something in this state.
+"""
+func get_type(data):
+	match typeof(data):
+		TYPE_ARRAY:
+			return Types.ARRAY
+		TYPE_DICTIONARY:
+			return Types.DICTIONARY
+		TYPE_STRING:
+			return Types.TEXT
+		TYPE_INT:
+			return Types.INT
+		TYPE_FLOAT:
+			return Types.FLOAT
+		TYPE_BOOL:
+			return Types.BOOL

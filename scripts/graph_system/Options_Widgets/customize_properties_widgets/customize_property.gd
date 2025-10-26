@@ -9,45 +9,38 @@ const VALUE_EDITOR_RESOURCE = "res://scenes/UI/Popups/Add_Property/add_property_
 func populate_values(key, data : Variant):
 	clear_widget(true)
 	property_name.text = key ## Set the name of the currently selected property
-	var contents = data[key]
 	## Create the top level value widget, then create the widget's for the children.
 	var value_editor = load(VALUE_EDITOR_RESOURCE).instantiate()
-	value_editor.key_and_separator_visibility(false)
 	element_container.add_child(value_editor)
-	if contents is Array:
-		for content in contents:
-			create_widget(value_editor, content)
-	elif contents is Dictionary:
-		for content in contents:
-			create_widget(value_editor, [content, contents[content]]) ## Passes the key name and content in an array.
-	else:
-		create_widget(value_editor, data[key])
+	value_editor.init_container_type(false)
+	create_widget(value_editor, data[key])
 
 ## Create a widget for the type of data.
-func create_widget(widget, content):
-	print(content)
-	var editor
-	match typeof(content):
+func create_widget(widget, data, _key = ""):
+	match typeof(data):
 		TYPE_ARRAY:
-			editor = widget.create_array_editor()
+			widget.set_info("", Types.ARRAY)
+			for ele in data:
+				widget.create_element(ele, _key)
+
 		TYPE_DICTIONARY:
-			editor = widget.create_dict_editor()
+			var new_dict = widget.create_dict_editor()
+			widget.set_info("", Types.DICTIONARY)
+
+			for ele in data:
+				create_widget(new_dict, data[ele], ele)
 		TYPE_INT:
-			editor = widget.create_int_editor()
+			widget.create_int_editor()
 			widget.set_info("", Types.INT)
-			editor.value = content as int
 		TYPE_FLOAT:
-			editor = widget.create_float_editor()
+			widget.create_float_editor()
 			widget.set_info("", Types.FLOAT)
-			editor.value = content as float
 		TYPE_BOOL:
-			editor = widget.create_bool_editor()
+			widget.create_bool_editor()
 			widget.set_info("", Types.BOOL)
-			editor.selected = content
 		TYPE_STRING:
-			editor = widget.create_text_editor()
+			widget.create_text_editor()
 			widget.set_info("", Types.TEXT)
-			editor.text = content
 
 func clear_widget(retain_visibility = false):
 	property_name.text = ""
