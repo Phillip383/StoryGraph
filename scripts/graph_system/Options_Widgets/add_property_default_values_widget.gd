@@ -218,9 +218,9 @@ func create_element(data = null, key = ""):
 	var show_key = true if key.length() > 0 else false
 	element.key_and_separator_visibility(show_key)
 	add_value_editor(element)
-	element.create_editor_from_data(data)
-	element.set_info(key, _type)
-	element.set_data_in_editor(data)
+	# element.create_editor_from_data(data) ## Commenting this out, as in order to have a recursive function in Customize_Property I don't think I can use this.
+	#element.set_info(key, _type)
+	#element.set_data_in_editor(data)
 	return element
 
 """

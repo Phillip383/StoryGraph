@@ -21,12 +21,13 @@ func create_widget(widget, data, _key = ""):
 		TYPE_ARRAY:
 			widget.set_info("", Types.ARRAY)
 			for ele in data:
-				widget.create_element(ele, _key)
-
+				var element = widget.create_element(ele, _key)
+				create_widget(element, ele)
 		TYPE_DICTIONARY:
 			widget.set_info("", Types.DICTIONARY)
 			for ele in data:
-				widget.create_element(data[ele], ele)
+				var element =  widget.create_element(data[ele], ele)
+				create_widget(element, data[ele], ele)
 		TYPE_INT:
 			widget.create_int_editor()
 			widget.set_info("", Types.INT)
