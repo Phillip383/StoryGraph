@@ -9,9 +9,8 @@ signal property_added(active_node : Node) ## Emitted when a property is successf
 @onready var property_name = $VBoxContainer/HBoxContainer/Name
 @onready var type_options = $VBoxContainer/HBoxContainer/TypeOption
 @onready var add_button = $VBoxContainer/Buttons/AddButton
-@onready var container_options = $VBoxContainer/ContainerTypesOptions
+@onready var container_options = $VBoxContainer/ContainerSizeWidget
 @onready var container_values = $VBoxContainer/Values
-@onready var container_size = $VBoxContainer/ContainerTypesOptions/SpinBox
 
 const REQUIRED_NAME_LENGTH = 2
 
@@ -25,7 +24,7 @@ var _active_node
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	add_button.pressed.connect(on_add_request)
-	container_size.value_changed.connect(on_container_size_change)
+	container_options.on_size_change.connect(on_container_size_change)
 	type_options.item_selected.connect(on_type_select)
 	property_name.text_changed.connect(on_property_named)
 
@@ -63,11 +62,9 @@ func on_type_select(item : int):
 		Types.ARRAY:
 			container_options.visible = true
 			container_values.visible = true
-			# TODO: Remove the old array values
 		Types.DICTIONARY:
 			container_options.visible = true
 			container_values.visible = true
-			# TODO: Remove the old Dictionary values
 		Types.BOOL:
 			container_options.visible = false
 			_current_value_editor = $VBoxContainer/BooleanValue
@@ -101,7 +98,7 @@ func clear_container_values():
 	var values = container_values.get_children()
 	for i in range(values.size()):
 		values[i].queue_free()
-	container_size.value = 0
+	container_options.set_element_size(0)
 
 func _on_close_button_pressed() -> void:
 	queue_free()

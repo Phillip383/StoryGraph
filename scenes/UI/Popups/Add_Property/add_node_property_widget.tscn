@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://b7n8ikp3s06y0"]
+[gd_scene load_steps=4 format=3 uid="uid://b7n8ikp3s06y0"]
 
 [ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="1_f6su1"]
 [ext_resource type="Script" uid="uid://ccca6o6qxu7eq" path="res://scripts/graph_system/Options_Widgets/add_node_property_widget.gd" id="1_xtj4v"]
+[ext_resource type="PackedScene" uid="uid://ca1n3r2xqkoun" path="res://scenes/UI/Popups/container_size_widget.tscn" id="3_14ajs"]
 
 [node name="CenterContainer" type="CenterContainer"]
 anchors_preset = 15
@@ -54,27 +55,9 @@ theme_override_font_sizes/font_size = 20
 placeholder_text = "name"
 expand_to_text_length = true
 
-[node name="ContainerTypesOptions" type="HBoxContainer" parent="VBoxContainer"]
+[node name="ContainerSizeWidget" parent="VBoxContainer" instance=ExtResource("3_14ajs")]
 visible = false
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="Label" type="Label" parent="VBoxContainer/ContainerTypesOptions"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 25
-text = "Size"
-horizontal_alignment = 2
-
-[node name="VSeparator" type="VSeparator" parent="VBoxContainer/ContainerTypesOptions"]
-layout_mode = 2
-theme_override_constants/separation = 29
-
-[node name="SpinBox" type="SpinBox" parent="VBoxContainer/ContainerTypesOptions"]
-custom_minimum_size = Vector2(50, 0)
-layout_mode = 2
-size_flags_horizontal = 3
 
 [node name="TextValue" type="TextEdit" parent="VBoxContainer"]
 visible = false

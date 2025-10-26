@@ -23,3 +23,6 @@ func on_decrement():
 	value -= 1
 	value_box.text = str(value)
 	on_size_change.emit(value)
+
+func set_element_size(value):
+	value_box.text = str(clamp(value, 0, INF))
