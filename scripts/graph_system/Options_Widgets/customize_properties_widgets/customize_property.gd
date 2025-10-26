@@ -10,28 +10,32 @@ func populate_values(key, data : Variant):
 	clear_widget(true)
 	property_name.text = key ## Set the name of the currently selected property
 	var contents = data[key]
+	## Create the top level value widget, then create the widget's for the children.
+	var value_editor = load(VALUE_EDITOR_RESOURCE).instantiate()
+	value_editor.is_array(true) ## This doesn't necessarily do what it says, and thats bad, refactor it.
+	element_container.add_child(value_editor)
 	if contents is Array or contents is Dictionary:
 		for content in contents:
-			create_widget(content)
+			create_widget(value_editor, content)
 	else:
-		create_widget(data[key])
+		create_widget(value_editor, data[key])
 
 ## Create a widget for the type of data.
-func create_widget(content):
+func create_widget(widget, content):
+	print(content)
 	match typeof(content):
 		TYPE_ARRAY:
-			pass
+			widget.create_array_editor()
 		TYPE_DICTIONARY:
-			pass
+			widget.create_dict_editor()
 		TYPE_INT:
-			print(content)
-			pass
+			widget.create_int_editor()
 		TYPE_FLOAT:
-			pass
+			widget.create_float_editor()
 		TYPE_BOOL:
-			pass
+			widget.create_bool_editor()
 		TYPE_STRING:
-			pass
+			widget.create_text_editor()
 
 func clear_widget(retain_visibility = false):
 	property_name.text = ""
