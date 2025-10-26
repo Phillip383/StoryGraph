@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://ca1n3r2xqkoun"]
+
+[ext_resource type="Texture2D" uid="uid://c40sk4ksbw40a" path="res://assets/Textures/Icons/32/minus.png" id="1_d3xhr"]
+[ext_resource type="Texture2D" uid="uid://blwfkl0mka56l" path="res://assets/Textures/Icons/32/plus.png" id="2_a4rb7"]
+
+[sub_resource type="Theme" id="Theme_a4rb7"]
+
+[node name="ContainerSizeWidget" type="HBoxContainer"]
+offset_right = 72.0
+offset_bottom = 21.0
+theme_override_constants/separation = 8
+
+[node name="Decrement" type="Button" parent="."]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+icon = ExtResource("1_d3xhr")
+
+[node name="SpinBox" type="SpinBox" parent="."]
+layout_mode = 2
+theme = SubResource("Theme_a4rb7")
+allow_greater = true
+alignment = 1
+
+[node name="Increment" type="Button" parent="."]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+icon = ExtResource("2_a4rb7")
