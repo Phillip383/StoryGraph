@@ -19,30 +19,30 @@ func populate_values(key, data : Variant):
 func create_widget(widget, data, _key = ""):
 	match typeof(data):
 		TYPE_ARRAY:
-			widget.set_info("", Types.ARRAY)
+			widget.set_info(_key, Types.ARRAY)
 			for ele in data:
 				var element = widget.create_element(ele, _key)
-				create_widget(element, ele)
+				create_widget(element, ele) ## Recursively call this method on the elements of the container, this will get any nested containers and their values.
 		TYPE_DICTIONARY:
-			widget.set_info("", Types.DICTIONARY)
+			widget.set_info(_key, Types.DICTIONARY)
 			for ele in data:
 				var element =  widget.create_element(data[ele], ele)
-				create_widget(element, data[ele], ele)
+				create_widget(element, data[ele], ele) ## Recursively call this method on the elements of the container, this will get any nested containers and their values.
 		TYPE_INT:
 			widget.create_int_editor()
-			widget.set_info("", Types.INT)
+			widget.set_info(_key, Types.INT)
 			widget.set_data_in_editor(data)
 		TYPE_FLOAT:
 			widget.create_float_editor()
-			widget.set_info("", Types.FLOAT)
+			widget.set_info(_key, Types.FLOAT)
 			widget.set_data_in_editor(data)
 		TYPE_BOOL:
 			widget.create_bool_editor()
-			widget.set_info("", Types.BOOL)
+			widget.set_info(_key, Types.BOOL)
 			widget.set_data_in_editor(data)
 		TYPE_STRING:
 			widget.create_text_editor()
-			widget.set_info("", Types.TEXT)
+			widget.set_info(_key, Types.TEXT)
 			widget.set_data_in_editor(data)
 
 func clear_widget(retain_visibility = false):
