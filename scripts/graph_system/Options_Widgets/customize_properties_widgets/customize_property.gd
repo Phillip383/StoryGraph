@@ -18,13 +18,13 @@ func populate_values(key, data : Variant):
 
 ## Create a widget for the type of data.
 func create_widget(content):
-	print(content)
 	match typeof(content):
 		TYPE_ARRAY:
 			pass
 		TYPE_DICTIONARY:
 			pass
 		TYPE_INT:
+			print(content)
 			pass
 		TYPE_FLOAT:
 			pass

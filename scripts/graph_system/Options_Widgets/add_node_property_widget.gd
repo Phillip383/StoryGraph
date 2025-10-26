@@ -139,7 +139,7 @@ func add_bool():
 	_active_node.add_data(property_name.text, selected)
 
 func add_int():
-	_active_node.add_data(property_name.text, _current_value_editor.value)
+	_active_node.add_data(property_name.text, _current_value_editor.value as int)
 
 func add_float():
 	_active_node.add_data(property_name.text, _current_value_editor.value)
