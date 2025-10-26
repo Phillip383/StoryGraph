@@ -50,7 +50,7 @@ func on_container_size_change(value : float):
 		for i in range(diff):
 			var new_value = CONTAINER_VALUE_SCENE.instantiate()
 			if _current_type == Types.ARRAY: ## If it's an array value, hide the separator and key value.
-				new_value.is_array(true)
+				new_value.key_and_separator_visibility(false)
 			container_values.add_child(new_value)
 
 ## Listens for the current selected type, this method updates visibility of the value widgets.

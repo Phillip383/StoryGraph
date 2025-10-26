@@ -51,9 +51,9 @@ func get_key_name():
 	return key_name.text
 
 ## Simple method to set the state between a dictionary or array container type.
-func is_array(value : bool):
-	$"DefaultKey".visible = !value
-	$"VSeparator".visible = !value
+func key_and_separator_visibility(value : bool):
+	$"DefaultKey".visible = value
+	$"VSeparator".visible = value
 
 # Updates the type of editor depending on the data type selected.
 func on_type_change(type : int):
@@ -95,7 +95,7 @@ func on_container_size_change(value : float):
 		for i in range(diff):
 			var new_value = load(scene_file_path).instantiate()
 			if current_type == Types.ARRAY: ## If it's an array value, hide the separator and key value.
-				new_value.is_array(true)
+				new_value.key_and_separator_visibility(false)
 			value_editor_container.add_child(new_value)
 	
 	value_changed.emit(value) ## Inform the top level of the data change.
@@ -140,11 +140,11 @@ func create_float_editor():
 func create_array_editor():
 	container_size_container.visible = true
 	var array = load(scene_file_path).instantiate()
-	array.is_array(true)
+	array.key_and_separator_visibility(false)
 	value_editor_container.add_child(array)
 
 func create_dict_editor():
 	container_size_container.visible = true
 	var dict = load(scene_file_path).instantiate()
-	dict.is_array(false)
+	dict.key_and_separator_visibility(true)
 	value_editor_container.add_child(dict)

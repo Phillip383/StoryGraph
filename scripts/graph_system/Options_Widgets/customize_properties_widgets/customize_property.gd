@@ -12,7 +12,7 @@ func populate_values(key, data : Variant):
 	var contents = data[key]
 	## Create the top level value widget, then create the widget's for the children.
 	var value_editor = load(VALUE_EDITOR_RESOURCE).instantiate()
-	value_editor.is_array(true) ## This doesn't necessarily do what it says, and thats bad, refactor it.
+	value_editor.key_and_separator_visibility(false) ## This doesn't necessarily do what it says, and thats bad, refactor it.
 	element_container.add_child(value_editor)
 	if contents is Array or contents is Dictionary:
 		for content in contents:
