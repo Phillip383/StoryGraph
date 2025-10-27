@@ -1,10 +1,9 @@
 extends InspectorChildBase
 
+const ADD_PROPERTY_EDITOR = "res://scenes/UI/Property_Editor/Add_Property/add_node_property_widget.tscn"
 
 ## SIGNALS
 signal property_added(active_node : Node)
-
-
 
 @onready var editor_container = $Value_Editor_C
 @onready var customize_property_widget = $Value_Editor_C/CustomizeProperty
@@ -39,7 +38,7 @@ func save_value():
 
 func _on_add_property_button_pressed(node : Node) -> void:
 	customize_property_widget.clear_widget()
-	var menu = load("res://scenes/UI/Popups/Add_Property/add_node_property_widget.tscn").instantiate()
+	var menu = load(ADD_PROPERTY_EDITOR).instantiate()
 	menu._active_node = node
 	menu.property_added.connect(on_property_added)
 	if is_instance_valid(editor):

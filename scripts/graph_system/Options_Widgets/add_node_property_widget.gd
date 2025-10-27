@@ -1,21 +1,19 @@
 extends CenterContainer
 
 ## This widget is used for container types values
-var CONTAINER_VALUE_SCENE : PackedScene = load("res://scenes/UI/Popups/Add_Property/add_property_default_values_widget.tscn")
+var CONTAINER_VALUE_SCENE : PackedScene = load("res://scenes/UI/Property_Editor/Add_Property/add_property_default_values_widget.tscn")
 
 ## SIGNALS
 signal property_added(active_node : Node) ## Emitted when a property is successfully added to the active node.
 
 @onready var property_name = $VBoxContainer/HBoxContainer/Name
-@onready var type_options = $VBoxContainer/HBoxContainer/TypeOption
+@onready var type_options : TypeOption = $VBoxContainer/HBoxContainer/TypeOption
 @onready var add_button = $VBoxContainer/Buttons/AddButton
 @onready var container_options = $VBoxContainer/ContainerSizeWidget
 @onready var container_values = $VBoxContainer/Values
 
 const REQUIRED_NAME_LENGTH = 2
 
-## Cached value for the currently selected type.
-var _current_type
 var _current_value_editor
 
 ## The node we are adding a property too.
@@ -48,47 +46,46 @@ func on_container_size_change(value : float):
 		var diff = value - current_count ## Only add values for the difference of existing values and new ones.
 		for i in range(diff):
 			var new_value = CONTAINER_VALUE_SCENE.instantiate()
-			if _current_type == Types.ARRAY: ## If it's an array value, hide the separator and key value.
+			if type_options.get_selected_id() == TYPE_ARRAY: ## If it's an array value, hide the separator and key value.
 				new_value.key_and_separator_visibility(false)
 			container_values.add_child(new_value)
 
 ## Listens for the current selected type, this method updates visibility of the value widgets.
-func on_type_select(item : int):
+func on_type_select(_item : int):
 	if _current_value_editor:
 		remove_previous_value_editor()
 	clear_container_values()
-	_current_type = item
-	match item:
-		Types.ARRAY:
+	match type_options.get_selected_id():
+		TYPE_ARRAY:
 			container_options.visible = true
 			container_values.visible = true
-		Types.DICTIONARY:
+		TYPE_DICTIONARY:
 			container_options.visible = true
 			container_values.visible = true
-		Types.BOOL:
+		TYPE_BOOL:
 			container_options.visible = false
 			_current_value_editor = $VBoxContainer/BooleanValue
 			$VBoxContainer/BooleanValue.visible = true
-		Types.TEXT:
+		TYPE_STRING:
 			container_options.visible = false
 			_current_value_editor = $VBoxContainer/TextValue
 			$VBoxContainer/TextValue.visible = true
-		Types.INT:
+		TYPE_INT:
 			container_options.visible = false
 			_current_value_editor = $VBoxContainer/IntValue
 			$VBoxContainer/IntValue.visible = true
-		Types.FLOAT:
+		TYPE_FLOAT:
 			container_options.visible = false
 			_current_value_editor = $VBoxContainer/FloatValue
 			$VBoxContainer/FloatValue.visible = true
 
 func remove_previous_value_editor():
-	match _current_type:
-		Types.ARRAY:
+	match type_options.get_selected_id():
+		TYPE_ARRAY:
 			container_options.visible = false
 			container_values.visible = false
 			return
-		Types.DICTIONARY:
+		TYPE_DICTIONARY:
 			container_options.visible = false
 			container_values.visible = false
 			return
@@ -104,29 +101,28 @@ func _on_close_button_pressed() -> void:
 	queue_free()
 
 func on_add_request():
-	match _current_type:
-		Types.ARRAY:
+	match type_options.get_selected_id():
+		TYPE_ARRAY:
 			var _arr = []
 			for child in container_values.get_children():
 				_arr.append(child.get_value())
 			_active_node.add_data(property_name.text, _arr)
-		Types.DICTIONARY:
+		TYPE_DICTIONARY:
 			var _dict = {}
 			for child in container_values.get_children():
 				_dict[child.get_key_name()] = child.get_value()
 			_active_node.add_data(property_name.text, _dict)
-		Types.BOOL:
+		TYPE_BOOL:
 			add_bool()
-		Types.INT:
+		TYPE_INT:
 			add_int()
-		Types.FLOAT:
+		TYPE_FLOAT:
 			add_float()
-		Types.TEXT:
+		TYPE_STRING:
 			add_text()
 
 	property_added.emit(_active_node)
 	reset()
-
 
 func add_text():
 	_active_node.add_data(property_name.text, _current_value_editor.text)

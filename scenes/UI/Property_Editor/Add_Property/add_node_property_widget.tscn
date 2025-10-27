@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://b7n8ikp3s06y0"]
+[gd_scene load_steps=5 format=3 uid="uid://b7n8ikp3s06y0"]
 
 [ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="1_f6su1"]
 [ext_resource type="Script" uid="uid://ccca6o6qxu7eq" path="res://scripts/graph_system/Options_Widgets/add_node_property_widget.gd" id="1_xtj4v"]
-[ext_resource type="PackedScene" uid="uid://ca1n3r2xqkoun" path="res://scenes/UI/Popups/container_size_widget.tscn" id="3_14ajs"]
+[ext_resource type="PackedScene" uid="uid://dc7tyol3idpog" path="res://scenes/UI/Property_Editor/type_option.tscn" id="2_mvx2r"]
+[ext_resource type="PackedScene" uid="uid://ca1n3r2xqkoun" path="res://scenes/UI/Property_Editor/container_size_widget.tscn" id="3_14ajs"]
 
 [node name="CenterContainer" type="CenterContainer"]
 anchors_preset = 15
@@ -24,24 +25,8 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="TypeOption" type="OptionButton" parent="VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(50, 0)
+[node name="TypeOption" parent="VBoxContainer/HBoxContainer" instance=ExtResource("2_mvx2r")]
 layout_mode = 2
-theme = ExtResource("1_f6su1")
-theme_override_font_sizes/font_size = 20
-item_count = 6
-popup/item_0/text = "Bool"
-popup/item_0/id = 0
-popup/item_1/text = "Text"
-popup/item_1/id = 1
-popup/item_2/text = "Int"
-popup/item_2/id = 2
-popup/item_3/text = "float"
-popup/item_3/id = 3
-popup/item_4/text = "Array"
-popup/item_4/id = 4
-popup/item_5/text = "Dictionary"
-popup/item_5/id = 5
 
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(40, 0)

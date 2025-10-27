@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://dlquk3hpta50p" path="res://scenes/UI/Inspectors/inspector_child_base.tscn" id="1_we54b"]
 [ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="2_2ut7c"]
 [ext_resource type="Script" uid="uid://er2gvecqy6lp" path="res://scripts/editor/widget_components/inspectors/inspector_editor.gd" id="2_ls5qa"]
-[ext_resource type="PackedScene" uid="uid://c0ng6gf8elp2h" path="res://scenes/UI/Popups/Customize_Property/customize_property.tscn" id="4_e8vas"]
+[ext_resource type="PackedScene" uid="uid://c0ng6gf8elp2h" path="res://scenes/UI/Property_Editor/Customize_Property/customize_property.tscn" id="4_e8vas"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ut7c"]
 bg_color = Color(0, 0, 0, 0.85490197)

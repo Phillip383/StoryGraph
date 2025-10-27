@@ -3,13 +3,11 @@ extends HBoxContainer
 ## Emitted whenever a value is changed.
 signal value_changed(value)
 
-@onready var type_options = $TypeOption
+@onready var type_options : TypeOption = $TypeOption
 @onready var value_editor_container = $ValueContainer/ValueList
 @onready var container_size_container = $ContainerSizeWidget
 @onready var container_size : Label = $ContainerSizeWidget/SizeLabel
 @onready var key_name = $DefaultKey
-
-var current_type
 
 ## Tracks the current editor open for this value widget so accessing it's data is achievable.
 var editor
@@ -25,26 +23,26 @@ func on_value_changed(_value):
 	pass
 
 func get_value():
-	match current_type:
-		Types.ARRAY:
+	match type_options.get_selected_id():
+		TYPE_ARRAY:
 			# Loop all of the children getting their values.
 			var _arr = []
 			for child in value_editor_container.get_children():
 				_arr.append(child.get_value())
 			return _arr
-		Types.DICTIONARY:
+		TYPE_DICTIONARY:
 			# Loop all of the children getting their keys and values
 			var _dict = {}
 			for child in value_editor_container.get_children():
 				_dict[child.get_key_name()] = child.get_value()
 			return _dict
-		Types.TEXT:
+		TYPE_STRING:
 			return editor.text
-		Types.INT:
+		TYPE_INT:
 			return editor.value
-		Types.FLOAT:
+		TYPE_FLOAT:
 			return editor.value
-		Types.BOOL:
+		TYPE_BOOL:
 			return editor.selected
 
 func get_key_name():
@@ -53,10 +51,13 @@ func get_key_name():
 func set_key_name(_name):
 	key_name.text = _name
 
-func set_type(_type):
-	current_type = _type
-	type_options.selected = _type
+## When setting type ensure that you pass the ID of the currently selected item.
+## Passing the index doesn't ensure the correct type to be selected.
+func set_type(_type_ID):
+	type_options.select_item_by_ID(_type_ID)
 
+## When setting type ensure that you pass the ID of the currently selected item.
+## Passing the index doesn't don't ensure the correct type to be selected.
 func set_info(_name, _type):
 	set_type(_type)
 	set_key_name(_name)
@@ -85,21 +86,20 @@ func key_and_separator_visibility(value : bool):
 	$"VSeparator".visible = value
 
 # Updates the type of editor depending on the data type selected.
-func on_type_change(type : int):
-	current_type = type
+func on_type_change(_type : int):
 	clear_container_values()
-	match type:
-		Types.ARRAY:
+	match type_options.get_selected_id():
+		TYPE_ARRAY:
 			create_array_editor()
-		Types.DICTIONARY:
+		TYPE_DICTIONARY:
 			create_dict_editor()
-		Types.FLOAT:
+		TYPE_FLOAT:
 			create_float_editor()
-		Types.INT:
+		TYPE_INT:
 			create_int_editor()
-		Types.TEXT:
+		TYPE_STRING:
 			create_text_editor()
-		Types.BOOL:
+		TYPE_BOOL:
 			create_bool_editor()
 
 # Setups a container type, such as the size setting of the container.
@@ -128,7 +128,7 @@ func on_container_size_change(value : float):
 		var diff = value - current_count ## Only add values for the difference of existing values and new ones.
 		for i in range(diff):
 			var new_value = load(scene_file_path).instantiate()
-			if current_type == Types.ARRAY: ## If it's an array value, hide the separator and key value.
+			if type_options.get_selected_id() == TYPE_ARRAY: ## If it's an array value, hide the separator and key value.
 				new_value.key_and_separator_visibility(false)
 			value_editor_container.add_child(new_value)
 
@@ -208,29 +208,9 @@ func create_editor_from_data(data):
 """
 Creates a container element.
 """
-func create_element(data = null, _key = "", is_dict_element = false):
-	var _type = get_type(data)
+func create_element(_data = null, _key = "", is_dict_element = false):
 	container_size_container.visible = true
 	var element = load(scene_file_path).instantiate()
 	element.key_and_separator_visibility(is_dict_element)
 	add_value_editor(element)
 	return element
-
-"""
-	TODO:
-	Checks the incoming data against built in types and returns my Enum type. Will refactor this out, and switch to just using the built in type. Once I get to a point of functionality working as intended. I do not want to refactor this and break something in this state.
-"""
-func get_type(data):
-	match typeof(data):
-		TYPE_ARRAY:
-			return Types.ARRAY
-		TYPE_DICTIONARY:
-			return Types.DICTIONARY
-		TYPE_STRING:
-			return Types.TEXT
-		TYPE_INT:
-			return Types.INT
-		TYPE_FLOAT:
-			return Types.FLOAT
-		TYPE_BOOL:
-			return Types.BOOL

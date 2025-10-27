@@ -1,6 +1,6 @@
 extends CenterContainer
 
-const VALUE_EDITOR_RESOURCE = "res://scenes/UI/Popups/Add_Property/add_property_default_values_widget.tscn"
+const VALUE_EDITOR_RESOURCE = "res://scenes/UI/Property_Editor/Add_Property/add_property_default_values_widget.tscn"
 
 signal on_edit_canceled()
 signal on_edit_confirmed()
@@ -43,32 +43,32 @@ func populate_values(key, _active_node : BaseStoryNode):
 func create_widget(widget, data, _key = ""):
 	match typeof(data):
 		TYPE_ARRAY:
-			widget.set_info(_key, Types.ARRAY)
+			widget.set_info(_key, TYPE_ARRAY)
 			widget.set_container_size(data.size())
 			for ele in data:
 				var element = widget.create_element(ele, _key)
 				create_widget(element, ele) ## Recursively call this method on the elements of the container, this will get any nested containers and their values.
 		TYPE_DICTIONARY:
-			widget.set_info(_key, Types.DICTIONARY)
+			widget.set_info(_key, TYPE_DICTIONARY)
 			widget.set_container_size(data.size())
 			for ele in data:
 				var element =  widget.create_element(data[ele], ele, true)
 				create_widget(element, data[ele], ele) ## Recursively call this method on the elements of the container, this will get any nested containers and their values.
 		TYPE_INT:
 			widget.create_int_editor()
-			widget.set_info(_key, Types.INT)
+			widget.set_info(_key, TYPE_INT)
 			widget.set_data_in_editor(data)
 		TYPE_FLOAT:
 			widget.create_float_editor()
-			widget.set_info(_key, Types.FLOAT)
+			widget.set_info(_key, TYPE_FLOAT)
 			widget.set_data_in_editor(data)
 		TYPE_BOOL:
 			widget.create_bool_editor()
-			widget.set_info(_key, Types.BOOL)
+			widget.set_info(_key, TYPE_BOOL)
 			widget.set_data_in_editor(data)
 		TYPE_STRING:
 			widget.create_text_editor()
-			widget.set_info(_key, Types.TEXT)
+			widget.set_info(_key, TYPE_STRING)
 			widget.set_data_in_editor(data)
 
 func clear_widget(retain_visibility = false):
