@@ -12,13 +12,15 @@ signal on_edit_confirmed()
 
 # Reference to the active node to update it's property.
 var active_node
+var value_editor
 
 func _ready():
 	update_button.pressed.connect(update_property)
 	cancel_button.pressed.connect(cancel_property)
 
 func update_property():
-	print("updating property")
+	var data = value_editor.get_value()
+	active_node.set_existing_data(property_name.text, data)
 	on_edit_confirmed.emit()
 
 func cancel_property():
@@ -32,7 +34,7 @@ func populate_values(key, _active_node : BaseStoryNode):
 	var data = _active_node.get_story_data()[key]
 	property_name.text = key ## Set the name of the currently selected property
 	## Create the top level value widget, then create the widget's for the children.
-	var value_editor = load(VALUE_EDITOR_RESOURCE).instantiate()
+	value_editor = load(VALUE_EDITOR_RESOURCE).instantiate()
 	element_container.add_child(value_editor)
 	value_editor.init_container_type(false)
 	create_widget(value_editor, data)
