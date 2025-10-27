@@ -11,6 +11,7 @@ signal property_added(active_node : Node) ## Emitted when a property is successf
 @onready var add_button = $VBoxContainer/Buttons/AddButton
 @onready var container_options = $VBoxContainer/ContainerSizeWidget
 @onready var container_values = $VBoxContainer/Values
+@onready var message_box = $VBoxContainer/MessageBox
 
 const REQUIRED_NAME_LENGTH = 2
 
@@ -26,13 +27,24 @@ func _ready() -> void:
 	type_options.item_selected.connect(on_type_select)
 	property_name.text_changed.connect(on_property_named)
 
-func on_property_named(text : String):
-	## TODO [SCRUM-5]: Validate that a property with the given name doesn't already exist.
-	if text.length() >= REQUIRED_NAME_LENGTH:
-		add_button.visible = true ## I would make this more robust, but I want to allow empty default values.
-	else: 
-		add_button.visible = false
+func add_button_state():
+	var prop_name = property_name.text
+	if prop_name.length() >= REQUIRED_NAME_LENGTH:
+		if _active_node.does_property_exist(prop_name):
+			message_box.text = "Property already exists"
+			message_box.visible = true
+			add_button.disabled = true
+		elif type_options.selected == -1:
+			add_button.disabled = true
+			message_box.visible = true
+			message_box.text = "Property need's type"
+		else:
+			add_button.disabled = false
+			message_box.visible = false
 
+func on_property_named(_text : String):
+	add_button_state()
+		
 ## Updates the number of visible default values for the container type property.
 func on_container_size_change(value : float):
 	var current_count = container_values.get_child_count()
@@ -55,6 +67,7 @@ func on_type_select(_item : int):
 	if _current_value_editor:
 		remove_previous_value_editor()
 	clear_container_values()
+	add_button_state()
 	match type_options.get_selected_id():
 		TYPE_ARRAY:
 			container_options.visible = true

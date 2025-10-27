@@ -28,6 +28,9 @@ func get_story_data() -> Dictionary[StringName, Variant]:
 func get_story_data_key() -> Array[StringName]:
 	return story_data.keys()
 
+func does_property_exist(key : StringName) -> bool:
+	return true if story_data.get(key) else false
+
 func add_data(key : StringName, data : Variant):
 	story_data.get_or_add(key, data)
 	on_data_changed.emit(story_data)
