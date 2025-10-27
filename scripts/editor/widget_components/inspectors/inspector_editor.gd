@@ -30,7 +30,7 @@ func _on_graph_node_deselected(_node: Node) -> void:
 	save_value()
 	customize_property_widget.clear_widget() ## Clear and make the customize widget invisible.
 	if editor:
-		editor_container.remove_child(editor)
+		editor.queue_free()
 
 func save_value():
 	if editor and data: ## Only save data changes if we were changing data.

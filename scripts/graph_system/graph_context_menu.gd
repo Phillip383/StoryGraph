@@ -27,5 +27,4 @@ func _on_selection(id : int):
 		ADD_NODE_ID:
 			var menu = NEW_NODE_MENU.instantiate()
 			menu.position = position - menu.size / 2
-			print(get_parent())
 			get_parent().add_child(menu)

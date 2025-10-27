@@ -12,7 +12,6 @@ border_color = Color(1, 0.99215686, 0, 1)
 [node name="NewNode" type="Window"]
 oversampling_override = 1.0
 title = "New Node"
-position = Vector2i(0, 36)
 size = Vector2i(350, 200)
 theme = ExtResource("1_4r8f6")
 script = ExtResource("2_ml3k4")
@@ -36,27 +35,34 @@ layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/CenterContainer"]
 layout_mode = 2
+theme_override_constants/separation = 30
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/CenterContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="NodeType" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer" instance=ExtResource("1_xcrec")]
-layout_mode = 2
-
-[node name="LineEdit" type="LineEdit" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(100, 30)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-placeholder_text = "name"
-
-[node name="Buttons" type="HBoxContainer" parent="MarginContainer/CenterContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/separation = 10
 
+[node name="NodeType" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer" instance=ExtResource("1_xcrec")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+placeholder_text = "node name"
+
+[node name="Buttons" type="HBoxContainer" parent="MarginContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 20
+
 [node name="Cancel" type="Button" parent="MarginContainer/CenterContainer/VBoxContainer/Buttons"]
+custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 text = "Cancel"
 

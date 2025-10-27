@@ -14,8 +14,6 @@ func _ready() -> void:
 	pass # Replace with function body.
 
 func _on_type_selected(ID : int) -> void:
-	print("Selected: ", ID)
-	print(node_types)
 	_selected_type = ID
 
 func _on_cancel_pressed() -> void:
