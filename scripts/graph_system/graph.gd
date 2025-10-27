@@ -47,7 +47,7 @@ func get_node_at_position(_location: Vector2):
 	for child in get_children():
 		if child is BaseStoryNode: ## Check if the child is a story node.
 			var node = child as BaseStoryNode
-			var node_pos = ((_location - node.position_offset) + scroll_offset) / zoom
-			if Rect2(Vector2.ZERO, node.size).has_point(node_pos):
+			var click_pos = ((_location + scroll_offset) / zoom) - node.position_offset
+			if Rect2(Vector2.ZERO, node.size).has_point(click_pos):
 				return node
 	return null
