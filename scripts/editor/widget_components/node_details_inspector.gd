@@ -8,8 +8,8 @@ This acts as a container for the properties of a selected node within the curren
 
 ## SIGNALS
 
-## this is emitted when a item in the list is selected, and passes the data of the selected item.
-signal item_selected(key : Variant, data : Variant)
+## this is emitted when a item in the list is selected, the active node is passed with the key of the property being selected.
+signal item_selected(key : Variant, node : BaseStoryNode)
 signal add_property(active_node : Node)
 
 @onready var _property_list : ItemList = $VBoxContainer/PropertyList_SC/PropertyList
@@ -39,7 +39,6 @@ func set_node_properties(property_names : Array[StringName]):
 func clear_node_properties():
 	_property_list.clear()
 
-
 func _on_graph_node_deselected(_node: Node) -> void:
 	clear_node_properties()
 	_add_property_button.disabled = true
@@ -51,7 +50,7 @@ func _on_graph_node_selected(node: Node) -> void:
 
 func on_list_item_selected(index: int) -> void:
 	var item = _property_list.get_item_text(index)
-	item_selected.emit(item, _active_node.get_story_data())
+	item_selected.emit(item, _active_node)
 
 func _on_add_property_button_pressed() -> void:
 	_property_list.deselect_all()
@@ -59,7 +58,6 @@ func _on_add_property_button_pressed() -> void:
 
 func _on_property_added(active_node: Node) -> void:
 	set_node_properties(active_node.get_story_data_key())
-
 
 func _on_property_edit_canceled() -> void:
 	_property_list.deselect_all()

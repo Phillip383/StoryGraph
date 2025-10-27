@@ -10,6 +10,8 @@ signal on_edit_confirmed()
 @onready var update_button = $VBoxContainer/CancelUpdateButtons/Update
 @onready var cancel_button = $VBoxContainer/CancelUpdateButtons/Cancel
 
+# Reference to the active node to update it's property.
+var active_node
 
 func _ready():
 	update_button.pressed.connect(update_property)
@@ -24,14 +26,16 @@ func cancel_property():
 	on_edit_canceled.emit()
 
 ## When a property is selected we call this and parse the property data passed in creating the correct GUI elements for the data types.
-func populate_values(key, data : Variant):
+func populate_values(key, _active_node : BaseStoryNode):
 	clear_widget(true)
+	active_node = _active_node
+	var data = _active_node.get_story_data()[key]
 	property_name.text = key ## Set the name of the currently selected property
 	## Create the top level value widget, then create the widget's for the children.
 	var value_editor = load(VALUE_EDITOR_RESOURCE).instantiate()
 	element_container.add_child(value_editor)
 	value_editor.init_container_type(false)
-	create_widget(value_editor, data[key])
+	create_widget(value_editor, data)
 
 ## Create a widget for the type of data.
 func create_widget(widget, data, _key = ""):
