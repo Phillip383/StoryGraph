@@ -23,7 +23,7 @@ func _process(_delta: float) -> void:
 func _on_node_details_item_selected(item : Variant, m_data) -> void:
 	if editor:
 		editor.queue_free()
-	
+
 	customize_property_widget.visible = true
 	customize_property_widget.populate_values(item, m_data)
 

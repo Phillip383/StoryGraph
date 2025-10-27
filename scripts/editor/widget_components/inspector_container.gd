@@ -1,6 +1,6 @@
 extends TabContainer
 
-class_name InspectorContainer 
+class_name InspectorContainer
 
 """
 Base Class for the various types of inspectors and editors. The design decision is for a future layout option as to where inspectors and editors can be changed.

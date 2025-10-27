@@ -2,8 +2,26 @@ extends CenterContainer
 
 const VALUE_EDITOR_RESOURCE = "res://scenes/UI/Popups/Add_Property/add_property_default_values_widget.tscn"
 
+signal on_edit_canceled()
+signal on_edit_confirmed()
+
 @onready var property_name = $VBoxContainer/PropertyName
 @onready var element_container = $VBoxContainer/Values
+@onready var update_button = $VBoxContainer/CancelUpdateButtons/Update
+@onready var cancel_button = $VBoxContainer/CancelUpdateButtons/Cancel
+
+
+func _ready():
+	update_button.pressed.connect(update_property)
+	cancel_button.pressed.connect(cancel_property)
+
+func update_property():
+	print("updating property")
+	on_edit_confirmed.emit()
+
+func cancel_property():
+	clear_widget(false)
+	on_edit_canceled.emit()
 
 ## When a property is selected we call this and parse the property data passed in creating the correct GUI elements for the data types.
 func populate_values(key, data : Variant):

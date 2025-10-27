@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://c0ng6gf8elp2h"]
+[gd_scene load_steps=3 format=3 uid="uid://c0ng6gf8elp2h"]
 
 [ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="1_2iog6"]
 [ext_resource type="Script" uid="uid://5f2rdnh54i77" path="res://scripts/graph_system/Options_Widgets/customize_properties_widgets/customize_property.gd" id="1_j24oq"]
-[ext_resource type="PackedScene" uid="uid://ca1n3r2xqkoun" path="res://scenes/UI/Popups/container_size_widget.tscn" id="2_cdu8p"]
 
 [node name="CustomizeProperty" type="CenterContainer"]
 offset_top = 192.0
@@ -24,9 +23,6 @@ layout_mode = 2
 
 [node name="Values" type="VBoxContainer" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 10)
-layout_mode = 2
-
-[node name="ContainerSizeWidget" parent="VBoxContainer" instance=ExtResource("2_cdu8p")]
 layout_mode = 2
 
 [node name="CancelUpdateButtons" type="HBoxContainer" parent="VBoxContainer"]
