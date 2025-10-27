@@ -72,25 +72,27 @@ func on_type_select(_item : int):
 		TYPE_ARRAY:
 			container_options.visible = true
 			container_values.visible = true
+			_current_value_editor.visible = false
 		TYPE_DICTIONARY:
 			container_options.visible = true
 			container_values.visible = true
+			_current_value_editor.visible = false
 		TYPE_BOOL:
 			container_options.visible = false
 			_current_value_editor = $VBoxContainer/BooleanValue
-			$VBoxContainer/BooleanValue.visible = true
+			_current_value_editor.visible = true
 		TYPE_STRING:
 			container_options.visible = false
 			_current_value_editor = $VBoxContainer/TextValue
-			$VBoxContainer/TextValue.visible = true
+			_current_value_editor.visible = true
 		TYPE_INT:
 			container_options.visible = false
 			_current_value_editor = $VBoxContainer/IntValue
-			$VBoxContainer/IntValue.visible = true
+			_current_value_editor.visible = true
 		TYPE_FLOAT:
 			container_options.visible = false
 			_current_value_editor = $VBoxContainer/FloatValue
-			$VBoxContainer/FloatValue.visible = true
+			_current_value_editor.visible = true
 
 func remove_previous_value_editor():
 	match type_options.get_selected_id():
