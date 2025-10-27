@@ -3,8 +3,4 @@
 [ext_resource type="Script" uid="uid://dj6j06ffcl5fn" path="res://scripts/graph_system/Nodes/node_type_selection.gd" id="1_fhdwe"]
 
 [node name="NodeTypeSelection" type="OptionButton"]
-selected = 0
-item_count = 1
-popup/item_0/text = "Type"
-popup/item_0/id = 0
 script = ExtResource("1_fhdwe")
