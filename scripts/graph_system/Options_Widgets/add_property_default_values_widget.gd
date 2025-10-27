@@ -54,6 +54,7 @@ func set_key_name(_name):
 	key_name.text = _name
 
 func set_type(_type):
+	current_type = _type
 	type_options.selected = _type
 
 func set_info(_name, _type):
@@ -116,7 +117,7 @@ func clear_container_values():
 
 # Updates the number of elements available to be set in the GUI.
 func on_container_size_change(value : float):
-		
+
 	var current_count = value_editor_container.get_child_count()
 
 	if value < current_count:
@@ -130,7 +131,7 @@ func on_container_size_change(value : float):
 			if current_type == Types.ARRAY: ## If it's an array value, hide the separator and key value.
 				new_value.key_and_separator_visibility(false)
 			value_editor_container.add_child(new_value)
-	
+
 	value_changed.emit(value) ## Inform the top level of the data change.
 
 func create_text_editor():
