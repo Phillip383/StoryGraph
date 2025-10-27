@@ -123,7 +123,7 @@ func on_container_size_change(value : float):
 	if value < current_count:
 		var diff = current_count - value
 		for i in range(diff - 1, -1, -1):
-			value_editor_container.get_child(i).queue_free()
+			value_editor_container.get_child(current_count - 1).queue_free()
 	else:
 		var diff = value - current_count ## Only add values for the difference of existing values and new ones.
 		for i in range(diff):
