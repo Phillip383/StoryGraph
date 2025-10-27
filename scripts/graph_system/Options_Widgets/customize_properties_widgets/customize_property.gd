@@ -21,6 +21,7 @@ func _ready():
 func update_property():
 	var data = value_editor.get_value()
 	active_node.set_existing_data(property_name.text, data)
+	populate_values(property_name.text, active_node) ##TODO: remove this, this is for debugging. Update the GUI elements with changes.
 	on_edit_confirmed.emit()
 
 func cancel_property():

@@ -39,11 +39,11 @@ func get_value():
 		TYPE_STRING:
 			return editor.text
 		TYPE_INT:
-			return editor.value
+			return editor.value as int
 		TYPE_FLOAT:
 			return editor.value
 		TYPE_BOOL:
-			return editor.selected
+			return true if editor.get_selected_id() == 1 else false
 
 func get_key_name():
 	return key_name.text
