@@ -2,8 +2,13 @@ extends GraphEdit
 
 class_name StoryGraph
 
+
 ## EXPORTS
 @export var tab_name : StringName = "(unsaved)*" ## Use the file name when saved, default to "unsaved"
+
+## SIGNALS
+signal on_changed() ## A signal that will emit when any change occurs to the graph, this can be used to tell the user they have unsaved work.
+
 
 @onready var context_menu = $"GraphNodeMenu"
 
@@ -32,12 +37,14 @@ Listens for the add node request from the context menu.
 func add_node(node : GraphNode):
 	node.position_offset = (get_local_mouse_position() + scroll_offset) / zoom + - node.size / 2
 	add_child(node)
+	on_changed.emit()
 
 """
 Listens for the connection request of the graph.
 """
 func _on_connection(from_node: StringName, from_port: int, to_node: StringName, to_port: int):
 	connect_node(from_node, from_port, to_node, to_port)
+	on_changed.emit()
 
 """
 This methods intended functionality is to check if the user right clicks on a node to keep the graph from consuming the input for it's context menu signal.

@@ -51,5 +51,5 @@ func export_node():
 	return {title : story_data}
 
 ## TODO: Flag a change prompting for a save.
-func on_value_changed(data):
+func on_value_changed(_data):
 	pass
