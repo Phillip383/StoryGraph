@@ -11,8 +11,8 @@ signal on_data_changed(data) ## Emitted when a property is added, removed, or it
 @export_category("Story Data")
 @export var story_data : Dictionary[StringName, Variant]
 
-## Helpful data for saving the node and keeping track of their id's
-var node_data
+@export_category("Node Data")
+@export var node_data : NodeData ## Helpful data for saving the node and keeping track of their id's, it is unique per node, any default values will be erased at runtime.
 
 func _ready() -> void:
 	node_data = NodeData.new()
@@ -42,6 +42,13 @@ func set_existing_data(key : StringName, data : Variant):
 func remove_data(key : StringName):
 	story_data.erase(key)
 	on_data_changed.emit(story_data)
+
+func set_node_title():
+	pass
+
+func export_node():
+	# Wraps the story_data inside a dictionary with the node title as key.
+	return {title : story_data}
 
 ## TODO: Flag a change prompting for a save.
 func on_value_changed(data):

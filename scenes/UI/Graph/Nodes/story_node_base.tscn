@@ -1,7 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://dhrg7t8ktb4jq"]
+[gd_scene load_steps=5 format=3 uid="uid://dhrg7t8ktb4jq"]
 
 [ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="1_ma2pr"]
 [ext_resource type="Script" uid="uid://g4pu8n7nwddi" path="res://scripts/graph_system/Nodes/story_node_base.gd" id="2_p0nie"]
+[ext_resource type="Script" uid="uid://bibkbqwmh1qfi" path="res://scripts/node_data.gd" id="3_p0nie"]
+
+[sub_resource type="Resource" id="Resource_qbq32"]
+script = ExtResource("3_p0nie")
+metadata/_custom_type_script = "uid://bibkbqwmh1qfi"
 
 [node name="StoryNodeBase" type="GraphNode" groups=["Story Node"]]
 editor_description = "The base node to derive other types of nodes from."
@@ -41,6 +46,7 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 script = ExtResource("2_p0nie")
+node_data = SubResource("Resource_qbq32")
 
 [node name="Slot1" type="Control" parent="."]
 layout_mode = 2
