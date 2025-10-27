@@ -43,8 +43,8 @@ func remove_data(key : StringName):
 	story_data.erase(key)
 	on_data_changed.emit(story_data)
 
-func set_node_title():
-	pass
+func set_node_title(_title : StringName):
+	title = _title
 
 func export_node():
 	# Wraps the story_data inside a dictionary with the node title as key.

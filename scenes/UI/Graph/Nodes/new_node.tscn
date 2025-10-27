@@ -1,0 +1,70 @@
+[gd_scene load_steps=6 format=3 uid="uid://b6r5vcqluu23c"]
+
+[ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="1_4r8f6"]
+[ext_resource type="PackedScene" uid="uid://sal8elh8wlh6" path="res://scenes/UI/Graph/Nodes/node_type_selection.tscn" id="1_xcrec"]
+[ext_resource type="Script" uid="uid://dtai0uvp3h0hr" path="res://scripts/graph_system/Nodes/new_node_window.gd" id="2_ml3k4"]
+[ext_resource type="PackedScene" uid="uid://dhrg7t8ktb4jq" path="res://scenes/UI/Graph/Nodes/story_node_base.tscn" id="3_qavgm"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4r8f6"]
+bg_color = Color(0.12941177, 0.12941177, 0.12941177, 1)
+border_color = Color(1, 0.99215686, 0, 1)
+
+[node name="NewNode" type="Window"]
+oversampling_override = 1.0
+title = "New Node"
+position = Vector2i(0, 36)
+size = Vector2i(350, 200)
+theme = ExtResource("1_4r8f6")
+script = ExtResource("2_ml3k4")
+node_types = Dictionary[int, PackedScene]({
+0: ExtResource("3_qavgm")
+})
+
+[node name="MarginContainer" type="PanelContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_4r8f6")
+theme_override_styles/panel = SubResource("StyleBoxFlat_4r8f6")
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/CenterContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="NodeType" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer" instance=ExtResource("1_xcrec")]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+placeholder_text = "name"
+
+[node name="Buttons" type="HBoxContainer" parent="MarginContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 10
+
+[node name="Cancel" type="Button" parent="MarginContainer/CenterContainer/VBoxContainer/Buttons"]
+layout_mode = 2
+text = "Cancel"
+
+[node name="Confirm" type="Button" parent="MarginContainer/CenterContainer/VBoxContainer/Buttons"]
+layout_mode = 2
+text = "Confirm"
+
+[connection signal="on_type_selected" from="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/NodeType" to="." method="_on_type_selected"]
+[connection signal="text_changed" from="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/LineEdit" to="." method="_on_name_changed"]
+[connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/Buttons/Cancel" to="." method="_on_cancel_pressed"]
+[connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/Buttons/Confirm" to="." method="_on_confirm_pressed"]

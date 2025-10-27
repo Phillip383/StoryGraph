@@ -10,7 +10,6 @@ class_name StoryGraph
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	popup_request.connect(_on_popup_request)
-	context_menu.connect("_on_add_node", _on_add_node)
 	connection_request.connect(_on_connection)
 
 func get_tab_name():
@@ -30,7 +29,7 @@ func _on_popup_request(_location : Vector2):
 """
 Listens for the add node request from the context menu.
 """
-func _on_add_node(node : GraphNode):
+func add_node(node : GraphNode):
 	node.position_offset = (get_local_mouse_position() + scroll_offset) / zoom + - node.size / 2
 	add_child(node)
 

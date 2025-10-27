@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://c8qxe00r5a84q"]
 
 [ext_resource type="Script" uid="uid://duh4yccltdvp" path="res://scripts/graph_system/graph.gd" id="1_rqtha"]
-[ext_resource type="PackedScene" uid="uid://c7xdg8k5bdgco" path="res://scenes/UI/Graph/Menus/graph_node_menu.tscn" id="2_pehdu"]
+[ext_resource type="PackedScene" uid="uid://c7xdg8k5bdgco" path="res://scenes/UI/Graph/Menus/graph_context_menu.tscn" id="2_pehdu"]
 
 [node name="Graph" type="GraphEdit"]
 anchors_preset = 15
