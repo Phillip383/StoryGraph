@@ -7,6 +7,8 @@ const FILE_FAILURE = "Failed To Create File!"
 
 @onready var description_box : TextEdit = $PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Description
 @onready var message_box : Label = $PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Label
+@onready var project_path_edit : LineEdit = $PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Location/ProjectPath
+@onready var file_dialog : FileDialog = $FileDialog
 
 var project_path
 var project_name
@@ -16,6 +18,7 @@ var description := ""
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	close_requested.connect(_on_cancel_pressed)
+	file_dialog.dir_selected.connect(_on_file_dialog_dir_selected)
 
 ## Return true if project was create, false otherwise.
 func create_project() -> bool:
@@ -68,8 +71,11 @@ func _on_project_name_text_changed(new_text: String) -> void:
 	project_name = new_text
 
 func _on_file_explorer_pressed() -> void:
-	## TODO: Instantiate a file explorer.
-	pass # Replace with function body.
+	file_dialog.show()
+
+func _on_file_dialog_dir_selected(dir : String):
+	project_path = dir
+	project_path_edit.text = dir
 
 func _on_project_path_text_changed(new_text: String) -> void:
 	project_path = new_text

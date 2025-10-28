@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://dve5m4oenyl6c"]
+[gd_scene load_steps=5 format=3 uid="uid://dve5m4oenyl6c"]
 
 [ext_resource type="Script" uid="uid://qq4eta1y80aj" path="res://scripts/Project_System/create_project_menu.gd" id="1_b5g5k"]
-[ext_resource type="Texture2D" uid="uid://qgs37frdd7m" path="res://assets/Textures/Icons/32/menu.png" id="1_flodl"]
+[ext_resource type="Texture2D" uid="uid://cdxsj8rowihyu" path="res://assets/Icons/Folder_Icon.svg" id="2_b5g5k"]
+[ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="3_bl1ch"]
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_flodl"]
 content_margin_left = 4.0
@@ -56,7 +57,8 @@ placeholder_text = "path"
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 tooltip_text = "File explorer"
-icon = ExtResource("1_flodl")
+theme_override_colors/icon_normal_color = Color(0, 0.6901961, 1, 1)
+icon = ExtResource("2_b5g5k")
 expand_icon = true
 
 [node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer"]
@@ -82,6 +84,18 @@ visible = false
 layout_mode = 2
 text = "Directory Not Found!!!"
 horizontal_alignment = 1
+
+[node name="FileDialog" type="FileDialog" parent="."]
+oversampling_override = 1.0
+title = "Open a Directory"
+initial_position = 1
+size = Vector2i(900, 500)
+theme = ExtResource("3_bl1ch")
+ok_button_text = "Select"
+dialog_hide_on_ok = true
+file_mode = 2
+display_mode = 1
+access = 2
 
 [connection signal="text_changed" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/ProjectName" to="." method="_on_project_name_text_changed"]
 [connection signal="text_changed" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Location/ProjectPath" to="." method="_on_project_path_text_changed"]
