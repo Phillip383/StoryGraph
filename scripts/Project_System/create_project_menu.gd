@@ -1,17 +1,17 @@
 extends Window
 
 const DIRECTORY_NOT_FOUND_MSG = "Directory Not Found!"
-const DIRECTORY_FAILURE = "Failed To Create Directory!"
+const DIRECTORY_FAILURE = "Failed To Create Directory! Check Path"
 const FILE_FAILURE = "Failed To Create File!"
-
+const PROJECT_NAME_FAILURE = "Invalid Project Name!"
 
 @onready var description_box : TextEdit = $PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Description
 @onready var message_box : Label = $PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Label
 @onready var project_path_edit : LineEdit = $PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Location/ProjectPath
 @onready var file_dialog : FileDialog = $FileDialog
 
-var project_path
-var project_name
+var project_path := ""
+var project_name := ""
 var description := ""
 
 
@@ -20,52 +20,107 @@ func _ready() -> void:
 	close_requested.connect(_on_cancel_pressed)
 	file_dialog.dir_selected.connect(_on_file_dialog_dir_selected)
 
-## Return true if project was create, false otherwise.
-func create_project() -> bool:
+## Returns OK if creation was successful, and any file or directory related error's upon failure.
+func create_project() -> Error:
+	## Check if path is valid, if not throw error.
+	var _error = DirAccess.dir_exists_absolute(project_path)
+	if not _error:
+		handle_error(DIRECTORY_NOT_FOUND_MSG)
+		return ERR_DOES_NOT_EXIST
 
-	## Project structure can easily be changed here as the algorithm below will create what is here. However, it will not create nested files and directories, if i add that, then I'll change the algorithm to support it.
-	var PROJECT_STRUCTURE = {
+	## Setup the necessary components for project creation.
+	var PROJECT_STRUCTURE = declare_project_structure()
+	_error = sanitize_data_for_creation()
+	if _error != OK:
+		return _error
+
+	_error = create_project_dir()
+	if _error != OK:
+		handle_error(DIRECTORY_FAILURE)
+		return _error
+
+	## Create the intermediate project files.
+	return create_project_structure(PROJECT_STRUCTURE)
+
+## The structure of the project directory in dictionary format, this is useful if I ever make changes to how I want a project to be created.
+## Directories are suffixed with _dir and files with _f, these suffixes are removed upon creation.
+func declare_project_structure():
+	var project_structure = {
 		project_name : {
 			"levels_dir" : null, # The directory where graphs will be saved.
 			"templates_dir" : null, # A directory where data templates will be stored for faster iteration of similar data models. 
-			"config_f" : null # A text file where project information will be stored.
+			"story.project_f" : null # A file where project information will be stored.
 		}
 	}
-	
+	return project_structure
+
+## transmutes the data into an acceptable format, and set's global scoped variables in this script.
+## Replaces the windows \\ with unix / in the path; appends the project name to the project path...
+## Ensure this is called after checking for a valid top level path...
+## Throws an error if the project name is empty..
+func sanitize_data_for_creation() -> Error:
+	if project_name.length() == 0:
+		handle_error(PROJECT_NAME_FAILURE)
+		return ERR_INVALID_DATA
 	description = description_box.text
-
 	project_path = project_path.replace("\\", "/") # Replace windows \ with unix style /
-	## Check if path is valid, if not throw error.
-	if DirAccess.dir_exists_absolute(project_path):
-		## Make the top level project directory...
-		var proj_path = project_path + "/" + project_name
-		var _error_code = DirAccess.make_dir_recursive_absolute(proj_path)
-		## Create the intermediate project files.
-		for object in PROJECT_STRUCTURE[project_name]:
-			var dir_str = object as String
-			if dir_str.contains("_dir"):
-				dir_str = dir_str.get_slice("_", 0)
-				_error_code = DirAccess.make_dir_absolute(proj_path + "/" + dir_str)
-				if _error_code != OK:
-					message_box.visible = true
-					message_box.text = DIRECTORY_FAILURE
+	project_path = project_path + "/" + project_name
+	return OK
 
-			elif dir_str.contains("_f"):
-				dir_str = dir_str.get_slice("_", 0)
-				var file = FileAccess.open(proj_path + "/" + dir_str, FileAccess.WRITE)
-				if not file:
-					message_box.visible = true
-					message_box.text = FILE_FAILURE
+## Helper function that prints a error message to the user on the project creation screen.
+func handle_error(error_message : String):
+	message_box.visible = true
+	message_box.text = error_message
 
-				if description.length() > 0:
-					file.store_string("description: " + description)
-				file.close()
-		
-		return true ## If we made it here everything is good...
-	else:
-		message_box.visible = true
-		message_box.text = DIRECTORY_NOT_FOUND_MSG
-		return false
+func create_dir(path : String) -> Error:
+	var _error = DirAccess.make_dir_absolute(path)
+	return _error
+
+func create_file(path : String) -> Error:
+	var _file = FileAccess.open(path, FileAccess.WRITE)
+	if _file == null:
+		return FileAccess.get_open_error()
+	
+	if path.contains(".project"):
+		if not create_project_file(_file):
+			handle_error(FILE_FAILURE)
+			return ERR_FILE_CANT_WRITE
+
+	return OK
+
+## Creates the project file with relative information for the project, IE. name, an optional description.
+## Will store project setting's as well.
+## Returns true if the operation was successful
+func create_project_file(_file : FileAccess) -> bool:
+	var successful
+	successful = _file.store_string("Project Name: " + project_name + "\n")
+	if description.length() > 0:
+		successful = _file.store_string("description: " + description + "\n")
+	_file.close()
+	return successful
+
+## Recursively creates the top level project directory returns the error code from the operation.
+func create_project_dir() -> Error:
+	return DirAccess.make_dir_recursive_absolute(project_path)
+
+## Creates the intermediate files and directories for the project throws an error for any operation that fails.
+func create_project_structure(structure) -> Error:
+	var _error : Error
+	for object in structure[project_name]:
+		var dir_str = object as String
+		if dir_str.contains("_dir"):
+			dir_str = dir_str.get_slice("_", 0)
+			_error = create_dir(project_path + "/" + dir_str)
+			if _error != OK:
+				handle_error(DIRECTORY_FAILURE + " :: " + error_string(_error))
+				return _error
+		elif dir_str.contains("_f"):
+			dir_str = dir_str.get_slice("_", 0)
+			_error = create_file(project_path + "/" + dir_str)
+			if _error != OK:
+				handle_error(FILE_FAILURE + " :: " + error_string(_error))
+				return _error
+	return OK
 
 func _on_project_name_text_changed(new_text: String) -> void:
 	project_name = new_text
@@ -85,9 +140,5 @@ func _on_cancel_pressed() -> void:
 
 ## Only destroys the create project window if it was successful
 func _on_create_pressed() -> void:
-	if create_project():
+	if create_project() == OK:
 		queue_free()
-
-## Queries the information every time it's changed to ensure it's in a good state to create a project.
-func confirm_button_state() -> void:
-	pass
