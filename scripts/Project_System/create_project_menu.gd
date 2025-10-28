@@ -14,6 +14,8 @@ var project_path := ""
 var project_name := ""
 var description := ""
 
+## This is the actual path we will use, we need to retain the original path to go back to a better state after a failure.
+var intermediate_project_path
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -22,6 +24,7 @@ func _ready() -> void:
 
 ## Returns OK if creation was successful, and any file or directory related error's upon failure.
 func create_project() -> Error:
+	message_box.visible = false ## Reset the message_box.
 	## Check if path is valid, if not throw error.
 	var _error = DirAccess.dir_exists_absolute(project_path)
 	if not _error:
@@ -54,17 +57,20 @@ func declare_project_structure():
 	}
 	return project_structure
 
-## transmutes the data into an acceptable format, and set's global scoped variables in this script.
-## Replaces the windows \\ with unix / in the path; appends the project name to the project path...
-## Ensure this is called after checking for a valid top level path...
-## Throws an error if the project name is empty..
+"""
+Transmutes the data into an acceptable format, and resets the state of the path variable.
+Replaces the windows \\ with unix / in the path; appends the project name to the project path...
+Ensure this is called after checking for a valid top level path...
+Throws an error if the project name is empty..
+"""
 func sanitize_data_for_creation() -> Error:
+	## Reset the project_path
+	intermediate_project_path = project_path
 	if project_name.length() == 0:
 		handle_error(PROJECT_NAME_FAILURE)
 		return ERR_INVALID_DATA
 	description = description_box.text
-	project_path = project_path.replace("\\", "/") # Replace windows \ with unix style /
-	project_path = project_path + "/" + project_name
+	intermediate_project_path = project_path.replace("\\", "/") + "/" + project_name # Replace windows \ with unix style /
 	return OK
 
 ## Helper function that prints a error message to the user on the project creation screen.
@@ -101,7 +107,7 @@ func create_project_file(_file : FileAccess) -> bool:
 
 ## Recursively creates the top level project directory returns the error code from the operation.
 func create_project_dir() -> Error:
-	return DirAccess.make_dir_recursive_absolute(project_path)
+	return DirAccess.make_dir_recursive_absolute(intermediate_project_path)
 
 ## Creates the intermediate files and directories for the project throws an error for any operation that fails.
 func create_project_structure(structure) -> Error:
@@ -110,13 +116,13 @@ func create_project_structure(structure) -> Error:
 		var dir_str = object as String
 		if dir_str.contains("_dir"):
 			dir_str = dir_str.get_slice("_", 0)
-			_error = create_dir(project_path + "/" + dir_str)
+			_error = create_dir(intermediate_project_path + "/" + dir_str)
 			if _error != OK:
 				handle_error(DIRECTORY_FAILURE + " :: " + error_string(_error))
 				return _error
 		elif dir_str.contains("_f"):
 			dir_str = dir_str.get_slice("_", 0)
-			_error = create_file(project_path + "/" + dir_str)
+			_error = create_file(intermediate_project_path + "/" + dir_str)
 			if _error != OK:
 				handle_error(FILE_FAILURE + " :: " + error_string(_error))
 				return _error
