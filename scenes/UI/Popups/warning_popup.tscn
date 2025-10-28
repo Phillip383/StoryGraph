@@ -1,0 +1,54 @@
+[gd_scene load_steps=3 format=3 uid="uid://6lf7jg8ji8um"]
+
+[ext_resource type="Script" uid="uid://djju8p2yx5xvi" path="res://scripts/Popups/warning_popup.gd" id="1_86267"]
+
+[sub_resource type="Theme" id="Theme_86267"]
+
+[node name="WarningPopup" type="Window"]
+oversampling_override = 1.0
+title = "Error"
+size = Vector2i(206, 106)
+wrap_controls = true
+transient = true
+exclusive = true
+always_on_top = true
+minimize_disabled = true
+maximize_disabled = true
+script = ExtResource("1_86267")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(200, 100)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="CenterContainer" type="CenterContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+theme = SubResource("Theme_86267")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="MessageBox" type="Label" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Default Message"
+horizontal_alignment = 1
+
+[node name="OkButton" type="Button" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Accept"

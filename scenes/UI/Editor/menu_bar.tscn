@@ -27,17 +27,19 @@ language = "en"
 oversampling_override = 1.0
 size = Vector2i(109, 125)
 theme = ExtResource("1_ohdrm")
-item_count = 5
+item_count = 6
 item_0/text = "New file"
 item_0/id = 0
 item_1/text = "New Project"
 item_1/id = 1
-item_2/text = "Save as"
+item_2/text = "Open Project"
 item_2/id = 2
-item_3/text = "Save"
+item_3/text = "Save as"
 item_3/id = 3
-item_4/text = "Export"
+item_4/text = "Save"
 item_4/id = 4
+item_5/text = "Export"
+item_5/id = 5
 
 [node name="Menu" type="PopupMenu" parent="MarginContainer/MenuBar"]
 

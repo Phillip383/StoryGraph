@@ -75,6 +75,10 @@ theme_override_constants/separation = 250
 layout_mode = 2
 text = "Cancel"
 
+[node name="OpenExisting" type="Button" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Buttons"]
+layout_mode = 2
+text = "Open Project"
+
 [node name="Create" type="Button" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Buttons"]
 layout_mode = 2
 text = "Create"
@@ -101,4 +105,5 @@ access = 2
 [connection signal="text_changed" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Location/ProjectPath" to="." method="_on_project_path_text_changed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Location/FileExplorer" to="." method="_on_file_explorer_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Buttons/Cancel" to="." method="_on_cancel_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Buttons/OpenExisting" to="." method="_on_open_existing_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Buttons/Create" to="." method="_on_create_pressed"]

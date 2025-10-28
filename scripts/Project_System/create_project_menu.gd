@@ -1,5 +1,6 @@
 extends Window
 
+const OPEN_PROJECT_DIALOG = preload("res://scenes/UI/Project_System/open_project_dialog.tscn")
 const DIRECTORY_NOT_FOUND_MSG = "Directory Not Found!"
 const DIRECTORY_FAILURE = "Failed To Create Directory! Check Path"
 const FILE_FAILURE = "Failed To Create File!"
@@ -148,3 +149,10 @@ func _on_cancel_pressed() -> void:
 func _on_create_pressed() -> void:
 	if create_project() == OK:
 		queue_free()
+
+## creates the open project dialog and adds it the scene tree.
+func _on_open_existing_pressed() -> void:
+	var open_dialog : OpenProjectDialog = OPEN_PROJECT_DIALOG.instantiate()
+	get_tree().current_scene.add_child(open_dialog)
+	await open_dialog.on_successful_selection
+	queue_free()

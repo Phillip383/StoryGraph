@@ -11,9 +11,10 @@ config_version=5
 [application]
 
 config/name="StoryGraph"
+config/version="0.0.1"
 run/main_scene="uid://bjq3ex5xqh4to"
 config/features=PackedStringArray("4.5", "Forward Plus")
-config/icon="uid://duqsok6xitndw"
+boot_splash/image="uid://duqsok6xitndw"
 
 [autoload]
 
@@ -27,7 +28,7 @@ window/size/mode=2
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/filesystem_drawer/plugin.cfg")
+enabled=PackedStringArray("res://addons/filesystem_drawer/plugin.cfg", "res://addons/gut/plugin.cfg")
 
 [global_group]
 
