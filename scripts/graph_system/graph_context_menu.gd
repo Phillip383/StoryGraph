@@ -1,6 +1,5 @@
 extends PopupMenu
 
-class_name StoryGraphContextMenu
 
 """
 The responsibilities of this class is to add nodes of various types to the graph as well as other options that might be added in time.

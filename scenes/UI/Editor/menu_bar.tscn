@@ -1,5 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://du7x8jpfvub1w"]
+[gd_scene load_steps=3 format=3 uid="uid://du7x8jpfvub1w"]
 
+[ext_resource type="Script" uid="uid://d02ibhobc3ulp" path="res://scripts/editor/Menus/menu_bar.gd" id="1_hemlw"]
 [ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="1_ohdrm"]
 
 [node name="PanelContainer" type="PanelContainer"]
@@ -10,6 +11,7 @@ anchor_bottom = 0.012
 offset_bottom = 12.04
 grow_horizontal = 2
 size_flags_horizontal = 3
+script = ExtResource("1_hemlw")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -23,7 +25,7 @@ language = "en"
 
 [node name="File" type="PopupMenu" parent="MarginContainer/MenuBar"]
 oversampling_override = 1.0
-size = Vector2i(100, 116)
+size = Vector2i(109, 125)
 theme = ExtResource("1_ohdrm")
 item_count = 5
 item_0/text = "New file"
@@ -46,3 +48,5 @@ theme = ExtResource("1_ohdrm")
 item_count = 1
 item_0/text = "Documentation"
 item_0/id = 0
+
+[connection signal="id_pressed" from="MarginContainer/MenuBar/File" to="." method="_on_file_id_pressed"]

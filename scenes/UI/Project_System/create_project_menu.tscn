@@ -1,5 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://dve5m4oenyl6c"]
+[gd_scene load_steps=4 format=3 uid="uid://dve5m4oenyl6c"]
 
+[ext_resource type="Script" uid="uid://qq4eta1y80aj" path="res://scripts/Project_System/create_project_menu.gd" id="1_b5g5k"]
 [ext_resource type="Texture2D" uid="uid://qgs37frdd7m" path="res://assets/Textures/Icons/32/menu.png" id="1_flodl"]
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_flodl"]
@@ -10,7 +11,9 @@ content_margin_bottom = 0.0
 
 [node name="CreateProjectMenu" type="Window"]
 oversampling_override = 1.0
+initial_position = 1
 size = Vector2i(800, 500)
+script = ExtResource("1_b5g5k")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 anchors_preset = 15
@@ -44,7 +47,7 @@ placeholder_text = "description"
 [node name="Location" type="HBoxContainer" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="LineEdit" type="LineEdit" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Location"]
+[node name="ProjectPath" type="LineEdit" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Location"]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 placeholder_text = "path"
@@ -73,3 +76,15 @@ text = "Cancel"
 [node name="Create" type="Button" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Buttons"]
 layout_mode = 2
 text = "Create"
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+text = "Directory Not Found!!!"
+horizontal_alignment = 1
+
+[connection signal="text_changed" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/ProjectName" to="." method="_on_project_name_text_changed"]
+[connection signal="text_changed" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Location/ProjectPath" to="." method="_on_project_path_text_changed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Location/FileExplorer" to="." method="_on_file_explorer_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Buttons/Cancel" to="." method="_on_cancel_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Buttons/Create" to="." method="_on_create_pressed"]
