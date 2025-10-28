@@ -14,6 +14,9 @@ content_margin_bottom = 0.0
 oversampling_override = 1.0
 initial_position = 1
 size = Vector2i(800, 500)
+wrap_controls = true
+transient = true
+exclusive = true
 script = ExtResource("1_b5g5k")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
