@@ -1,7 +1,6 @@
 extends GraphEdit
 
-class_name StoryGraph
-
+class_name Level
 
 ## EXPORTS
 @export var tab_name : StringName = "(unsaved)*" ## Use the file name when saved, default to "unsaved"
