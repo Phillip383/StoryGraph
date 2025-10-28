@@ -68,7 +68,9 @@ metadata/_tab_index = 0
 
 [node name="Levels" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C" instance=ExtResource("4_h0swr")]
 layout_mode = 2
+theme_override_constants/tab_separation = 15
 current_tab = 0
+drag_to_rearrange_enabled = true
 script = ExtResource("6_w61rn")
 
 [node name="Level" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels" instance=ExtResource("1_ot8g1")]
@@ -105,6 +107,7 @@ size_flags_horizontal = 3
 theme = ExtResource("1_wjrqj")
 metadata/_tab_index = 0
 
+[connection signal="new_level_request" from="PanelContainer/MarginContainer/Main_C/MenuBar" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels" method="_on_menu_bar_new_level_request"]
 [connection signal="on_level_changed" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Inspector_Left_Top_C/LevelInspector" method="_on_level_changed"]
 [connection signal="node_deselected" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels/Level" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Left_Bottom_C/Node Details" method="_on_graph_node_deselected"]
 [connection signal="node_deselected" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels/Level" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Property_Editor_C/Property Editor" method="_on_graph_node_deselected"]

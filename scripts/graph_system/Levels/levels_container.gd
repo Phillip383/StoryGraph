@@ -1,5 +1,8 @@
 extends InspectorContainer
 
+const LEVEL_SCENE = preload("res://scenes/UI/Graph/level.tscn")
+
+
 signal on_level_changed(level : Level)
 
 var _active_level : Level
@@ -11,6 +14,10 @@ func _ready() -> void:
 	child_entered_tree.connect(on_child_added)
 	_active_level = get_current_tab_control() as Level
 	connect_for_updates()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("new_level"):
+		create_new_level()
 
 func get_active_level()-> Level:
 	return _active_level
@@ -39,3 +46,10 @@ func on_child_added(child : Node):
 	if level:
 		level.level_name_change.connect(child_name_changed)
 		level.on_changed.connect(child_changed)
+
+func create_new_level():
+	var new_level = LEVEL_SCENE.instantiate()
+	add_child(new_level)
+
+func _on_menu_bar_new_level_request() -> void:
+	create_new_level()

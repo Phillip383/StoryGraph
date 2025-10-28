@@ -19,6 +19,7 @@ signal level_name_change(level_name : String)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	set_tab_name(DEFAULT_NAME)
 	level_data = LevelData.new()
 	popup_request.connect(_on_popup_request)
 	connection_request.connect(_on_connection)
