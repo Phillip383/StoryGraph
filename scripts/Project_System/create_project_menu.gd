@@ -1,13 +1,13 @@
 extends Window
 
 const OPEN_PROJECT_DIALOG = preload("res://scenes/UI/Project_System/open_project_dialog.tscn")
+const WARNING_POPUP = preload("res://scenes/UI/Popups/warning_popup.tscn")
 const DIRECTORY_NOT_FOUND_MSG = "Directory Not Found!"
 const DIRECTORY_FAILURE = "Failed To Create Directory! Check Path"
 const FILE_FAILURE = "Failed To Create File!"
 const PROJECT_NAME_FAILURE = "Invalid Project Name!"
 
 @onready var description_box : TextEdit = $PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Description
-@onready var message_box : Label = $PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Label
 @onready var project_path_edit : LineEdit = $PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Location/ProjectPath
 @onready var file_dialog : FileDialog = $FileDialog
 
@@ -25,7 +25,6 @@ func _ready() -> void:
 
 ## Returns OK if creation was successful, and any file or directory related error's upon failure.
 func create_project() -> Error:
-	message_box.visible = false ## Reset the message_box.
 	## Check if path is valid, if not throw error.
 	var _error = DirAccess.dir_exists_absolute(project_path)
 	if not _error:
@@ -76,8 +75,9 @@ func sanitize_data_for_creation() -> Error:
 
 ## Helper function that prints a error message to the user on the project creation screen.
 func handle_error(error_message : String):
-	message_box.visible = true
-	message_box.text = error_message
+	var popup = WARNING_POPUP.instantiate()
+	add_child(popup)
+	popup.set_message(error_message)
 
 func create_dir(path : String) -> Error:
 	var _error = DirAccess.make_dir_absolute(path)

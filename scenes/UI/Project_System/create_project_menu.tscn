@@ -83,12 +83,6 @@ text = "Open Project"
 layout_mode = 2
 text = "Create"
 
-[node name="Label" type="Label" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer"]
-visible = false
-layout_mode = 2
-text = "Directory Not Found!!!"
-horizontal_alignment = 1
-
 [node name="FileDialog" type="FileDialog" parent="."]
 oversampling_override = 1.0
 title = "Open a Directory"
