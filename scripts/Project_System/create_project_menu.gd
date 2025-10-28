@@ -75,9 +75,9 @@ func sanitize_data_for_creation() -> Error:
 
 ## Helper function that prints a error message to the user on the project creation screen.
 func handle_error(error_message : String):
-	var popup = WARNING_POPUP.instantiate()
-	add_child(popup)
-	popup.set_message(error_message)
+	var warning_popup = WARNING_POPUP.instantiate()
+	add_child(warning_popup)
+	warning_popup.set_message(error_message)
 
 func create_dir(path : String) -> Error:
 	var _error = DirAccess.make_dir_absolute(path)
