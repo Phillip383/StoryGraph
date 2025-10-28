@@ -1,7 +1,8 @@
 extends InspectorContainer
 
+const SAVE_NEW_WINDOW = preload("res://scenes/UI/Popups/save_window.tscn")
+const SAVE_WINDOW_TITLE = "Save Level"
 const LEVEL_SCENE = preload("res://scenes/UI/Graph/level.tscn")
-
 
 signal on_level_changed(level : Level)
 
@@ -12,23 +13,32 @@ func _ready() -> void:
 	super._ready()
 	tab_changed.connect(on_tab_switched)
 	child_entered_tree.connect(on_child_added)
-	_active_level = get_current_tab_control() as Level
+	_active_level = get_tab_control(0) as Level
 	connect_for_updates()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("new_level"):
 		create_new_level()
+	elif event.is_action_pressed("save_level"):
+		## Prompt a save window to name the level if their is no name.
+		if _active_level.name == _active_level.DEFAULT_NAME:
+			var save_window : SaveWindow = SAVE_NEW_WINDOW.instantiate()
+			save_window.title = SAVE_WINDOW_TITLE
+			add_child(save_window)
+			save_window.on_save.connect(_active_level.save_level)
+		else:
+			_active_level.save_level()
 
 func get_active_level()-> Level:
 	return _active_level
 
 func on_tab_switched(_index : int):
-	_active_level = get_current_tab_control() as Level
+	_active_level = get_tab_control(_index) as Level
 	on_level_changed.emit(_active_level)
 
-func child_name_changed(child_name : String):
-	var _index = get_tab_idx_from_control(_active_level)
-	set_tab_title(_index, child_name)
+func child_name_changed(level : Level):
+	var _index = get_tab_idx_from_control(level)
+	set_tab_title(_index, level.name)
 
 func child_changed():
 	var _index = get_tab_idx_from_control(_active_level)
