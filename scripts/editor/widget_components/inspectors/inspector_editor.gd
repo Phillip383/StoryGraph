@@ -15,10 +15,6 @@ var data
 func _ready() -> void:
 	super._ready()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	pass
-
 func _on_node_details_item_selected(item : Variant, m_data) -> void:
 	if editor:
 		editor.queue_free()
@@ -49,3 +45,10 @@ func _on_add_property_button_pressed(node : Node) -> void:
 
 func on_property_added(node : Node):
 	property_added.emit(node)
+
+# Clears the previously edited properties when the level is changed.
+func on_level_changed(_level: Level) -> void:
+	if customize_property_widget:
+		customize_property_widget.clear_widget()
+	if editor:
+		editor.queue_free()

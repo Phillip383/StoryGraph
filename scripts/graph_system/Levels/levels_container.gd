@@ -14,7 +14,6 @@ func _ready() -> void:
 	tab_changed.connect(on_tab_switched)
 	child_entered_tree.connect(on_child_added)
 	_active_level = get_tab_control(0) as Level
-	on_level_changed.emit(_active_level) # Inform the tree of the starting level.
 	FileManager.level_create_requested.connect(create_new_level)
 	FileManager.save_focused_requested.connect(save_request)
 	FileManager.on_level_load_request.connect(load_level)

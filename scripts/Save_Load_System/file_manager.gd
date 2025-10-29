@@ -44,7 +44,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func get_current_project_dir():
 	return _current_project_dir
 
-func is_in_active_proect():
+func is_in_active_project():
 	return FileAccess.file_exists(get_project_file())
 
 """

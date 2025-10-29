@@ -19,12 +19,13 @@ var node_details : NodeDetailsInspector
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	set_tab_name(DEFAULT_NAME)
+	name = DEFAULT_NAME
 	level_data = LevelData.new()
 	popup_request.connect(_on_popup_request)
 	connection_request.connect(_on_connection)
 	node_deselected.connect(on_node_deselected)
 	node_selected.connect(on_node_selected)
+	get_parent().on_level_changed.connect(on_level_changed)
 
 	## Have to do this in _ready for every graph spawned, signals connected in the editor, are unique.
 	node_details = get_tree().get_first_node_in_group("Node Details")
@@ -106,7 +107,8 @@ Loads a level's previous state from disk.
 @param _file - the level file to load.
 """
 func load_level(_data):
-	name = _data["name"]
+
+	set_tab_name(_data["name"])
 	level_data.level_id = _data["id"]
 	level_data.level_name = name
 	connections = _data["con"]
@@ -125,3 +127,9 @@ func on_node_selected(node : Node):
 
 func on_node_deselected(node : Node):
 	node_details._on_graph_node_deselected(node)
+
+func on_level_changed(node : Node):
+	if node == self:
+		return
+	else:
+		set_selected(null)
