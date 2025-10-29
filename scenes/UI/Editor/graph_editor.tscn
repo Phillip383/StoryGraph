@@ -62,7 +62,7 @@ theme_override_constants/minimum_grab_thickness = 3
 layout_mode = 2
 current_tab = 0
 
-[node name="LevelInspector" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Inspector_Left_Top_C" instance=ExtResource("4_tixvr")]
+[node name="StoryLines" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Inspector_Left_Top_C" instance=ExtResource("4_tixvr")]
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -108,7 +108,7 @@ theme = ExtResource("1_wjrqj")
 metadata/_tab_index = 0
 
 [connection signal="new_level_request" from="PanelContainer/MarginContainer/Main_C/MenuBar" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels" method="_on_menu_bar_new_level_request"]
-[connection signal="on_level_changed" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Inspector_Left_Top_C/LevelInspector" method="_on_level_changed"]
+[connection signal="on_level_changed" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Inspector_Left_Top_C/StoryLines" method="_on_level_changed"]
 [connection signal="node_deselected" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels/Level" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Left_Bottom_C/Node Details" method="_on_graph_node_deselected"]
 [connection signal="node_deselected" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels/Level" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Property_Editor_C/Property Editor" method="_on_graph_node_deselected"]
 [connection signal="node_selected" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels/Level" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Left_Bottom_C/Node Details" method="_on_graph_node_selected"]

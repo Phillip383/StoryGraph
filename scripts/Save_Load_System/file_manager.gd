@@ -29,9 +29,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("new_level"):
 		level_create_requested.emit()
 	elif event.is_action_pressed("save"):
-		var focused = get_viewport().gui_get_focus_owner() as Level
+		var focused = get_viewport().gui_get_focus_owner().is_in_group("Levels")
 		if focused:
-			save_focused_requested.emit(FileType.LEVEL)
+			save_focused_requested.emit(FileManager.FileType.LEVEL)
 			return
 
 """
@@ -49,9 +49,10 @@ Opens a file, with only the name and type required, the method will append the c
 @param _name: the name of the file to open.
 @param _type: the type of file it is, IE. Level or template, see FileManager->LevelTypes
 @param _access: The mode to open it in, IE, FileAccess.WRITE, see FilAccess for more modes
-@return opened file or returns the culprite error code for the failure.
+@param _status: An optional array that will contain any Errors from the operation.
+@return opened file or null if the operation failed.
 """
-func open_file(_name : String, _type : FileType, _access : FileAccess.ModeFlags):
+func open_file(_name : String, _type : FileType, _access : FileAccess.ModeFlags, _status = []) -> FileAccess:
 	var _file : FileAccess
 	var _path : String
 	match _type:
@@ -63,9 +64,56 @@ func open_file(_name : String, _type : FileType, _access : FileAccess.ModeFlags)
 			_file = FileAccess.open(_path, _access)
 
 	if not _file:
-		return FileAccess.get_open_error() ## If opening failed, return the error
+		_status.append(FileAccess.get_open_error()) ## If opening failed, return the error
+		return null
 
 	return _file
+
+"""
+Saves the given data to a file of a relavant file type given the enum _type. Will create the file if it doesn't already exist.
+@param _name: the name of the file to save.
+@param _type: the type of the file to save.
+@param _data: the contents to save to the file.
+@return Error: OK, on success, or cant acquire resource if data was null, or the open_error that was experienced.
+"""
+func save_file(_name : String, _type : FileType, _data) -> Error:
+	## If the data is null, return out.
+	if not _data:
+		return ERR_CANT_ACQUIRE_RESOURCE
+
+	## Open it for writing
+	var _status = []
+	var _file = open_file(_name, _type, FileAccess.WRITE, _status)
+	# If we have a file with no errors.
+	if _file:
+		_file.store_var(_data)
+		_file.close()
+		return OK
+	else:
+		print(error_string(_status[0]))
+		return FileAccess.get_open_error()
+
+"""
+Loads a file with given name and type to disk if it exists and returns a dictionary of the contents of the file.
+@param _file_name: the name of the file to load.
+@param _type: the type of file to load.
+@param _status: this array will contain any error's that might have taken place, will contain OK, if the operation was successful
+@return contents: contents of the file if the operation was successful, otherwise empty dictionary
+"""
+func load_file(_file_name : String, _type : FileType, _status) -> Dictionary[StringName, Variant]:
+	var contents : Dictionary[StringName, Variant] = {}
+	if file_exists(_file_name, _type):
+		var _file = open_file(_file_name, _type, FileAccess.READ)
+		if _file:
+			contents = _file.get_var()
+		else:
+			_status.append(FileAccess.get_open_error())
+			return {}
+	else:
+		_status.append(ERR_DOES_NOT_EXIST)
+		return {}
+	_status.append(OK)
+	return contents
 
 """
 Checks if a file of a given type with given name already exists
@@ -78,7 +126,6 @@ func file_exists(_name : String, _type : FileType) -> bool:
 		FileType.TEMPLATE:
 			_path = get_template_by_name(_name)
 	return FileAccess.file_exists(_path)
-
 
 func open_project(project_path : String) -> Error:
 	##Already open

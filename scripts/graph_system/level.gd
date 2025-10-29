@@ -75,19 +75,20 @@ packs the level connections and it's node's within a dictionary and save's it a 
 @param _file_name: the name to give the saved level.
 @return A dictionary of the level's packed state, or null if the save failed.
 """
-func save_level(_file_name = name):
-	var _state = {}
+func save_level(_file_name = name) -> Dictionary[StringName, Variant]:
+
 	set_tab_name(_file_name) # Set the tab name in the levels_container to the file_name.
 
-	var _file = FileManager.open_file(_file_name, FileManager.FileType.LEVEL, FileAccess.WRITE)
-	if _file:
-		## TODO: do the saving
-		print("Opened: ", _file.get_path())
-	else:
-		##TODO: handle error
-		pass
-	if _file:
-		_file.close()
+	var _state : Dictionary[StringName, Variant]
+	_state["name"] = _file_name
+	_state["id"] = level_data.level_id
+	_state["con"] = connections
+	_state["nodes"] = []
+
+	for node in get_children():
+		if node.is_in_group("Story Node"):
+			_state["nodes"].append(node.save_node())
+
 	return _state
 
 """

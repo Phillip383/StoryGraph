@@ -51,7 +51,7 @@ func declare_project_structure():
 	var project_structure = {
 		project_name : {
 			"levels_dir" : null, # The directory where graphs will be saved.
-			"templates_dir" : null, # A directory where data templates will be stored for faster iteration of similar data models. 
+			"templates_dir" : null, # A directory where data templates will be stored for faster iteration of similar data models.
 			"story.project_f" : null # A file where project information will be stored.
 		}
 	}
@@ -87,7 +87,7 @@ func create_file(path : String) -> Error:
 	var _file = FileAccess.open(path, FileAccess.WRITE)
 	if _file == null:
 		return FileAccess.get_open_error()
-	
+
 	if path.contains(".project"):
 		if not create_project_file(_file):
 			handle_error(FILE_FAILURE)

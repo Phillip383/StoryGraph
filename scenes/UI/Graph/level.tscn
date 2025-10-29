@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://duh4yccltdvp" path="res://scripts/graph_system/level.gd" id="1_rqtha"]
 [ext_resource type="PackedScene" uid="uid://c7xdg8k5bdgco" path="res://scenes/UI/Graph/Menus/graph_context_menu.tscn" id="2_pehdu"]
 
-[node name="level" type="GraphEdit"]
+[node name="level" type="GraphEdit" groups=["Levels"]]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

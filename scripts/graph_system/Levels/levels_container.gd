@@ -14,6 +14,7 @@ func _ready() -> void:
 	tab_changed.connect(on_tab_switched)
 	child_entered_tree.connect(on_child_added)
 	_active_level = get_tab_control(0) as Level
+	on_level_changed.emit(_active_level) # Inform the tree of the starting level.
 	FileManager.level_create_requested.connect(create_new_level)
 	FileManager.save_focused_requested.connect(save_request)
 	connect_for_updates()
@@ -60,10 +61,19 @@ func save_request(_type):
 	if _type == FileManager.FileType.LEVEL:
 		## Prompt a save window to name the level if their is no name.
 		if _active_level.name == _active_level.DEFAULT_NAME:
-			var save_window : SaveWindow = SAVE_NEW_WINDOW.instantiate()
-			save_window.title = SAVE_WINDOW_TITLE
-			save_window.set_file_type(_type)
-			add_child(save_window)
-			save_window.on_save.connect(_active_level.save_level)
+			await new_save(_type) ## Await the save window confirmation
 		else:
-			_active_level.save_level()
+			await save(_active_level.name, _type)
+
+func new_save(_type):
+		var save_window : SaveWindow = SAVE_NEW_WINDOW.instantiate()
+		save_window.title = SAVE_WINDOW_TITLE
+		save_window.set_file_type(_type)
+		add_child(save_window)
+		save_window.on_save.connect(save, _type)
+		await save_window.on_save
+
+func save(_file_name, _type):
+		var _level_data = _active_level.save_level(_file_name)
+		on_level_changed.emit(_active_level) # Inform the tree of the changed level name.
+		return FileManager.save_file(_file_name, _type, _level_data)

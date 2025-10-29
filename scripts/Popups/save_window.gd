@@ -6,7 +6,7 @@ const WARNING_POPUP = preload("res://scenes/UI/Popups/warning_popup.tscn")
 const WARNING_EXISTS = "Level with name already exists."
 const WARNING_NO_NAME = "Please Name The Level."
 
-signal on_save(file_name : String)
+signal on_save(file_name : String, _type)
 
 var _file_name : String
 var _file_type : FileManager.FileType
@@ -27,7 +27,7 @@ func _on_save_pressed() -> void:
 	if _file_name.length() > 0:
 		## TODO: Add the ability for the save window to be context aware of what type of file we are saving when I add templates and other files.
 		if not FileManager.file_exists(_file_name, _file_type):
-			on_save.emit(_file_name)
+			on_save.emit(_file_name, _file_type)
 			queue_free()
 		else:
 			var warning_popup = WARNING_POPUP.instantiate()
