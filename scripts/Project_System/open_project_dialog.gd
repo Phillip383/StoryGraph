@@ -17,9 +17,9 @@ func _ready() -> void:
 
 func on_select_directory(dir_path : String):
 	path = dir_path
-	
+
 func _on_ok_button_pressed():
-	var _error = GraphEditor.open_project(path) 
+	var _error = FileManager.open_project(path)
 	if _error == OK:
 		on_successful_selection.emit(path)
 		queue_free()

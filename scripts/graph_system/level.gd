@@ -66,23 +66,33 @@ func get_node_at_position(_location: Vector2):
 				return node
 	return null
 
-## A main/start/entry node represents the beginning of a storyline.
-## Thus, we will loop through all the start nodes, getting their "from" connections and mapping their ID's as prerequisites, and then mapping their "to" connection as future quests in the storyline, that should unlock upon status change.
-## This data will be put in a dictionary and saved to disk in a .json file named {level_name}.json. The top level dictionary will be the name of the level, and the first entry will be it's level_id, thus "level_id" : {n}. After this, the level's nodes content will follow.
 """
-Saves all the nodes, storylines, and their connections for this level
+packs the level connections and it's node's within a dictionary and save's it a .level file. The level_state dictionary structure:
+	name, - The level name.
+	id, - The level id
+	con, - An array of dictionaries for the connections of the graph.
+	nodes - An array of all the node's within the graph
+@param _file_name: the name to give the saved level.
+@return A dictionary of the level's packed state, or null if the save failed.
 """
-func save_level(_file_name = name) -> Error:
-	set_tab_name(_file_name)
-	var levels_dir = GraphEditor.get_levels_directory()
-	var file_path = "%s/%s.json" % [levels_dir, _file_name]
-	var _file = FileAccess.open(file_path, FileAccess.WRITE)
+func save_level(_file_name = name):
+	var _state = {}
+	set_tab_name(_file_name) # Set the tab name in the levels_container to the file_name.
+
+	var _file = FileManager.open_file(_file_name, FileManager.FileType.LEVEL, FileAccess.WRITE)
 	if _file:
 		## TODO: do the saving
-		pass
+		print("Opened: ", _file.get_path())
 	else:
 		##TODO: handle error
 		pass
 	if _file:
 		_file.close()
-	return OK
+	return _state
+
+"""
+Loads a level's previous state from disk.
+@param _file - the level file to load.
+"""
+func load_level(_file : FileAccess):
+	pass

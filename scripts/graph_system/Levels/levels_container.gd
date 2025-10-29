@@ -14,20 +14,9 @@ func _ready() -> void:
 	tab_changed.connect(on_tab_switched)
 	child_entered_tree.connect(on_child_added)
 	_active_level = get_tab_control(0) as Level
+	FileManager.level_create_requested.connect(create_new_level)
+	FileManager.save_focused_requested.connect(save_request)
 	connect_for_updates()
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("new_level"):
-		create_new_level()
-	elif event.is_action_pressed("save_level"):
-		## Prompt a save window to name the level if their is no name.
-		if _active_level.name == _active_level.DEFAULT_NAME:
-			var save_window : SaveWindow = SAVE_NEW_WINDOW.instantiate()
-			save_window.title = SAVE_WINDOW_TITLE
-			add_child(save_window)
-			save_window.on_save.connect(_active_level.save_level)
-		else:
-			_active_level.save_level()
 
 func get_active_level()-> Level:
 	return _active_level
@@ -63,3 +52,18 @@ func create_new_level():
 
 func _on_menu_bar_new_level_request() -> void:
 	create_new_level()
+
+"""
+Connected signal from the Filemanager, if the requested save type is of LEVEL, the save the active level.
+"""
+func save_request(_type):
+	if _type == FileManager.FileType.LEVEL:
+		## Prompt a save window to name the level if their is no name.
+		if _active_level.name == _active_level.DEFAULT_NAME:
+			var save_window : SaveWindow = SAVE_NEW_WINDOW.instantiate()
+			save_window.title = SAVE_WINDOW_TITLE
+			save_window.set_file_type(_type)
+			add_child(save_window)
+			save_window.on_save.connect(_active_level.save_level)
+		else:
+			_active_level.save_level()
