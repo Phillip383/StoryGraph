@@ -53,5 +53,6 @@ layout_mode = 2
 text = "Save"
 
 [connection signal="text_changed" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Filename" to="." method="_on_filename_text_changed"]
+[connection signal="text_submitted" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Filename" to="." method="_on_filename_text_submitted"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Buttons/Cancel" to="." method="_on_cancel_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Buttons/Save" to="." method="_on_save_pressed"]
