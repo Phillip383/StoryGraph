@@ -67,7 +67,7 @@ func get_node_at_position(_location: Vector2):
 	return null
 
 ## A main/start/entry node represents the beginning of a storyline.
-## Thus, we will loop through all the start nodes, getting their "from" connections and mapping their ID's as prerequisites, and then mapping their "to" connection as future quests in the storyline, that should unlock upon status change. 
+## Thus, we will loop through all the start nodes, getting their "from" connections and mapping their ID's as prerequisites, and then mapping their "to" connection as future quests in the storyline, that should unlock upon status change.
 ## This data will be put in a dictionary and saved to disk in a .json file named {level_name}.json. The top level dictionary will be the name of the level, and the first entry will be it's level_id, thus "level_id" : {n}. After this, the level's nodes content will follow.
 """
 Saves all the nodes, storylines, and their connections for this level
@@ -83,5 +83,6 @@ func save_level(_file_name = name) -> Error:
 	else:
 		##TODO: handle error
 		pass
-	_file.close()
+	if _file:
+		_file.close()
 	return OK
