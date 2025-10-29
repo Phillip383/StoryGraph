@@ -37,6 +37,7 @@ enabled=PackedStringArray("res://addons/filesystem_drawer/plugin.cfg", "res://ad
 "Story Node"="Used within the code to check types of change requests to up date different inspectors."
 Inspectors=""
 Levels=""
+"Node Details"=""
 
 [gui]
 

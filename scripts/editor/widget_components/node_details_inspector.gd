@@ -40,6 +40,7 @@ func clear_node_properties():
 	_property_list.clear()
 
 func _on_graph_node_deselected(_node: Node) -> void:
+	_active_node = null
 	clear_node_properties()
 	_add_property_button.disabled = true
 

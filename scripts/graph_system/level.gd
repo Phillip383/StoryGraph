@@ -15,12 +15,20 @@ signal level_name_change(level : Level)
 
 @onready var context_menu = $"GraphNodeMenu"
 
+var node_details : NodeDetailsInspector
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	set_tab_name(DEFAULT_NAME)
 	level_data = LevelData.new()
 	popup_request.connect(_on_popup_request)
 	connection_request.connect(_on_connection)
+	node_deselected.connect(on_node_deselected)
+	node_selected.connect(on_node_selected)
+
+	## Have to do this in _ready for every graph spawned, signals connected in the editor, are unique.
+	node_details = get_tree().get_first_node_in_group("Node Details")
+
 
 func set_tab_name(level_name : String):
 	name = level_name
@@ -111,3 +119,9 @@ func load_level(_data):
 		add_child(loaded_node)
 
 	## TODO: Add the connections
+
+func on_node_selected(node : Node):
+	node_details._on_graph_node_selected(node)
+
+func on_node_deselected(node : Node):
+	node_details._on_graph_node_deselected(node)

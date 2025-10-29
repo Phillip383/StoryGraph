@@ -92,7 +92,7 @@ theme_override_constants/minimum_grab_thickness = 3
 layout_mode = 2
 current_tab = 0
 
-[node name="Node Details" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Left_Bottom_C" instance=ExtResource("8_w61rn")]
+[node name="Node Details" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Left_Bottom_C" groups=["Node Details"] instance=ExtResource("8_w61rn")]
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -109,9 +109,7 @@ metadata/_tab_index = 0
 
 [connection signal="new_level_request" from="PanelContainer/MarginContainer/Main_C/MenuBar" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels" method="_on_menu_bar_new_level_request"]
 [connection signal="on_level_changed" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Inspector_Left_Top_C/StoryLines" method="_on_level_changed"]
-[connection signal="node_deselected" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels/Level" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Left_Bottom_C/Node Details" method="_on_graph_node_deselected"]
 [connection signal="node_deselected" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels/Level" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Property_Editor_C/Property Editor" method="_on_graph_node_deselected"]
-[connection signal="node_selected" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels/Level" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Left_Bottom_C/Node Details" method="_on_graph_node_selected"]
 [connection signal="add_property" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Left_Bottom_C/Node Details" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Property_Editor_C/Property Editor" method="_on_add_property_button_pressed"]
 [connection signal="item_selected" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Left_Bottom_C/Node Details" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Property_Editor_C/Property Editor" method="_on_node_details_item_selected"]
 [connection signal="property_added" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Property_Editor_C/Property Editor" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Left_Bottom_C/Node Details" method="_on_property_added"]
