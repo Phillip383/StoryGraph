@@ -97,7 +97,7 @@ Loads a nodes previous state
 	pos, the position of the node within it's parent graph.
 	data - the properites that were added to this node.
 """
-func load_node(_state : Dictionary[StringName, Variant]):
+func load_node(_state):
 	title = _state["name"]
 	node_data.node_id = _state["id"]
 	node_data.node_type = _state["type"]

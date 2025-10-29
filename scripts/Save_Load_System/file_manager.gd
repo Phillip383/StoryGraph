@@ -12,8 +12,12 @@ enum FileType {
 
 ##SIGNALS
 signal level_create_requested()
+signal on_level_load_request(_level_data)
+
 signal save_focused_requested(_type : FileManager.FileType)
+
 signal template_create_requested()
+signal on_template_load_request(_template)
 
 ## const string literals for file saving and loading.
 const LEVEL_FILE_TYPE = "level"
@@ -29,8 +33,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("new_level"):
 		level_create_requested.emit()
 	elif event.is_action_pressed("save"):
-		var focused = get_viewport().gui_get_focus_owner().is_in_group("Levels")
-		if focused:
+		var focused = get_viewport().gui_get_focus_owner()
+		if focused and focused.is_in_group("Levels"):
 			save_focused_requested.emit(FileManager.FileType.LEVEL)
 			return
 
@@ -100,7 +104,7 @@ Loads a file with given name and type to disk if it exists and returns a diction
 @param _status: this array will contain any error's that might have taken place, will contain OK, if the operation was successful
 @return contents: contents of the file if the operation was successful, otherwise empty dictionary
 """
-func load_file(_file_name : String, _type : FileType, _status) -> Dictionary[StringName, Variant]:
+func load_file_by_name(_file_name : String, _type : FileType, _status) -> Dictionary[StringName, Variant]:
 	var contents : Dictionary[StringName, Variant] = {}
 	if file_exists(_file_name, _type):
 		var _file = open_file(_file_name, _type, FileAccess.READ)
@@ -114,6 +118,19 @@ func load_file(_file_name : String, _type : FileType, _status) -> Dictionary[Str
 		return {}
 	_status.append(OK)
 	return contents
+
+"""
+Loads a file by it's path, internally checks it's type by the file's suffix.
+"""
+func load_file_by_path(_path : String):
+	##TODO: Add type checking from paths, a contains reverse search would be best.
+	var _file = FileAccess.open(_path, FileAccess.READ)
+	if _file:
+		var _data = _file.get_var()
+		on_level_load_request.emit(_data)
+		_file.close()
+	else:
+		return FileAccess.get_open_error()
 
 """
 Checks if a file of a given type with given name already exists

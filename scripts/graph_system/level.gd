@@ -2,6 +2,8 @@ extends GraphEdit
 
 class_name Level
 
+const NODE_SCENE = preload("res://scenes/UI/Graph/Nodes/story_node_base.tscn")
+
 const DEFAULT_NAME = "(unsaved)*"
 ## EXPORTS
 @export var level_data : LevelData ## This is handled internally, no need to change values in the editor, it's export for debugging purposes, and is unique per level instance.
@@ -95,5 +97,17 @@ func save_level(_file_name = name) -> Dictionary[StringName, Variant]:
 Loads a level's previous state from disk.
 @param _file - the level file to load.
 """
-func load_level(_file : FileAccess):
-	pass
+func load_level(_data):
+	name = _data["name"]
+	level_data.level_id = _data["id"]
+	level_data.level_name = name
+	connections = _data["con"]
+	var nodes = _data["nodes"]
+
+	# Add the nodes	
+	for node_data in nodes:
+		var loaded_node : BaseStoryNode = NODE_SCENE.instantiate()
+		loaded_node.load_node(node_data)
+		add_child(loaded_node)
+
+	## TODO: Add the connections

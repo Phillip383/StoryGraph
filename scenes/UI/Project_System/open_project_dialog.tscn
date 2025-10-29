@@ -8,6 +8,7 @@ title = "Open a Directory"
 initial_position = 1
 size = Vector2i(900, 500)
 visible = true
+mode_overrides_title = false
 file_mode = 2
 access = 2
 script = ExtResource("1_13nhy")

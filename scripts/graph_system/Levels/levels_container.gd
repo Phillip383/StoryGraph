@@ -17,6 +17,7 @@ func _ready() -> void:
 	on_level_changed.emit(_active_level) # Inform the tree of the starting level.
 	FileManager.level_create_requested.connect(create_new_level)
 	FileManager.save_focused_requested.connect(save_request)
+	FileManager.on_level_load_request.connect(load_level)
 	connect_for_updates()
 
 func get_active_level()-> Level:
@@ -55,7 +56,7 @@ func _on_menu_bar_new_level_request() -> void:
 	create_new_level()
 
 """
-Connected signal from the Filemanager, if the requested save type is of LEVEL, the save the active level.
+Connected signal from the FileManager, if the requested save type is of LEVEL, the save the active level.
 """
 func save_request(_type):
 	if _type == FileManager.FileType.LEVEL:
@@ -77,3 +78,8 @@ func save(_file_name, _type):
 		var _level_data = _active_level.save_level(_file_name)
 		on_level_changed.emit(_active_level) # Inform the tree of the changed level name.
 		return FileManager.save_file(_file_name, _type, _level_data)
+
+func load_level(_data):
+	var loaded_level : Level = LEVEL_SCENE.instantiate()
+	add_child(loaded_level)
+	loaded_level.load_level(_data)
