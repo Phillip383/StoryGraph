@@ -148,6 +148,7 @@ func _on_cancel_pressed() -> void:
 ## Only destroys the create project window if it was successful
 func _on_create_pressed() -> void:
 	if create_project() == OK:
+		FileManager.open_project(intermediate_project_path)
 		queue_free()
 
 ## creates the open project dialog and adds it the scene tree.

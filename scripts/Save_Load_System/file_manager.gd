@@ -186,4 +186,4 @@ func get_project_file():
 
 func set_application_title():
 	var tokens = _current_project_dir.split("/")
-	get_tree().root.title += " - Project - " + tokens[tokens.size() - 1]
+	get_tree().root.title = "%s - Project - %s" % [ProjectSettings.get_setting("application/config/name"), tokens[tokens.size() - 1]]
