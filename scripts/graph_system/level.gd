@@ -16,11 +16,10 @@ signal level_name_change(level : Level)
 
 
 @onready var context_menu = $"GraphNodeMenu"
+@onready var manager = $GraphManager ## Handles the state of the level.
 
 var node_details : NodeDetailsInspector
 
-## TODO: connect the to the node's changed signal to set the level to an unsaved state when a data changes.
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	name = DEFAULT_NAME
 	level_data = LevelData.new()
@@ -28,19 +27,14 @@ func _ready() -> void:
 	connection_request.connect(_on_connection)
 	node_deselected.connect(on_node_deselected)
 	node_selected.connect(on_node_selected)
-	get_parent().on_level_changed.connect(on_level_changed)
+	begin_node_move.connect(on_node_begin_move)
 
 	## Have to do this in _ready for every graph spawned, signals connected in the editor, are unique.
 	node_details = get_tree().get_first_node_in_group("Node Details")
 
-
 func set_tab_name(level_name : String):
 	name = level_name
 	level_name_change.emit(self)
-
-"""returns the LevelData resource for this level."""
-func get_level_data():
-	return level_data
 
 """
 Listens for the popup request of the graph. Used primarily to make the context menu visible at the mouse location
@@ -60,7 +54,7 @@ func add_node(node : GraphNode):
 	node.on_data_changed.connect(on_node_changed)
 	node.position_offset = (get_local_mouse_position() + scroll_offset) / zoom + - node.size / 2
 	add_child(node)
-	unsaved = true
+	manager._change_state(GraphManager.GraphState.EDITING)
 	on_changed.emit()
 
 """
@@ -68,7 +62,7 @@ Listens for the connection request of the graph.
 """
 func _on_connection(from_node: StringName, from_port: int, to_node: StringName, to_port: int):
 	connect_node(from_node, from_port, to_node, to_port)
-	unsaved = true
+	manager._change_state(GraphManager.GraphState.EDITING)
 	on_changed.emit()
 
 """
@@ -93,7 +87,7 @@ packs the level connections and it's node's within a dictionary and save's it a 
 @return A dictionary of the level's packed state, or null if the save failed.
 """
 func save_level(_file_name = name) -> Dictionary[StringName, Variant]:
-	unsaved = false
+	manager._change_state(GraphManager.GraphState.SAVING)
 	set_tab_name(_file_name) # Set the tab name in the levels_container to the file_name.
 
 	var _state : Dictionary[StringName, Variant]
@@ -106,6 +100,7 @@ func save_level(_file_name = name) -> Dictionary[StringName, Variant]:
 		if node.is_in_group("Story Node"):
 			_state["nodes"].append(node.save_node())
 
+	manager._change_state(GraphManager.GraphState.IDLE)
 	return _state
 
 """
@@ -113,7 +108,7 @@ Loads a level's previous state from disk.
 @param _file - the level file to load.
 """
 func load_level(_data):
-	unsaved = false
+	manager._change_state(GraphManager.GraphState.LOADING)
 	set_tab_name(_data["name"])
 	level_data.level_id = _data["id"]
 	level_data.level_name = name
@@ -129,10 +124,15 @@ func load_level(_data):
 	## TODO: Add the connections
 	for connection in connections:
 		print(connections)
-
+	
+	manager._change_state(GraphManager.GraphState.IDLE)
 
 func on_node_changed(_data):
-	unsaved = true
+	manager._change_state(GraphManager.GraphState.EDITING)
+	on_changed.emit()
+
+func on_node_begin_move():
+	manager._change_state(GraphManager.GraphState.EDITING)
 	on_changed.emit()
 
 func on_node_selected(node : Node):
@@ -145,4 +145,5 @@ func on_level_changed(node : Node):
 	if node == self:
 		return
 	else:
+		manager._change_state(GraphManager.GraphState.IDLE)
 		set_selected(null)

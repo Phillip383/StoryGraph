@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bjq3ex5xqh4to"]
+[gd_scene load_steps=10 format=3 uid="uid://bjq3ex5xqh4to"]
 
 [ext_resource type="PackedScene" uid="uid://du7x8jpfvub1w" path="res://scenes/UI/Editor/menu_bar.tscn" id="1_fgo7h"]
 [ext_resource type="PackedScene" uid="uid://c8qxe00r5a84q" path="res://scenes/UI/Graph/level.tscn" id="1_ot8g1"]
@@ -7,15 +7,10 @@
 [ext_resource type="PackedScene" uid="uid://b1ruqpcnl1fhv" path="res://scenes/UI/Inspectors/inspector_tree.tscn" id="4_tixvr"]
 [ext_resource type="PackedScene" uid="uid://cfhnqaiw8smg4" path="res://scenes/UI/Inspectors/property_editor.tscn" id="6_nxgem"]
 [ext_resource type="Script" uid="uid://dvrwd3nqg7lk0" path="res://scripts/graph_system/Levels/levels_container.gd" id="6_w61rn"]
-[ext_resource type="Script" uid="uid://wp8lm7qj2073" path="res://scripts/level_data.gd" id="8_51ho3"]
 [ext_resource type="PackedScene" uid="uid://d2eujlaoqe32p" path="res://scenes/UI/Editor/node_details_container.tscn" id="8_w61rn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fgo7h"]
 bg_color = Color(0.019607844, 0.019607844, 0.019607844, 0.8352941)
-
-[sub_resource type="Resource" id="Resource_xmt7k"]
-script = ExtResource("8_51ho3")
-metadata/_custom_type_script = "uid://wp8lm7qj2073"
 
 [node name="GraphEditor" type="CanvasLayer"]
 
@@ -74,8 +69,6 @@ script = ExtResource("6_w61rn")
 [node name="Level" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels" instance=ExtResource("1_ot8g1")]
 custom_minimum_size = Vector2(1500, 0)
 layout_mode = 2
-scroll_offset = Vector2(-1, -29)
-level_data = SubResource("Resource_xmt7k")
 metadata/_tab_index = 0
 
 [node name="HSplitContainer" type="HSplitContainer" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer"]
@@ -109,7 +102,6 @@ metadata/_tab_index = 0
 [connection signal="on_level_changed" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Inspector_Left_Top_C/StoryLines" method="_on_level_changed"]
 [connection signal="on_level_changed" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Left_Bottom_C/Node Details" method="on_level_changed"]
 [connection signal="on_level_changed" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Property_Editor_C/Property Editor" method="on_level_changed"]
-[connection signal="node_deselected" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels/Level" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Property_Editor_C/Property Editor" method="_on_graph_node_deselected"]
 [connection signal="add_property" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Left_Bottom_C/Node Details" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Property_Editor_C/Property Editor" method="_on_add_property_button_pressed"]
 [connection signal="item_selected" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Left_Bottom_C/Node Details" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Property_Editor_C/Property Editor" method="_on_node_details_item_selected"]
 [connection signal="property_added" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Property_Editor_C/Property Editor" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Left_Bottom_C/Node Details" method="_on_property_added"]
