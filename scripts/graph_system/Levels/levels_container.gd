@@ -2,6 +2,7 @@ extends InspectorContainer
 
 const SAVE_NEW_WINDOW = preload("res://scenes/UI/Popups/save_window.tscn")
 const SAVE_WINDOW_TITLE = "Save Level"
+const CLOSE_UNSAVED_PROMPT = preload("res://scenes/UI/Popups/unsaved_close_prompt.tscn")
 const LEVEL_SCENE = preload("res://scenes/UI/Graph/level.tscn")
 
 signal on_level_changed(level : Level)
@@ -24,8 +25,21 @@ func _ready() -> void:
 	get_tab_bar().tab_close_pressed.connect(on_tab_closed)
 
 func on_tab_closed(tab : int):
-	## TODO: Check if the level has unsaved work...
-	get_child(tab).queue_free()
+	if get_child_count() == 1: ## Always need a level open.
+		return
+	var level = get_tab_control(tab)
+	if level.unsaved and FileManager.file_exists(level.name, FileManager.FileType.LEVEL):
+		var prompt = CLOSE_UNSAVED_PROMPT.instantiate()
+		add_child(prompt)
+		var selection = await prompt.on_selection
+		if selection == true:
+			save(level.name, FileManager.FileType.LEVEL)
+			level.queue_free()
+	elif level.unsaved:
+		await new_save(FileManager.FileType.LEVEL)
+		level.queue_free()
+	else:
+		level.queue_free()
 
 func get_active_level()-> Level:
 	return _active_level

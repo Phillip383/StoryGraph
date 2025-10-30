@@ -4,9 +4,11 @@ class_name Level
 
 const NODE_SCENE = preload("res://scenes/UI/Graph/Nodes/story_node_base.tscn")
 
-const DEFAULT_NAME = "(unsaved)*"
+const DEFAULT_NAME = "(unsaved)"
 ## EXPORTS
 @export var level_data : LevelData ## This is handled internally, no need to change values in the editor, it's export for debugging purposes, and is unique per level instance.
+
+var unsaved : bool = false
 
 ## SIGNALS
 signal on_changed() ## A signal that will emit when any change occurs to the graph, this can be used to tell the user they have unsaved work.
@@ -17,6 +19,7 @@ signal level_name_change(level : Level)
 
 var node_details : NodeDetailsInspector
 
+## TODO: connect the to the node's changed signal to set the level to an unsaved state when a data changes.
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	name = DEFAULT_NAME
@@ -56,6 +59,7 @@ Listens for the add node request from the context menu.
 func add_node(node : GraphNode):
 	node.position_offset = (get_local_mouse_position() + scroll_offset) / zoom + - node.size / 2
 	add_child(node)
+	unsaved = true
 	on_changed.emit()
 
 """
@@ -63,6 +67,7 @@ Listens for the connection request of the graph.
 """
 func _on_connection(from_node: StringName, from_port: int, to_node: StringName, to_port: int):
 	connect_node(from_node, from_port, to_node, to_port)
+	unsaved = true
 	on_changed.emit()
 
 """
@@ -87,7 +92,7 @@ packs the level connections and it's node's within a dictionary and save's it a 
 @return A dictionary of the level's packed state, or null if the save failed.
 """
 func save_level(_file_name = name) -> Dictionary[StringName, Variant]:
-
+	unsaved = false
 	set_tab_name(_file_name) # Set the tab name in the levels_container to the file_name.
 
 	var _state : Dictionary[StringName, Variant]
@@ -107,7 +112,7 @@ Loads a level's previous state from disk.
 @param _file - the level file to load.
 """
 func load_level(_data):
-
+	unsaved = false
 	set_tab_name(_data["name"])
 	level_data.level_id = _data["id"]
 	level_data.level_name = name
