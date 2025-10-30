@@ -1,7 +1,6 @@
-[gd_scene load_steps=13 format=3 uid="uid://bjq3ex5xqh4to"]
+[gd_scene load_steps=12 format=3 uid="uid://bjq3ex5xqh4to"]
 
 [ext_resource type="PackedScene" uid="uid://du7x8jpfvub1w" path="res://scenes/UI/Editor/menu_bar.tscn" id="1_fgo7h"]
-[ext_resource type="Script" uid="uid://dl0tutpbikpck" path="res://scripts/editor/graph_editor.gd" id="1_h0swr"]
 [ext_resource type="PackedScene" uid="uid://c8qxe00r5a84q" path="res://scenes/UI/Graph/level.tscn" id="1_ot8g1"]
 [ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="1_wjrqj"]
 [ext_resource type="PackedScene" uid="uid://bsdca22cutwdk" path="res://scenes/UI/Inspectors/inspector_container.tscn" id="4_h0swr"]
@@ -19,7 +18,6 @@ script = ExtResource("8_51ho3")
 metadata/_custom_type_script = "uid://wp8lm7qj2073"
 
 [node name="GraphEditor" type="CanvasLayer"]
-script = ExtResource("1_h0swr")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 anchors_preset = 15

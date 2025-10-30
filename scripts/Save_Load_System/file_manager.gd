@@ -23,7 +23,7 @@ signal on_template_load_request(_template)
 const LEVEL_FILE_TYPE = "level"
 const TEMPLATE_FILE_TYPE = "json"
 const PROJECT_FILE_TYPE = "project"
-const CONFIG_FILE_TYPE = "config"
+const CONFIG_FILE_TYPE = "json"
 
 ## The path to the currently open project
 var _current_project_dir := ""
