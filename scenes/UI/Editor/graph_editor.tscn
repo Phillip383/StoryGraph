@@ -69,6 +69,7 @@ script = ExtResource("6_w61rn")
 [node name="Level" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels" instance=ExtResource("1_ot8g1")]
 custom_minimum_size = Vector2(1500, 0)
 layout_mode = 2
+scroll_offset = Vector2(-1, -29)
 metadata/_tab_index = 0
 
 [node name="HSplitContainer" type="HSplitContainer" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer"]

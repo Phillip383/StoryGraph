@@ -16,11 +16,13 @@ var _name : StringName
 @onready var type_option : NodeTypeSelection = $MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/NodeType
 @onready var message_box : Label = $MarginContainer/CenterContainer/VBoxContainer/MessageBox
 @onready var confirm_button : Button = $MarginContainer/CenterContainer/VBoxContainer/Buttons/Confirm
+@onready var text_box : LineEdit = $MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/LineEdit
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	close_requested.connect(_on_cancel_pressed)
+	text_box.text_submitted.connect(on_submitted)
 	_selected_type = type_option.get_selected_id()
 
 func _on_type_selected(ID : int) -> void:
@@ -68,3 +70,6 @@ func check_for_existing_node() -> bool:
 				return true
 
 	return false
+
+func on_submitted(_text):
+	_on_confirm_pressed()

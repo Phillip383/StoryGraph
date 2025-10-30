@@ -52,22 +52,16 @@ func child_name_changed(level : Level):
 	var _index = get_tab_idx_from_control(level)
 	set_tab_title(_index, level.name)
 
-func child_changed():
-	var _index = get_tab_idx_from_control(_active_level)
-	set_tab_title(_index, get_tab_title(_index) + "*")
-
 func connect_for_updates():
 	for child in get_children():
 		var level = child as Level
 		if level:
 			level.level_name_change.connect(child_name_changed)
-			level.on_changed.connect(child_changed)
 
 func on_child_added(child : Node):
 	var level = child as Level
 	if level:
 		level.level_name_change.connect(child_name_changed)
-		level.on_changed.connect(child_changed)
 
 func create_new_level():
 	var new_level = LEVEL_SCENE.instantiate()
@@ -85,7 +79,7 @@ func save_request(_type):
 		if _active_level.name == _active_level.DEFAULT_NAME:
 			await new_save(_type) ## Await the save window confirmation
 		else:
-			await save(_active_level.name, _type)
+			save(_active_level.name, _type)
 
 func new_save(_type):
 		var save_window : SaveWindow = SAVE_NEW_WINDOW.instantiate()
@@ -96,6 +90,8 @@ func new_save(_type):
 		await save_window.on_save
 
 func save(_file_name, _type):
+		if _file_name.contains("*"):
+			_file_name = _file_name.remove_chars("*")
 		var _level_data = _active_level.save_level(_file_name)
 		on_level_changed.emit(_active_level) # Inform the tree of the changed level name.
 		return FileManager.save_file(_file_name, _type, _level_data)

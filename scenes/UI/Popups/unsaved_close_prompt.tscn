@@ -5,7 +5,7 @@
 [node name="UnsavedClosePrompt" type="Window"]
 oversampling_override = 1.0
 initial_position = 2
-size = Vector2i(315, 100)
+size = Vector2i(315, 215)
 wrap_controls = true
 transient = true
 exclusive = true
@@ -35,7 +35,11 @@ theme_override_constants/separation = 25
 
 [node name="Label" type="Label" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer"]
 layout_mode = 2
-text = "File has unsaved changes."
+text = "Unsaved Changes."
+
+[node name="UnsavedProgressLabel" type="Label" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
 
 [node name="Buttons" type="HBoxContainer" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer"]
 layout_mode = 2
@@ -47,9 +51,14 @@ theme_override_constants/separation = 30
 layout_mode = 2
 text = "Cancel"
 
+[node name="Discard" type="Button" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Buttons"]
+layout_mode = 2
+text = "Discard"
+
 [node name="Save" type="Button" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Buttons"]
 layout_mode = 2
 text = "Save"
 
 [connection signal="pressed" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Buttons/Cancel" to="." method="_on_cancel_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Buttons/Discard" to="." method="_on_discard_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Buttons/Save" to="." method="_on_save_pressed"]

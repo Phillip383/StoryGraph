@@ -114,6 +114,7 @@ func load_file_by_name(_file_name : String, _type : FileType, _status) -> Dictio
 		var _file = open_file(_file_name, _type, FileAccess.READ)
 		if _file:
 			contents = _file.get_var()
+			on_level_load_request.emit(contents)
 		else:
 			_status.append(FileAccess.get_open_error())
 			return {}
