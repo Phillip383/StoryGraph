@@ -19,6 +19,14 @@ func _ready() -> void:
 	FileManager.on_level_load_request.connect(load_level)
 	connect_for_updates()
 
+	## Setup tabs for closing
+	get_tab_bar().set_tab_close_display_policy(TabBar.CLOSE_BUTTON_SHOW_ALWAYS)
+	get_tab_bar().tab_close_pressed.connect(on_tab_closed)
+
+func on_tab_closed(tab : int):
+	## TODO: Check if the level has unsaved work...
+	get_child(tab).queue_free()
+
 func get_active_level()-> Level:
 	return _active_level
 
