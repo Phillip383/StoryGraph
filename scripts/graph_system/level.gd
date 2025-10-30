@@ -57,6 +57,7 @@ func _on_popup_request(_location : Vector2):
 Listens for the add node request from the context menu.
 """
 func add_node(node : GraphNode):
+	node.on_data_changed.connect(on_node_changed)
 	node.position_offset = (get_local_mouse_position() + scroll_offset) / zoom + - node.size / 2
 	add_child(node)
 	unsaved = true
@@ -124,8 +125,15 @@ func load_level(_data):
 		var loaded_node : BaseStoryNode = NODE_SCENE.instantiate()
 		loaded_node.load_node(node_data)
 		add_child(loaded_node)
-
+		loaded_node.on_data_changed.connect(on_node_changed) ## Need to reconnect to the signal for updates to the node.
 	## TODO: Add the connections
+	for connection in connections:
+		print(connections)
+
+
+func on_node_changed(_data):
+	unsaved = true
+	on_changed.emit()
 
 func on_node_selected(node : Node):
 	node_details._on_graph_node_selected(node)

@@ -37,6 +37,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		if focused and focused.is_in_group("Levels"):
 			save_focused_requested.emit(FileManager.FileType.LEVEL)
 			return
+	elif event.is_action_pressed("save_all"):
+		##TODO: Add everything I want to save to a group, gather it, loop over them calling their save function. This will require a refactor.
+		pass
 
 """
 @return current project directory path
@@ -90,6 +93,7 @@ func save_file(_name : String, _type : FileType, _data) -> Error:
 	var _file = open_file(_name, _type, FileAccess.WRITE, _status)
 	# If we have a file with no errors.
 	if _file:
+		## TODO: Change this to json and encrypt it, this isn't safe.
 		_file.store_var(_data)
 		_file.close()
 		return OK
@@ -126,6 +130,7 @@ func load_file_by_path(_path : String):
 	##TODO: Add type checking from paths, a contains reverse search would be best.
 	var _file = FileAccess.open(_path, FileAccess.READ)
 	if _file:
+		## TODO: Change this to json and encrypt it, this isn't safe.
 		var _data = _file.get_var()
 		on_level_load_request.emit(_data)
 		_file.close()

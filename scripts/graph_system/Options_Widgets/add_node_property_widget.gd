@@ -1,5 +1,7 @@
 extends CenterContainer
 
+class_name PropertyEditor
+
 ## This widget is used for container types values
 var CONTAINER_VALUE_SCENE : PackedScene = load("res://scenes/UI/Property_Editor/Add_Property/add_property_default_values_widget.tscn")
 
