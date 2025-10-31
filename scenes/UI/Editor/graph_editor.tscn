@@ -1,12 +1,14 @@
-[gd_scene load_steps=10 format=3 uid="uid://bjq3ex5xqh4to"]
+[gd_scene load_steps=12 format=3 uid="uid://bjq3ex5xqh4to"]
 
 [ext_resource type="PackedScene" uid="uid://du7x8jpfvub1w" path="res://scenes/UI/Editor/menu_bar.tscn" id="1_fgo7h"]
 [ext_resource type="PackedScene" uid="uid://c8qxe00r5a84q" path="res://scenes/UI/Graph/level.tscn" id="1_ot8g1"]
 [ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="1_wjrqj"]
 [ext_resource type="PackedScene" uid="uid://bsdca22cutwdk" path="res://scenes/UI/Inspectors/inspector_container.tscn" id="4_h0swr"]
 [ext_resource type="PackedScene" uid="uid://b1ruqpcnl1fhv" path="res://scenes/UI/Inspectors/inspector_tree.tscn" id="4_tixvr"]
+[ext_resource type="PackedScene" uid="uid://cw0mfi2ihphk2" path="res://scenes/UI/Popups/unsaved_close_prompt.tscn" id="6_51ho3"]
 [ext_resource type="PackedScene" uid="uid://cfhnqaiw8smg4" path="res://scenes/UI/Inspectors/property_editor.tscn" id="6_nxgem"]
 [ext_resource type="Script" uid="uid://dvrwd3nqg7lk0" path="res://scripts/graph_system/Levels/levels_container.gd" id="6_w61rn"]
+[ext_resource type="PackedScene" uid="uid://bjg65kvgcmtp7" path="res://scenes/UI/Popups/save_window.tscn" id="6_xmt7k"]
 [ext_resource type="PackedScene" uid="uid://d2eujlaoqe32p" path="res://scenes/UI/Editor/node_details_container.tscn" id="8_w61rn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fgo7h"]
@@ -65,6 +67,9 @@ theme_override_constants/tab_separation = 15
 current_tab = 0
 drag_to_rearrange_enabled = true
 script = ExtResource("6_w61rn")
+SAVE_NEW_WINDOW = ExtResource("6_xmt7k")
+CLOSE_UNSAVED_PROMPT = ExtResource("6_51ho3")
+LEVEL_SCENE = ExtResource("1_ot8g1")
 
 [node name="Level" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels" instance=ExtResource("1_ot8g1")]
 custom_minimum_size = Vector2(1500, 0)

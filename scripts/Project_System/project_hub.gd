@@ -1,8 +1,8 @@
 extends Window
 
-const NEW_PROJECT_WINDOW = preload("res://scenes/UI/Project_System/create_project_menu.tscn")
-const IMPORT_WINDOW = preload("res://scenes/UI/Project_System/Open_Project_dialog.tscn")
-const PROJECT_LIST_ELEMENT = preload("res://scenes/UI/Project_System/project_list_element.tscn")
+@export var NEW_PROJECT_WINDOW : PackedScene
+@export var IMPORT_WINDOW : PackedScene
+@export var PROJECT_LIST_ELEMENT : PackedScene
 
 @onready var project_list : VBoxContainer = $PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/ProjectList
 

@@ -4,9 +4,9 @@ const NEW_LEVEL_ID = 0
 const CREATE_PROJECT_ID = 1
 const OPEN_PROJECT_ID = 2
 const OPEN_LEVEL_ID = 3
-const PROJECT_CREATION_WINDOW = preload("res://scenes/UI/Project_System/create_project_menu.tscn")
-const OPEN_PROJECT_WINDOW = preload("res://scenes/UI/Project_System/project_hub.tscn")
-const NEW_LEVEL_WINDOW = ""
+@export var PROJECT_CREATION_WINDOW : PackedScene
+@export var OPEN_PROJECT_WINDOW : PackedScene
+@export var OPEN_LEVEL_DIALOG : PackedScene
 
 ## Emitted when a new level is requested to be created from the menu bar.
 signal new_level_request()
@@ -28,14 +28,13 @@ func _on_file_id_pressed(id: int) -> void:
 		open_level()
 
 func open_level():
-	## TODO: Open file dialog and load the selected file
-	var file_dialog : FileDialog = OPEN_PROJECT_WINDOW.instantiate()
-	file_dialog.title = "Open Level"
-	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
-	file_dialog.root_subfolder = FileManager.get_levels_directory()
-	file_dialog.add_filter("*.%s" % FileManager.LEVEL_FILE_TYPE)
-	file_dialog.file_selected.connect(on_level_opened)
-	get_tree().current_scene.add_child(file_dialog)
+	var open_proj_window : FileDialog = OPEN_LEVEL_DIALOG.instantiate()
+	open_proj_window.title = "Open Level"
+	open_proj_window.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	open_proj_window.root_subfolder = FileManager.get_levels_directory()
+	open_proj_window.add_filter("*.%s" % FileManager.LEVEL_FILE_TYPE)
+	open_proj_window.file_selected.connect(on_level_opened)
+	get_tree().current_scene.add_child(open_proj_window)
 
 func on_level_opened(path : String):
 	FileManager.load_file_by_path(path)

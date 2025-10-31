@@ -1,6 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://bhc6x433xunet"]
+[gd_scene load_steps=6 format=3 uid="uid://bhc6x433xunet"]
 
 [ext_resource type="Script" uid="uid://yenqfhcatbm8" path="res://scripts/Project_System/project_hub.gd" id="1_xs7t8"]
+[ext_resource type="PackedScene" uid="uid://cyrnjdcvfxucg" path="res://scenes/UI/Project_System/open_project_dialog.tscn" id="2_t336c"]
+[ext_resource type="PackedScene" uid="uid://dve5m4oenyl6c" path="res://scenes/UI/Project_System/create_project_menu.tscn" id="2_uko17"]
+[ext_resource type="PackedScene" uid="uid://sjaxai4a83t3" path="res://scenes/UI/Project_System/project_list_element.tscn" id="4_ea03w"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v3ui7"]
 
@@ -12,6 +15,9 @@ wrap_controls = true
 transient = true
 exclusive = true
 script = ExtResource("1_xs7t8")
+NEW_PROJECT_WINDOW = ExtResource("2_uko17")
+IMPORT_WINDOW = ExtResource("2_t336c")
+PROJECT_LIST_ELEMENT = ExtResource("4_ea03w")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 custom_minimum_size = Vector2(800, 600)

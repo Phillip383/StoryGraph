@@ -1,9 +1,10 @@
 extends InspectorContainer
 
-const SAVE_NEW_WINDOW = preload("res://scenes/UI/Popups/save_window.tscn")
+
+@export var SAVE_NEW_WINDOW : PackedScene
 const SAVE_WINDOW_TITLE = "Save Level"
-const CLOSE_UNSAVED_PROMPT = preload("res://scenes/UI/Popups/unsaved_close_prompt.tscn")
-const LEVEL_SCENE = preload("res://scenes/UI/Graph/level.tscn")
+@export var CLOSE_UNSAVED_PROMPT : PackedScene
+@export var LEVEL_SCENE : PackedScene
 
 signal on_level_changed(level : Level)
 
@@ -102,7 +103,7 @@ func new_save(_type):
 ##
 func save(_file_name, _type):
 	var _level_data = _active_level.save_level(_file_name)
-	on_level_changed.emit(_active_level) # Inform the tree of the changed level name.
+	on_level_changed.emit(_active_level) #TODO: This is the bug in the node details!!! Inform the tree of the changed level name.
 	var error = FileManager.save_file(_file_name, _type, _level_data)
 	if error == OK:
 		## Set the title bar back to a saved state.

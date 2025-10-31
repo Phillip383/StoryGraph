@@ -16,8 +16,8 @@ signal post_level_load(_level : Level)
 
 signal save_focused_requested(_type : FileManager.FileType)
 
-signal template_create_requested()
-signal on_template_load_request(_template)
+# signal template_create_requested()
+# signal on_template_load_request(_template)
 
 ## const string literals for file saving and loading.
 const LEVEL_FILE_TYPE = "level"

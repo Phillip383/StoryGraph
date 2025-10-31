@@ -1,8 +1,8 @@
-extends CanvasLayer
+extends Node
 
 var unsaved_levels : Array[Level]
 
-const PROJECT_HUB = preload("res://scenes/UI/project_System/project_hub.tscn")
+@export var PROJECT_HUB : PackedScene = preload("res://scenes/UI/Project_System/project_hub.tscn")
 
 
 ## Const string literals for storing the state of the editor upon closing and opening.
