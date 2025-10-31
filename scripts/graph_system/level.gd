@@ -16,6 +16,7 @@ signal on_edited(level : Level) ## A signal that will emit when any change occur
 
 var node_details : NodeDetailsInspector
 
+var node_connections : Array[Dictionary]
 
 func _ready() -> void:
 	name = DEFAULT_NAME
@@ -38,7 +39,7 @@ Listens for the popup request of the graph. Used primarily to make the context m
 func _on_popup_request(_location : Vector2):
 	var clicked_node : BaseStoryNode = get_node_at_position(_location)
 	if is_instance_valid(clicked_node):
-		print(clicked_node)
+		print(clicked_node) ## TODO: Add node rename.
 	else:
 		context_menu.position = get_viewport().get_mouse_position()
 		context_menu.show()
@@ -47,6 +48,7 @@ func _on_popup_request(_location : Vector2):
 Listens for the add node request from the context menu.
 """
 func add_node(node : GraphNode):
+	##TODO: Increment node ID, and assign it.
 	node.on_data_changed.connect(on_node_changed)
 	node.position_offset = (get_local_mouse_position() + scroll_offset) / zoom + - node.size / 2
 	add_child(node)
@@ -57,6 +59,18 @@ func add_node(node : GraphNode):
 Listens for the connection request of the graph.
 """
 func _on_connection(from_node: StringName, from_port: int, to_node: StringName, to_port: int):
+	## Get the node's being connected names
+	var f_node = get_node("%s" % from_node).title
+	var t_node = get_node("%s" % to_node).title
+
+	## Save the connections by node title, not instance name..
+	node_connections.append({
+		"from_node" : f_node,
+		"from_port": from_port,
+		"to_node" : t_node,
+		"to_port" : to_port
+	})
+
 	connect_node(from_node, from_port, to_node, to_port)
 	manager._change_state(GraphManager.GraphState.EDITING)
 	on_edited.emit(self)
@@ -83,12 +97,13 @@ packs the level connections and it's node's within a dictionary and save's it a 
 @return A dictionary of the level's packed state, or null if the save failed.
 """
 func save_level(_file_name = name) -> Dictionary[StringName, Variant]:
+	## TODO: Save a global Node ID that tracks the current ID.
 	manager._change_state(GraphManager.GraphState.SAVING)
-
+	name = _file_name
 	var _state : Dictionary[StringName, Variant]
 	_state["name"] = _file_name
 	_state["id"] = level_data.level_id
-	_state["con"] = connections
+	_state["con"] = node_connections
 	_state["nodes"] = []
 
 	for node in get_children():
@@ -103,24 +118,27 @@ Loads a level's previous state from disk.
 @param _file - the level file to load.
 """
 func load_level(_data):
+	## TODO: Load a global Node ID That tracks the current ID.
 	manager._change_state(GraphManager.GraphState.LOADING)
 	name = _data["name"]
 	level_data.level_id = _data["id"]
 	level_data.level_name = name
-	connections = _data["con"]
+	node_connections = _data["con"]
 	var nodes = _data["nodes"]
 
+	## Maps node's title to their new instance name.
+	var node_map : Dictionary[String, String]
 	# Add the nodes	
 	for node_data in nodes:
 		var loaded_node : BaseStoryNode = NODE_SCENE.instantiate()
-		loaded_node.load_node(node_data)
 		add_child(loaded_node)
+		loaded_node.load_node(node_data)
+		node_map.get_or_add(loaded_node.title, loaded_node.name)
 		loaded_node.on_data_changed.connect(on_node_changed) ## Need to reconnect to the signal for updates to the node.
 	
-	## Add the connections
-	for connection in connections:
-		print(connection)
-		connect_node(connection["from_node"], connection["from_port"], connection["to_node"], connection["to_port"])
+	## Add the connections, using the nodes titles
+	for connection in node_connections:
+		connect_node(node_map[connection["from_node"]], connection["from_port"], node_map[connection["to_node"]], connection["to_port"])
 	
 	manager._change_state(GraphManager.GraphState.IDLE)
 
@@ -144,17 +162,3 @@ func on_level_changed(node : Node):
 	else:
 		manager._change_state(GraphManager.GraphState.IDLE)
 		set_selected(null)
-
-func get_node_title_by_instance_name(_ini_name : String) -> String:
-	var node : BaseStoryNode = get_node(_ini_name)
-	return node.title
-
-func _on_connection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
-	## Get the node's being connected names
-	var f_node = get_node_title_by_instance_name(from_node)
-	var t_node = get_node_title_by_instance_name(to_node)
-	print(f_node, " TO ", t_node)
-	##TODO: Check if the connection is valid, either correct port, and not itself
-
-	## Make the connection
-	connect_node(f_node, from_port, t_node, to_port)
