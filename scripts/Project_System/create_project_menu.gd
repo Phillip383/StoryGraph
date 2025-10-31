@@ -7,6 +7,8 @@ const DIRECTORY_FAILURE = "Failed To Create Directory! Check Path"
 const FILE_FAILURE = "Failed To Create File!"
 const PROJECT_NAME_FAILURE = "Invalid Project Name!"
 
+signal on_successful_creation()
+
 @onready var description_box : TextEdit = $PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Description
 @onready var project_path_edit : LineEdit = $PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Location/ProjectPath
 @onready var file_dialog : FileDialog = $FileDialog
@@ -150,6 +152,7 @@ func _on_create_pressed() -> void:
 	if create_project() == OK:
 		FileManager.open_project(intermediate_project_path)
 		FileManager.add_project_to_list({project_name : intermediate_project_path})
+		on_successful_creation.emit()
 		queue_free()
 
 ## creates the open project dialog and adds it the scene tree.

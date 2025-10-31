@@ -5,7 +5,7 @@ class_name OpenProjectDialog
 const WARNING_POPUP = preload("res://scenes/UI/Popups/warning_popup.tscn")
 
 ## Emitted when a valid project is selected to open
-signal on_successful_selection(project_path)
+signal on_successful_selection(project : Dictionary[String, String])
 
 ## Cached path that is selected, this is a funky thing, but the design of the file dialog dictates it necessary to implement the get_ok_button pressed signal to keep the file dialog opened if an invalid path is selected.
 var path
@@ -19,12 +19,7 @@ func on_select_directory(dir_path : String):
 	path = dir_path
 
 func _on_ok_button_pressed():
-	var _error = FileManager.open_project(path)
-	if _error == OK:
-		on_successful_selection.emit(path)
-		queue_free()
-	else:
-		show()
-		var warning_popup : WarningPopup = WARNING_POPUP.instantiate()
-		add_child(warning_popup)
-		warning_popup.set_message(error_string(_error))
+	var tokens = path.split("/")
+	var proj_name : String = tokens[tokens.size() - 1]
+	var dict : Dictionary[String, String] = {proj_name : path}
+	on_successful_selection.emit(dict)

@@ -1,0 +1,36 @@
+[gd_scene load_steps=3 format=3 uid="uid://sjaxai4a83t3"]
+
+[ext_resource type="Texture2D" uid="uid://duqsok6xitndw" path="res://assets/Icons/Story_Graph_Icon.svg" id="1_ihwlf"]
+[ext_resource type="Script" uid="uid://detv1hbr1exwf" path="res://scripts/Project_System/project_list_element.gd" id="1_n6igp"]
+
+[node name="ProjectListElement" type="PanelContainer"]
+z_index = 20
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 104.0
+grow_horizontal = 2
+script = ExtResource("1_n6igp")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+theme_override_constants/separation = 40
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Icon" type="TextureRect" parent="HBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+texture = ExtResource("1_ihwlf")
+
+[node name="Name" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_outline_size = 5
+theme_override_font_sizes/font_size = 50
+text = "Project name"

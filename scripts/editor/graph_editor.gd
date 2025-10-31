@@ -2,6 +2,9 @@ extends CanvasLayer
 
 var unsaved_levels : Array[Level]
 
+const PROJECT_HUB = preload("res://scenes/UI/project_System/project_hub.tscn")
+
+
 ## Const string literals for storing the state of the editor upon closing and opening.
 const LAST_OPEN_PROJ_KEY = "last_open_project"
 const LAST_OPEN_LEVELS = "open_levels"
@@ -59,22 +62,28 @@ func on_application_close():
 Opens the editor config file and sets the current project to the last open project, if no project was found, then it start's the application with a create project dialog. Will save the list of recent projects also at some point.
 """
 func on_application_open():
-	var editor_config_path = get_editor_conf_path()
-	var editor_config = FileAccess.open(editor_config_path, FileAccess.READ)
-	if editor_config:
-		var _last_state = JSON.parse_string(editor_config.get_as_text())
-		if _last_state[LAST_OPEN_PROJ_KEY].length() == 0:
-			var create_proj = load("res://scenes/UI/Project_System/create_project_menu.tscn").instantiate()
-			get_tree().current_scene.add_child(create_proj)
+	var hub= PROJECT_HUB.instantiate()
+	get_tree().current_scene.add_child(hub)
+	var selection = await hub.on_selection
+	FileManager.open_project(selection)
+	hub.queue_free()
+	## TODO: Enable this when editor settings are complete.
+	# var editor_config_path = get_editor_conf_path()
+	# var editor_config = FileAccess.open(editor_config_path, FileAccess.READ)
+	# if editor_config:
+	# 	var _last_state = JSON.parse_string(editor_config.get_as_text())
+	# 	if _last_state[LAST_OPEN_PROJ_KEY].length() == 0:
+	# 		var create_proj = load("res://scenes/UI/Project_System/create_project_menu.tscn").instantiate()
+	# 		get_tree().current_scene.add_child(create_proj)
 
-		FileManager.open_project(_last_state[LAST_OPEN_PROJ_KEY])
-		await get_tree().create_timer(1.0).timeout ## Give the scene tree time to load.
-		if _last_state.get(LAST_OPEN_LEVELS):
-			for level in _last_state[LAST_OPEN_LEVELS]:
-				var _status = []
-				FileManager.load_file_by_name(level, FileManager.FileType.LEVEL, _status)
-	else:
-		return FileAccess.get_open_error()
+	# 	FileManager.open_project(_last_state[LAST_OPEN_PROJ_KEY])
+	# 	await get_tree().create_timer(1.0).timeout ## Give the scene tree time to load.
+	# 	if _last_state.get(LAST_OPEN_LEVELS):
+	# 		for level in _last_state[LAST_OPEN_LEVELS]:
+	# 			var _status = []
+	# 			FileManager.load_file_by_name(level, FileManager.FileType.LEVEL, _status)
+	# else:
+	# 	return FileAccess.get_open_error()
 
 
 ##Helpful function that checks if the application is running in standalone, or in editor returns the path that we need to get the last state of the application. Defaults to build/debug while running in editor.
