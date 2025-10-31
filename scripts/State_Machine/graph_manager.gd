@@ -38,7 +38,6 @@ func _enter_state(_new_state):
 	elif _new_state == GraphState.SAVING:
 		disable_input()
 	elif _new_state == GraphState.EDITING:
-		get_parent().name = get_parent().name + "*"
 		GraphEditor.unsaved_levels.append(get_parent())
 
 func _exit_state(_old_state):

@@ -3,22 +3,19 @@ extends GraphEdit
 class_name Level
 
 const NODE_SCENE = preload("res://scenes/UI/Graph/Nodes/story_node_base.tscn")
-
 const DEFAULT_NAME = "(unsaved)"
+
 ## EXPORTS
 @export var level_data : LevelData ## This is handled internally, no need to change values in the editor, it's export for debugging purposes, and is unique per level instance.
 
-var unsaved : bool = false
-
 ## SIGNALS
-signal on_changed() ## A signal that will emit when any change occurs to the graph, this can be used to tell the user they have unsaved work.
-signal level_name_change(level : Level)
-
+signal on_edited(level : Level) ## A signal that will emit when any change occurs to the graph, this can be used to tell the user they have unsaved work.
 
 @onready var context_menu = $"GraphNodeMenu"
 @onready var manager = $GraphManager ## Handles the state of the level.
 
 var node_details : NodeDetailsInspector
+
 
 func _ready() -> void:
 	name = DEFAULT_NAME
@@ -32,9 +29,8 @@ func _ready() -> void:
 	## Have to do this in _ready for every graph spawned, signals connected in the editor, are unique.
 	node_details = get_tree().get_first_node_in_group("Node Details")
 
-func set_tab_name(level_name : String):
-	name = level_name
-	level_name_change.emit(self)
+func get_current_state() -> GraphManager.GraphState:
+	return manager.current_state
 
 """
 Listens for the popup request of the graph. Used primarily to make the context menu visible at the mouse location
@@ -55,7 +51,7 @@ func add_node(node : GraphNode):
 	node.position_offset = (get_local_mouse_position() + scroll_offset) / zoom + - node.size / 2
 	add_child(node)
 	manager._change_state(GraphManager.GraphState.EDITING)
-	on_changed.emit()
+	on_edited.emit(self)
 
 """
 Listens for the connection request of the graph.
@@ -63,7 +59,7 @@ Listens for the connection request of the graph.
 func _on_connection(from_node: StringName, from_port: int, to_node: StringName, to_port: int):
 	connect_node(from_node, from_port, to_node, to_port)
 	manager._change_state(GraphManager.GraphState.EDITING)
-	on_changed.emit()
+	on_edited.emit(self)
 
 """
 This methods intended functionality is to check if the user right clicks on a node to keep the graph from consuming the input for it's context menu signal.
@@ -88,7 +84,6 @@ packs the level connections and it's node's within a dictionary and save's it a 
 """
 func save_level(_file_name = name) -> Dictionary[StringName, Variant]:
 	manager._change_state(GraphManager.GraphState.SAVING)
-	set_tab_name(_file_name) # Set the tab name in the levels_container to the file_name.
 
 	var _state : Dictionary[StringName, Variant]
 	_state["name"] = _file_name
@@ -109,7 +104,7 @@ Loads a level's previous state from disk.
 """
 func load_level(_data):
 	manager._change_state(GraphManager.GraphState.LOADING)
-	set_tab_name(_data["name"])
+	name = _data["name"]
 	level_data.level_id = _data["id"]
 	level_data.level_name = name
 	connections = _data["con"]
@@ -129,11 +124,11 @@ func load_level(_data):
 
 func on_node_changed(_data):
 	manager._change_state(GraphManager.GraphState.EDITING)
-	on_changed.emit()
+	on_edited.emit(self)
 
 func on_node_begin_move():
 	manager._change_state(GraphManager.GraphState.EDITING)
-	on_changed.emit()
+	on_edited.emit(self)
 
 func on_node_selected(node : Node):
 	node_details._on_graph_node_selected(node)

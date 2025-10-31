@@ -88,7 +88,6 @@ func get_editor_conf_path():
 		if DirAccess.dir_exists_absolute(running_in_editor_path):
 			return running_in_editor_path
 
-## TODO: Flesh this out tomorrow add a widget that list's the unsaved level's and save them upon approval, or discard them, or cancel the quit.
 func unsaved_progress():
 	if unsaved_levels.size() > 0:
 		var save_win = load("res://scenes/UI/Popups/unsaved_close_prompt.tscn").instantiate()

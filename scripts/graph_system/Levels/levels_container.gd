@@ -24,18 +24,19 @@ func _ready() -> void:
 	get_tab_bar().set_tab_close_display_policy(TabBar.CLOSE_BUTTON_SHOW_ALWAYS)
 	get_tab_bar().tab_close_pressed.connect(on_tab_closed)
 
+
 func on_tab_closed(tab : int):
 	if get_child_count() == 1: ## Always need a level open.
 		return
 	var level = get_tab_control(tab)
-	if level.unsaved and FileManager.file_exists(level.name, FileManager.FileType.LEVEL):
+	if level.get_current_state() == GraphManager.GraphState.EDITING and FileManager.file_exists(level.name, FileManager.FileType.LEVEL):
 		var prompt = CLOSE_UNSAVED_PROMPT.instantiate()
 		add_child(prompt)
 		var selection = await prompt.on_selection
 		if selection == true:
 			save(level.name, FileManager.FileType.LEVEL)
 			level.queue_free()
-	elif level.unsaved:
+	elif level.get_current_state() == GraphManager.GraphState.EDITING:
 		await new_save(FileManager.FileType.LEVEL)
 		level.queue_free()
 	else:
@@ -48,20 +49,22 @@ func on_tab_switched(_index : int):
 	_active_level = get_tab_control(_index) as Level
 	on_level_changed.emit(_active_level)
 
-func child_name_changed(level : Level):
-	var _index = get_tab_idx_from_control(level)
-	set_tab_title(_index, level.name)
-
 func connect_for_updates():
 	for child in get_children():
 		var level = child as Level
 		if level:
-			level.level_name_change.connect(child_name_changed)
+			if not level.on_edited.is_connected(_on_level_edited):
+				level.on_edited.connect(_on_level_edited)
+			if not on_level_changed.is_connected(level.on_level_changed):
+				on_level_changed.connect(level.on_level_changed)
 
 func on_child_added(child : Node):
 	var level = child as Level
 	if level:
-		level.level_name_change.connect(child_name_changed)
+		if not level.on_edited.is_connected(_on_level_edited):
+			level.on_edited.connect(_on_level_edited)
+		if not on_level_changed.is_connected(level.on_level_changed):
+			on_level_changed.connect(level.on_level_changed)
 
 func create_new_level():
 	var new_level = LEVEL_SCENE.instantiate()
@@ -70,31 +73,41 @@ func create_new_level():
 func _on_menu_bar_new_level_request() -> void:
 	create_new_level()
 
-"""
-Connected signal from the FileManager, if the requested save type is of LEVEL, the save the active level.
-"""
+# When the level is edited, we flag the title to illustrate unsaved work.
+func _on_level_edited(level : Level):
+	set_tab_title(get_tab_idx_from_control(level), level.name + "*")
+
+## Connected signal from the FileManager, if the requested save type is of LEVEL, the save the active level.
 func save_request(_type):
 	if _type == FileManager.FileType.LEVEL:
-		## Prompt a save window to name the level if their is no name.
+		## Prompt a save window to name the level if there is no name.
 		if _active_level.name == _active_level.DEFAULT_NAME:
 			await new_save(_type) ## Await the save window confirmation
 		else:
 			save(_active_level.name, _type)
 
+## Prompt the user to name the level if it hasn't been named yet. 
 func new_save(_type):
-		var save_window : SaveWindow = SAVE_NEW_WINDOW.instantiate()
-		save_window.title = SAVE_WINDOW_TITLE
-		save_window.set_file_type(_type)
-		add_child(save_window)
-		save_window.on_save.connect(save, _type)
-		await save_window.on_save
+	var save_window : SaveWindow = SAVE_NEW_WINDOW.instantiate()
+	save_window.title = SAVE_WINDOW_TITLE
+	save_window.set_file_type(_type)
+	add_child(save_window)
+	save_window.on_save.connect(save, _type)
+	await save_window.on_save
 
+## Saves the active level in the tab container.
+#@param: _file_name, either passed by the tab containers existing active level name, or by the save prompt window if the name is default.
+#@param: _type, the type of file needing to be saved.
+#@return: Returns an Error code.
+##
 func save(_file_name, _type):
-		if _file_name.contains("*"):
-			_file_name = _file_name.remove_chars("*")
-		var _level_data = _active_level.save_level(_file_name)
-		on_level_changed.emit(_active_level) # Inform the tree of the changed level name.
-		return FileManager.save_file(_file_name, _type, _level_data)
+	var _level_data = _active_level.save_level(_file_name)
+	on_level_changed.emit(_active_level) # Inform the tree of the changed level name.
+	var error = FileManager.save_file(_file_name, _type, _level_data)
+	if error == OK:
+		## Set the title bar back to a saved state.
+		set_tab_title(get_tab_idx_from_control(_active_level), _active_level.name)
+	return error
 
 func load_level(_data):
 	var loaded_level : Level = LEVEL_SCENE.instantiate()
