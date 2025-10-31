@@ -1,8 +1,7 @@
 extends Node
 
-"""
-The file types of the application, this will be used to open the correct directory.
-"""
+
+##The file types of the application, this will be used to open the correct directory.
 enum FileType {
 	LEVEL,
 	TEMPLATE,
@@ -42,24 +41,21 @@ func _unhandled_input(event: InputEvent) -> void:
 		##TODO: Add everything I want to save to a group, gather it, loop over them calling their save function. This will require a refactor.
 		pass
 
-"""
-@return current project directory path
-"""
+##@return current project directory path
 func get_current_project_dir():
 	return _current_project_dir
 
 func is_in_active_project():
 	return FileAccess.file_exists(get_project_file())
 
-"""
-Opens a file, with only the name and type required, the method will append the correct file type.
 
-@param _name: the name of the file to open.
-@param _type: the type of file it is, IE. Level or template, see FileManager->LevelTypes
-@param _access: The mode to open it in, IE, FileAccess.WRITE, see FilAccess for more modes
-@param _status: An optional array that will contain any Errors from the operation.
-@return opened file or null if the operation failed.
-"""
+## Opens a file, with only the name and type required, the method will append the correct file type.
+
+## @param _name: the name of the file to open.
+## @param _type: the type of file it is, IE. Level or template, see FileManager->LevelTypes
+## @param _access: The mode to open it in, IE, FileAccess.WRITE, see FilAccess for more modes
+## @param _status: An optional array that will contain any Errors from the operation.
+## @return opened file or null if the operation failed.
 func open_file(_name : String, _type : FileType, _access : FileAccess.ModeFlags, _status = []) -> FileAccess:
 	var _file : FileAccess
 	var _path : String
@@ -77,13 +73,12 @@ func open_file(_name : String, _type : FileType, _access : FileAccess.ModeFlags,
 
 	return _file
 
-"""
-Saves the given data to a file of a relavant file type given the enum _type. Will create the file if it doesn't already exist.
-@param _name: the name of the file to save.
-@param _type: the type of the file to save.
-@param _data: the contents to save to the file.
-@return Error: OK, on success, or cant acquire resource if data was null, or the open_error that was experienced.
-"""
+
+## Saves the given data to a file of a relevant file type given the enum _type. Will create the file if it doesn't already exist.
+## @param _name: the name of the file to save.
+## @param _type: the type of the file to save.
+## @param _data: the contents to save to the file.
+## @return Error: OK, on success, or cant acquire resource if data was null, or the open_error that was experienced.
 func save_file(_name : String, _type : FileType, _data) -> Error:
 	## If the data is null, return out.
 	if not _data:
@@ -102,13 +97,12 @@ func save_file(_name : String, _type : FileType, _data) -> Error:
 		print(error_string(_status[0]))
 		return FileAccess.get_open_error()
 
-"""
-Loads a file with given name and type to disk if it exists and returns a dictionary of the contents of the file.
-@param _file_name: the name of the file to load.
-@param _type: the type of file to load.
-@param _status: this array will contain any error's that might have taken place, will contain OK, if the operation was successful
-@return contents: contents of the file if the operation was successful, otherwise empty dictionary
-"""
+
+## Loads a file with given name and type to disk if it exists and returns a dictionary of the contents of the file.
+## @param _file_name: the name of the file to load.
+## @param _type: the type of file to load.
+## @param _status: this array will contain any error's that might have taken place, will contain OK, if the operation was successful
+## @return contents: contents of the file if the operation was successful, otherwise empty dictionary
 func load_file_by_name(_file_name : String, _type : FileType, _status) -> Dictionary[StringName, Variant]:
 	var contents : Dictionary[StringName, Variant] = {}
 	if file_exists(_file_name, _type):
@@ -125,9 +119,8 @@ func load_file_by_name(_file_name : String, _type : FileType, _status) -> Dictio
 	_status.append(OK)
 	return contents
 
-"""
-Loads a file by it's path, internally checks it's type by the file's suffix.
-"""
+
+## Loads a file by it's path, internally checks it's type by the file's suffix.
 func load_file_by_path(_path : String):
 	##TODO: Add type checking from paths, a contains reverse search would be best.
 	var _file = FileAccess.open(_path, FileAccess.READ)
@@ -139,9 +132,8 @@ func load_file_by_path(_path : String):
 	else:
 		return FileAccess.get_open_error()
 
-"""
-Checks if a file of a given type with given name already exists
-"""
+
+## Checks if a file of a given type with given name already exists
 func file_exists(_name : String, _type : FileType) -> bool:
 	var _path : String
 	match _type:
@@ -163,9 +155,8 @@ func open_project(project_path : String) -> Error:
 		return OK
 	return ERR_DOES_NOT_EXIST
 
-## Returns the root directory for the currently open project.
-func get_open_project():
-	return _current_project_dir
+func add_project_to_list(_proj : Dictionary[String, String]) -> void:
+	GraphEditor.add_project_to_list(_proj)
 
 ## Returns the path of the levels directory
 func get_levels_directory():

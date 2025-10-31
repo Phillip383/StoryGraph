@@ -149,6 +149,7 @@ func _on_cancel_pressed() -> void:
 func _on_create_pressed() -> void:
 	if create_project() == OK:
 		FileManager.open_project(intermediate_project_path)
+		FileManager.add_project_to_list({project_name : intermediate_project_path})
 		queue_free()
 
 ## creates the open project dialog and adds it the scene tree.
@@ -157,3 +158,6 @@ func _on_open_existing_pressed() -> void:
 	get_tree().current_scene.add_child(open_dialog)
 	await open_dialog.on_successful_selection
 	queue_free()
+
+func import_existing_project(_path : String):
+	pass
