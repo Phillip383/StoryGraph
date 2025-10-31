@@ -13,6 +13,7 @@ enum FileType {
 ##SIGNALS
 signal level_create_requested()
 signal on_level_load_request(_level_data)
+signal post_level_load(_level : Level)
 
 signal save_focused_requested(_type : FileManager.FileType)
 

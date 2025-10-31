@@ -14,6 +14,7 @@ var data
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	super._ready()
+	FileManager.post_level_load.connect(on_level_changed)
 
 func _on_node_details_item_selected(item : Variant, m_data) -> void:
 	if editor:
@@ -52,3 +53,5 @@ func on_level_changed(_level: Level) -> void:
 		customize_property_widget.clear_widget()
 	if editor:
 		editor.queue_free()
+	if not _level.node_deselected.is_connected(_on_graph_node_deselected):
+		_level.node_deselected.connect(_on_graph_node_deselected)

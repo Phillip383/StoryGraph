@@ -113,3 +113,4 @@ func load_level(_data):
 	var loaded_level : Level = LEVEL_SCENE.instantiate()
 	add_child(loaded_level)
 	loaded_level.load_level(_data)
+	FileManager.post_level_load.emit(loaded_level)
