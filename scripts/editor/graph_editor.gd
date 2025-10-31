@@ -65,22 +65,7 @@ func on_application_open():
 	var hub= PROJECT_HUB.instantiate()
 	get_tree().current_scene.add_child(hub)
 	## TODO: Enable this when editor settings are complete.
-	# var editor_config_path = get_editor_conf_path()
-	# var editor_config = FileAccess.open(editor_config_path, FileAccess.READ)
-	# if editor_config:
-	# 	var _last_state = JSON.parse_string(editor_config.get_as_text())
-	# 	if _last_state[LAST_OPEN_PROJ_KEY].length() == 0:
-	# 		var create_proj = load("res://scenes/UI/Project_System/create_project_menu.tscn").instantiate()
-	# 		get_tree().current_scene.add_child(create_proj)
-
-	# 	FileManager.open_project(_last_state[LAST_OPEN_PROJ_KEY])
-	# 	await get_tree().create_timer(1.0).timeout ## Give the scene tree time to load.
-	# 	if _last_state.get(LAST_OPEN_LEVELS):
-	# 		for level in _last_state[LAST_OPEN_LEVELS]:
-	# 			var _status = []
-	# 			FileManager.load_file_by_name(level, FileManager.FileType.LEVEL, _status)
-	# else:
-	# 	return FileAccess.get_open_error()
+	##load_persistent_project()
 
 
 ##Helpful function that checks if the application is running in standalone, or in editor returns the path that we need to get the last state of the application. Defaults to build/debug while running in editor.
@@ -145,8 +130,9 @@ func remove_project_from_list(_project_name : String):
 ## Get's the project list from the editor config.
 func get_project_list():
 	var config : FileAccess = FileAccess.open(get_editor_conf_path(), FileAccess.READ)
-	if config and config.get_length() > 0:
+	if config:
 		var content = JSON.parse_string(config.get_as_text())
+		config.close()
 		if content:
 			return content[PROJECT_LIST]
 	else:
@@ -164,11 +150,14 @@ func unsaved_progress():
 		return await save_win.on_selection
 
 func persistent_project():
-	var editor_config_path = get_editor_conf_path() + "/config.json"
+	var editor_config_path = get_editor_conf_path()
+	var _proj_list = get_project_list()
+	var _state = JSON.parse_string(FileAccess.get_file_as_string(editor_config_path))
 	var editor_config = FileAccess.open(editor_config_path, FileAccess.WRITE)
 	if editor_config:
-		var _state = {LAST_OPEN_PROJ_KEY : FileManager.get_current_project_dir()}
-		_state[LAST_OPEN_LEVELS] = persistent_levels()
+		_state = {LAST_OPEN_PROJ_KEY : FileManager.get_current_project_dir()}
+		_state.get_or_add(LAST_OPEN_LEVELS, persistent_levels())
+		_state.get_or_add(PROJECT_LIST, _proj_list)
 		var state_string = JSON.stringify(_state)
 		editor_config.store_string(state_string)
 		editor_config.close()
@@ -182,3 +171,17 @@ func persistent_levels():
 	for level in open_levels:
 		levels.append(level.name)
 	return levels
+
+func load_persistent_project():
+	var editor_config_path = get_editor_conf_path()
+	var editor_config = FileAccess.open(editor_config_path, FileAccess.READ)
+	if editor_config:
+		var _last_state = JSON.parse_string(editor_config.get_as_text())
+		FileManager.open_project(_last_state[LAST_OPEN_PROJ_KEY])
+		await get_tree().create_timer(1.0).timeout ## Give the scene tree time to load.
+		if _last_state.get(LAST_OPEN_LEVELS):
+			for level in _last_state[LAST_OPEN_LEVELS]:
+				var _status = []
+				FileManager.load_file_by_name(level, FileManager.FileType.LEVEL, _status)
+	else:
+		return FileAccess.get_open_error()
