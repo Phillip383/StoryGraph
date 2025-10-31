@@ -29,3 +29,8 @@ func update_tree(_parent : Node, _item : Variant):
 func _on_level_changed(level: Level) -> void:
 	active_level = level
 	create_tree()
+
+
+func _on_level_save(_active_level: Level) -> void:
+	active_level = _active_level
+	create_tree()

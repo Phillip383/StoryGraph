@@ -7,6 +7,7 @@ const SAVE_WINDOW_TITLE = "Save Level"
 @export var LEVEL_SCENE : PackedScene
 
 signal on_level_changed(level : Level)
+signal on_level_save(active_level : Level)
 
 var _active_level : Level
 
@@ -103,7 +104,7 @@ func new_save(_type):
 ##
 func save(_file_name, _type):
 	var _level_data = _active_level.save_level(_file_name)
-	on_level_changed.emit(_active_level) #TODO: This is the bug in the node details!!! Inform the tree of the changed level name.
+	on_level_save.emit(_active_level)
 	var error = FileManager.save_file(_file_name, _type, _level_data)
 	if error == OK:
 		## Set the title bar back to a saved state.

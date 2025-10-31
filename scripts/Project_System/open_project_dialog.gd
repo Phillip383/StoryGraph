@@ -2,7 +2,7 @@ extends FileDialog
 
 class_name OpenProjectDialog
 
-const WARNING_POPUP = preload("res://scenes/UI/Popups/warning_popup.tscn")
+@export var WARNING_POPUP : PackedScene
 
 ## Emitted when a valid project is selected to open
 signal on_successful_selection(project : Dictionary[String, String])
