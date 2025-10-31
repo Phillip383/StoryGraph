@@ -45,13 +45,14 @@ func _on_close_pressed() -> void:
 func add_projects():
 	# element.set_icon() #TODO: when project settings are created add this...
 	var proj_list = GraphEditor.get_project_list()
-	for proj in proj_list:
-		for proj_name in proj:
-			var element : ProjectListElement = PROJECT_LIST_ELEMENT.instantiate()
-			element.on_selection.connect(project_selected)
-			project_list.add_child(element)
-			element.set_project_name(proj_name)
-			element.set_project_path(proj[proj_name])
+	if proj_list:
+		for proj in proj_list:
+			for proj_name in proj:
+				var element : ProjectListElement = PROJECT_LIST_ELEMENT.instantiate()
+				element.on_selection.connect(project_selected)
+				project_list.add_child(element)
+				element.set_project_name(proj_name)
+				element.set_project_path(proj[proj_name])
 
 func project_selected(_project):
 	on_selection.emit(_project)

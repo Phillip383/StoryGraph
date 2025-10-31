@@ -98,25 +98,49 @@ func get_editor_conf_path():
 func add_project_to_list(_value : Dictionary[String, String]) -> Error:
 	var config = get_editor_conf_path()
 	var _file : FileAccess = FileAccess.open(config, FileAccess.READ_WRITE)
+	var content = {}
 	if _file:
-		var content = JSON.parse_string(_file.get_as_text())
-		#assert(content == null, "Editor content could not be read")
-		if content.get(PROJECT_LIST):
-			content[PROJECT_LIST].append(_value)
+		if _file.get_length() > 0:
+			content = JSON.parse_string(_file.get_as_text())
+			if content and content.get(PROJECT_LIST):
+				content[PROJECT_LIST].append(_value)
+			else:
+				content[PROJECT_LIST] = [_value]
+			_file.store_string(JSON.stringify(content))
+			_file.close()
+			return OK
 		else:
 			content[PROJECT_LIST] = [_value]
-		_file.store_string(JSON.stringify(content))
-		_file.close()
-		return OK
+			_file.store_string(JSON.stringify(content))
+			_file.close()
+			return OK
 	else:
 		return FileAccess.get_open_error()
+
+
+func remove_project_from_list(_project_name : String):
+	var proj_list = get_project_list()
+	var content
+	if proj_list:
+		## Filters the array of dictionaries, not including the project with the given name.
+		var filtered_projects = proj_list.filter( func(p: Dictionary): return p.keys().size() > 0 and p.keys()[0] != _project_name)
+		var config = get_editor_conf_path()
+		var _file : FileAccess = FileAccess.open(config, FileAccess.READ)
+		if _file:
+			content = JSON.parse_string(_file.get_as_text())
+			content[PROJECT_LIST] = filtered_projects
+			_file.close()
+		_file = FileAccess.open(config, FileAccess.WRITE)
+		if _file:
+			_file.store_string(JSON.stringify(content))
 
 ## Get's the project list from the editor config.
 func get_project_list():
 	var config : FileAccess = FileAccess.open(get_editor_conf_path(), FileAccess.READ)
-	if config:
+	if config and config.get_length() > 0:
 		var content = JSON.parse_string(config.get_as_text())
-		return content[PROJECT_LIST]
+		if content:
+			return content[PROJECT_LIST]
 	else:
 		return null
 
