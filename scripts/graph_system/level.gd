@@ -116,9 +116,11 @@ func load_level(_data):
 		loaded_node.load_node(node_data)
 		add_child(loaded_node)
 		loaded_node.on_data_changed.connect(on_node_changed) ## Need to reconnect to the signal for updates to the node.
-	## TODO: Add the connections
+	
+	## Add the connections
 	for connection in connections:
-		print(connections)
+		print(connection)
+		connect_node(connection["from_node"], connection["from_port"], connection["to_node"], connection["to_port"])
 	
 	manager._change_state(GraphManager.GraphState.IDLE)
 
@@ -142,3 +144,17 @@ func on_level_changed(node : Node):
 	else:
 		manager._change_state(GraphManager.GraphState.IDLE)
 		set_selected(null)
+
+func get_node_title_by_instance_name(_ini_name : String) -> String:
+	var node : BaseStoryNode = get_node(_ini_name)
+	return node.title
+
+func _on_connection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
+	## Get the node's being connected names
+	var f_node = get_node_title_by_instance_name(from_node)
+	var t_node = get_node_title_by_instance_name(to_node)
+	print(f_node, " TO ", t_node)
+	##TODO: Check if the connection is valid, either correct port, and not itself
+
+	## Make the connection
+	connect_node(f_node, from_port, t_node, to_port)

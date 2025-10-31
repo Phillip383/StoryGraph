@@ -1,30 +1,40 @@
-# StoryGraph
-A node-based story architecting tool inspired by Unreal Engine’s Blueprints, designed to empower narrative designers with a visual interface for laying out storylines, dialogue flows, and quest logic. Story structures can be exported to various formats—JSON, CSV, or XML—for seamless integration into game engines and narrative systems.
+# Story Graph
 
+## Introduction
 
-# Explanation of features and design
-The application will have story graphs. Every main node in the graph will be its own unique storyline, or plot point, and it will connect via a line to the next node, which represents the next quest/dialog/plot in the story.
+Story Graph aims to make forming data relationships less taxing by adding a visual graphical element between the narrative designer and data modelled. Build in Godot version 4.5, as Godot has amazing capabilities when comes to building user interfaces. The engine also came with functionality such as a graph and node system that greatly saved me time and increased my agility. The godot documentation is also extremely friendly, as when I first started this project i was using Qt and QML. That was cumbersome, as the Qt documentation is harder to navigate than Godot's. The GDScripting language, offers reasonable speed for most task's and its simplistic design and how it's coupled with the editor offers great agility and dev experience. That is my reasoning for choosing the Godot Engine for this project.
 
-The main nodes can be encapsulated as you would chunks of logic in blueprints as functions, except they'll be called storylines within the application. You will be able to quickly search a list of all storylines and access them via visual searching or by name. This will keep the main graph clean, and easier to focus on the story line you're working on without the clutter from other nodes in the main graph. As long as the storyline is a part of that main graph. All of the data from it will be included in the final product.
+## Project Features
 
-Another important consideration I have accounted for is those quests or plots that will take you to a different level. There will be a special built-in node called a 'link' that will take in input to link the current node to a storyline in a different graph. This will essentially create/copy the data from that node into the final product for the two graphs, so you don't have to load an entire level's story data to get one quest, or have to worry about adding that story in the zone it links to. The application will do that for you. An idea of how to handle this on your end is every time a level is loaded, run a routine after the story data is loaded to compare active stories in the player's quest log to story IDs in that level and update the status of that quest in the level. 
+Below I will include a snapshot of the project's backlog to give an overview of the features I am to implement in this application.
+![Project Backlog](docs/images/project_backlog.jpeg)
 
-Each story graph will be its own file when exported. This is important, and I chose this design because, when considering games, they often have their own levels and narrative structures. Think of World of Warcraft as an example, you can have a story graph for each zone that contains the quests of that zone, so elwynn_forest.csv
-will have all of the quest data within it for that zone.
+## Current Progress
 
-The application will export to JSON and CSV for sure. I'm considering XML; each CSV could be uploaded to a database with its own table. This will keep it clean instead of having thousands of quests in one file or table, which would have to be loaded unnessarly. You only have to load the data needed for the level the player is currently in. 
+The snapshot belows show's the current progress I have made on the project, and the overall task's needing to be completed. I have gotten most of the back bone done already, such as serializing data from node's and level's, saving and loading data, and creating a project structure. It is almost ready for alpha because the bare minimum use case of modeling level contained narratives for video games is nearly complete and ready for testing.
+![Project Summary](docs/images/project_summary.jpeg)
 
-The application will automatically assign an incrementing id, or you can change the stucture of how you would like this id to be represented. You will have the option to restart the node id on each story graph, or keep the current id and follow up with it in the story graph, so if graph 1 has 100 nodes, graph 2 will start at 101. I chose to make this customizable because every game has a different structure, and I want this application to be as agnostic as possible. 
+## Project Showcase
 
+### The Project Hub
 
-# Ambitious features I want to add. 
+This window allows for project management. Selecting a project, deleting projects, renaming or creating a new project.
+![Project Hub](docs/images/project_hub.png)
 
-I also intend to write plugins for each of the three big engines, Godot, Unreal Engine, and Unity, to quickly parse and link your quest and dialog data to your game logic, but that will come in time. 
+### Multiple Level's
 
-Opening and live updating pre-existing JSON and CSV graph files, instead of having to export updates and reimport them into the engine. This ties into partly why I want to write plugins for the engines. 
+You can have multiple level's open at a time, each level control their own state, and only the active level can be edited.
+![Multiple Levels](docs/images/multiple_levels.png)
 
-Since the graph-based system is just a visual representation of data, I plan on incorporating git as version control. 
+### Node Properties
 
-I also want to add conditions to storylines, prerequisites, so a designer can make sure a player can't get a certain storyline without completing a set of quests or an entire storyline. 
+Node properties are the data contained on that node. Property types range from primitive types such as, int, float, bool, and container types such as Array's and Dictionaries. They can hold strings(text) as well. Nested container types are supported as well. During testing I have made some pretty gnarly nests. There is an editor for adding new properties to the node, or updating the existing properties on the currently selected node. Since the storing of properties is essentially a dictionary. I have implemented a solution to ensure that a user can not overwrite an existing property.
+![Selected Node](docs/images/selected_node.png)
 
-Adding a debug feature to walk the designer through the story flow at a set rate. I feel like this visual representation can help designers ensure they have the correct flow. 
+![Add Property Editor](docs/images/Adding_Property.png)
+
+![Updating Property](docs/images/updating_properties.png)
+
+## Conclusion
+
+If you would like to build the program. A Godot version of 4.5 will work, you don't need .NET as I haven't included any C# yet, but that might change at a later date as I recently built my godot engine with .NET because I want to use interface's for a few features within the project, and GDScript does not offer that powerful feature. Once I get to a reasonable build for alpha I will add a release to GitHub.
