@@ -96,7 +96,7 @@ func get_editor_conf_path():
 
 ## Appends a project to the end of the project list in the editor config.
 func add_project_to_list(_value : Dictionary[String, String]) -> Error:
-	var config = get_editor_conf_path()
+	var config = get_or_add_editor_config()
 	var _file : FileAccess = FileAccess.open(config, FileAccess.READ_WRITE)
 	var content = {}
 	if _file:
@@ -117,6 +117,14 @@ func add_project_to_list(_value : Dictionary[String, String]) -> Error:
 	else:
 		return FileAccess.get_open_error()
 
+## Gets the editor config path, or create's it, if it doesn't exist.
+func get_or_add_editor_config():
+	var con_path = get_editor_conf_path()
+	if FileAccess.file_exists(con_path):
+		return con_path
+	var _file = FileAccess.open(con_path, FileAccess.WRITE)
+	_file.close()
+	return get_editor_conf_path()
 
 func remove_project_from_list(_project_name : String):
 	var proj_list = get_project_list()
