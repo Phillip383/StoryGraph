@@ -55,3 +55,5 @@ func add_projects():
 
 func project_selected(_project):
 	on_selection.emit(_project)
+	FileManager.open_project(_project)
+	queue_free()

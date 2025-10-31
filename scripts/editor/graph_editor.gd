@@ -64,9 +64,6 @@ Opens the editor config file and sets the current project to the last open proje
 func on_application_open():
 	var hub= PROJECT_HUB.instantiate()
 	get_tree().current_scene.add_child(hub)
-	var selection = await hub.on_selection
-	FileManager.open_project(selection)
-	hub.queue_free()
 	## TODO: Enable this when editor settings are complete.
 	# var editor_config_path = get_editor_conf_path()
 	# var editor_config = FileAccess.open(editor_config_path, FileAccess.READ)
