@@ -53,20 +53,33 @@ func _set_slots_by_type():
 		set_slot(left_idx, input_enable, NodeData.NodeType.TRANSIT, UNI_COLOR, output_enable, 0, UNI_COLOR)
 		set_slot(right_idx, !input_enable, 0, UNI_COLOR, !output_enable, NodeData.NodeType.EXIT, UNI_COLOR)
 
+
 ## Node data is for loading and saving projects
 func get_node_data() -> NodeData:
 	return node_data
+
+
+func get_node_type() -> NodeData.NodeType:
+	return node_data.node_type
+
+
+func get_node_id() -> int:
+	return node_data.node_id
+
+
+func set_node_id(id : int) -> void:
+	node_data.node_id = id
+
 
 ## @return story_data: the properties currently on this node.
 func get_story_data() -> Dictionary[StringName, Variant]:
 	return story_data
 
+
 ## @return story_data keys: returns the keys of the properties on this node.
 func get_story_data_key() -> Array[StringName]:
 	return story_data.keys()
 
-func set_node_id(id : int) -> void:
-	node_data.node_id = id
 
 ## @return: returns true if a property already exists and false otherwise.
 func does_property_exist(key : StringName) -> bool:

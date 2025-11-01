@@ -8,6 +8,8 @@ const SAVE_WINDOW_TITLE = "Save Level"
 
 signal on_level_changed(level : Level)
 signal on_level_save(active_level : Level)
+signal on_story_line_added(node : BaseStoryNode)
+signal on_story_lines_removed(_names : Array[StringName])
 
 var _active_level : Level
 
@@ -16,12 +18,10 @@ func _ready() -> void:
 	super._ready()
 	tab_changed.connect(on_tab_switched)
 	child_entered_tree.connect(on_child_added)
-	_active_level = get_tab_control(0) as Level
 	FileManager.level_create_requested.connect(create_new_level)
 	FileManager.save_focused_requested.connect(save_request)
 	FileManager.on_level_load_request.connect(load_level)
 	FileManager.project_changed.connect(clear_levels)
-	connect_for_updates()
 
 	## Setup tabs for closing
 	get_tab_bar().set_tab_close_display_policy(TabBar.CLOSE_BUTTON_SHOW_ALWAYS)
@@ -56,14 +56,15 @@ func on_tab_switched(_index : int):
 	_active_level = get_tab_control(_index) as Level
 	on_level_changed.emit(_active_level)
 
-func connect_for_updates():
-	for child in get_children():
-		var level = child as Level
+func connect_for_updates(level : Level):
 		if level:
 			if not level.on_edited.is_connected(_on_level_edited):
 				level.on_edited.connect(_on_level_edited)
 			if not on_level_changed.is_connected(level.on_level_changed):
 				on_level_changed.connect(level.on_level_changed)
+
+			level.on_story_line_added.connect(_story_line_added)
+			level.on_story_lines_removed.connect(_story_lines_removed)
 
 func on_child_added(child : Node):
 	var level = child as Level
@@ -120,7 +121,15 @@ func load_level(_data):
 	var loaded_level : Level = LEVEL_SCENE.instantiate()
 	add_child(loaded_level)
 	loaded_level.load_level(_data)
+	current_tab = get_tab_idx_from_control(loaded_level)
+	connect_for_updates(loaded_level)
 	FileManager.post_level_load.emit(loaded_level)
 
 func _on_create_new_Level_pressed() -> void:
 	create_new_level()
+
+func _story_line_added(node : BaseStoryNode):
+	on_story_line_added.emit(node)
+
+func _story_lines_removed(_names : Array[StringName]) -> void:
+	on_story_lines_removed.emit(_names)

@@ -12,6 +12,9 @@ const DEFAULT_NAME = "(unsaved)"
 ## SIGNALS
 signal on_edited(level : Level) ## A signal that will emit when any change occurs to the graph, this can be used to tell the user they have unsaved work.
 
+signal on_story_line_added(node : BaseStoryNode)
+signal on_story_lines_removed(_name : Array[StringName])
+
 @onready var context_menu = $"GraphNodeMenu"
 @onready var manager = $GraphManager ## Handles the state of the level.
 
@@ -64,14 +67,22 @@ func add_node(node : GraphNode):
 	node.position_offset = (get_local_mouse_position() + scroll_offset) / zoom + - node.size / 2
 	node.set_node_id(get_next_node_id())
 	manager._change_state(GraphManager.GraphState.EDITING)
+	if node.get_node_type() == NodeData.NodeType.ENTRY:
+		on_story_line_added.emit(node) ## Tell the tree and other elements a story line was added.
 	on_edited.emit(self)
 
 func delete_nodes(nodes : Array[StringName]):
+	var story_lines : Array[StringName] = []
 	for node_name in nodes:
 		var node = get_node("%s" % node_name)
+		if node.node_data.node_type == NodeData.NodeType.ENTRY:
+			story_lines.append(node.title)
 		## remove the connections to the deleted node
 		node_connections = node_connections.filter( func(p) : return p["from_node"] != node.title and p["to_node"] != node.title)
 		node.queue_free()
+
+	if story_lines.size() > 0:
+		on_story_lines_removed.emit(story_lines) ##Inform the tree and editor of the deleted nodes.
 
 """
 Listens for the connection request of the graph.

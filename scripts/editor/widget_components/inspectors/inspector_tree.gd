@@ -4,34 +4,69 @@ class_name LevelInspector
 
 @onready var tree : Tree = $Tree
 
+var root_item : TreeItem
 var active_level : Level
+var story_lines : Dictionary[String, Node] ## Stored as a dictionary for fast lookup when a node is clicked in the tree to move graph view to focus that node.
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	super._ready()
+	FileManager.post_level_load.connect(_on_level_load)
 
 ## Creates the tree structure with the active level's nodes.
 func create_tree():
-	tree.clear() ## Clean the tree before we create it...
-	var root : TreeItem = tree.create_item()
-	if active_level:
-		root.set_text(0, active_level.name)
+	tree.clear()
+	story_lines.clear()
 
-	# For every node connected to the entry node of the story line, add them as a sub item of the story line.
+	root_item = tree.create_item()
+	if active_level:
+		find_level_story_lines()
+		root_item.set_text(0, active_level.name)
+		for story in story_lines:
+			var line = root_item.create_child()
+			line.set_text(0, story)
+
 
 func find_level_story_lines():
-	# For every entry node create a level in the tree.
-	pass
+	# For every entry node create a item in the tree.
+	for child in active_level.get_children():
+		var node = child as BaseStoryNode
+		if node and node.get_node_type() == NodeData.NodeType.ENTRY:
+			story_lines.get_or_add(node.title, node)
 
 ## Called when a level, story line, or a node is added or deleted from the project. Takes the parent node and add's the item to the tree. This structure will be more performant than iterating over the entire level or graph looking for a change.
 func update_tree(_parent : Node, _item : Variant):
 	pass
 
+
 func _on_level_changed(level: Level) -> void:
+	if active_level == level:
+		return
+
 	active_level = level
 	create_tree()
 
 
 func _on_level_save(_active_level: Level) -> void:
+	if _active_level != active_level: ## Protect against save all.
+		return
+
 	active_level = _active_level
 	create_tree()
+
+func _on_level_load(level):
+	active_level = level
+	create_tree()
+
+
+func on_story_line_added(node: BaseStoryNode) -> void:
+	story_lines[node.title] = node
+	var line = root_item.create_child()
+	line.set_text(0, node.title)
+
+
+func on_story_lines_removed(_names: Array[StringName]) -> void:
+	for node_name in _names:
+		for item in root_item.get_children():
+			if node_name == item.get_text(0):
+				item.free()

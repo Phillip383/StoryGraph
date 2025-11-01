@@ -35,9 +35,9 @@ func _on_cancel_pressed() -> void:
 ## creates a node of selected type and names the node; add's it to the parent graph of the window. Destroys itself once done.
 func _on_confirm_pressed() -> void:
 	var new_node : BaseStoryNode = node_types[_selected_type].instantiate()
-	get_parent().add_node(new_node)
 	new_node.set_node_title(_name)
 	new_node.set_node_type(_selected_type)
+	get_parent().add_node(new_node)
 	new_node._set_slots_by_type()
 	queue_free()
 
