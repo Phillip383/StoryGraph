@@ -11,6 +11,7 @@ var story_lines : Dictionary[String, Node] ## Stored as a dictionary for fast lo
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	super._ready()
+	tree.item_selected.connect(focus_selected_story_line)
 	FileManager.post_level_load.connect(_on_level_load)
 
 ## Creates the tree structure with the active level's nodes.
@@ -70,3 +71,11 @@ func on_story_lines_removed(_names: Array[StringName]) -> void:
 		for item in root_item.get_children():
 			if node_name == item.get_text(0):
 				item.free()
+
+func focus_selected_story_line():
+	var _item_text = tree.get_selected().get_text(0)
+	var level_center = active_level.size / 2.0
+	var node = story_lines[_item_text]
+	active_level.scroll_offset = (node.position_offset * active_level.zoom) - level_center + (node.size / 2.0)
+	active_level.zoom = 1.4
+	active_level.set_selected(node)
