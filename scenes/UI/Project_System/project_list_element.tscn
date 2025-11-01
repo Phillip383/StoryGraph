@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://sjaxai4a83t3"]
+[gd_scene load_steps=33 format=3 uid="uid://sjaxai4a83t3"]
 
 [ext_resource type="Texture2D" uid="uid://duqsok6xitndw" path="res://assets/Icons/Story_Graph_Icon.svg" id="1_ihwlf"]
 [ext_resource type="Script" uid="uid://detv1hbr1exwf" path="res://scripts/Project_System/project_list_element.gd" id="1_n6igp"]
@@ -271,16 +271,6 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[sub_resource type="StyleBoxLine" id="StyleBoxLine_n6igp"]
-content_margin_left = 0.0
-content_margin_top = 9.0
-content_margin_right = 0.0
-content_margin_bottom = 9.0
-color = Color(0.5, 0.5, 0.5, 1)
-grow_begin = -4.0
-grow_end = -4.0
-vertical = true
-
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_n6igp"]
 
 [node name="ProjectListElement" type="PanelContainer"]
@@ -322,17 +312,6 @@ layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 4
 
-[node name="Rename" type="Button" parent="HBoxContainer/Buttons"]
-custom_minimum_size = Vector2(70, 40)
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Rename"
-
-[node name="VSeparator" type="VSeparator" parent="HBoxContainer/Buttons"]
-layout_mode = 2
-theme_override_constants/separation = 25
-theme_override_styles/separator = SubResource("StyleBoxLine_n6igp")
-
 [node name="Delete" type="Button" parent="HBoxContainer/Buttons"]
 custom_minimum_size = Vector2(70, 40)
 layout_mode = 2
@@ -344,5 +323,4 @@ layout_mode = 2
 theme_override_constants/separation = 30
 theme_override_styles/separator = SubResource("StyleBoxEmpty_n6igp")
 
-[connection signal="pressed" from="HBoxContainer/Buttons/Rename" to="." method="_on_rename_pressed"]
 [connection signal="pressed" from="HBoxContainer/Buttons/Delete" to="." method="_on_delete_pressed"]

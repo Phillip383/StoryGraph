@@ -7,6 +7,7 @@ const DEFAULT_NAME = "(unsaved)"
 
 ## EXPORTS
 @export var level_data : LevelData ## This is handled internally, no need to change values in the editor, it's export for debugging purposes, and is unique per level instance.
+@export var _node_id : int ## DO NOT CHANGE THIS WITHOUT THE METHODS!!!!
 
 ## SIGNALS
 signal on_edited(level : Level) ## A signal that will emit when any change occurs to the graph, this can be used to tell the user they have unsaved work.
@@ -16,12 +17,7 @@ signal on_edited(level : Level) ## A signal that will emit when any change occur
 
 var node_details : NodeDetailsInspector
 
-var _node_id = -1 ## DO NOT CHANGE THIS WITHOUT THE METHODS!!!!
 var node_connections : Array[Dictionary]
-
-func get_next_node_id():
-	_node_id += 1
-	return _node_id
 
 func _ready() -> void:
 	name = DEFAULT_NAME
@@ -32,9 +28,18 @@ func _ready() -> void:
 	node_selected.connect(on_node_selected)
 	begin_node_move.connect(on_node_begin_move)
 	delete_nodes_request.connect(delete_nodes)
+	## Add the additional valid connection types.
+	add_valid_connection_type(NodeData.NodeType.ENTRY, NodeData.NodeType.EXIT)
+	add_valid_connection_type(NodeData.NodeType.ENTRY, NodeData.NodeType.TRANSIT)
+	add_valid_connection_type(NodeData.NodeType.LINK, NodeData.NodeType.TRANSIT)
+	add_valid_connection_type(NodeData.NodeType.TRANSIT, NodeData.NodeType.EXIT)
 
 	## Have to do this in _ready for every graph spawned, signals connected in the editor, are unique.
 	node_details = get_tree().get_first_node_in_group("Node Details")
+
+func get_next_node_id():
+	_node_id += 1
+	return _node_id
 
 func get_current_state() -> GraphManager.GraphState:
 	return manager.current_state
@@ -54,9 +59,9 @@ func _on_popup_request(_location : Vector2):
 Listens for the add node request from the context menu.
 """
 func add_node(node : GraphNode):
+	add_child(node)
 	node.on_data_changed.connect(on_node_changed)
 	node.position_offset = (get_local_mouse_position() + scroll_offset) / zoom + - node.size / 2
-	add_child(node)
 	node.set_node_id(get_next_node_id())
 	manager._change_state(GraphManager.GraphState.EDITING)
 	on_edited.emit(self)
@@ -115,7 +120,7 @@ func save_level(_file_name = name) -> Dictionary[StringName, Variant]:
 	var _state : Dictionary[StringName, Variant]
 	_state["name"] = _file_name
 	_state["id"] = level_data.level_id
-	_state["node_id"] = _node_id
+	_state["node_id"] = _node_id if _node_id else -1
 	_state["con"] = node_connections
 	_state["nodes"] = []
 
@@ -135,24 +140,24 @@ func load_level(_data):
 	name = _data["name"]
 	level_data.level_id = _data["id"]
 	level_data.level_name = name
-	_node_id = _data.get_or_add("node_id")
+	_node_id = _data["node_id"] if _data.get("node_id") else -1
 	node_connections = _data["con"]
 	var nodes = _data["nodes"]
 
 	## Maps node's title to their new instance name.
 	var node_map : Dictionary[String, String]
-	# Add the nodes	
+	# Add the nodes
 	for node_data in nodes:
 		var loaded_node : BaseStoryNode = NODE_SCENE.instantiate()
 		add_child(loaded_node)
 		loaded_node.load_node(node_data)
 		node_map.get_or_add(loaded_node.title, loaded_node.name)
 		loaded_node.on_data_changed.connect(on_node_changed) ## Need to reconnect to the signal for updates to the node.
-	
+
 	## Add the connections, using the nodes titles
 	for connection in node_connections:
 		connect_node(node_map[connection["from_node"]], connection["from_port"], node_map[connection["to_node"]], connection["to_port"])
-	
+
 	manager._change_state(GraphManager.GraphState.IDLE)
 
 func on_node_changed(_data):
