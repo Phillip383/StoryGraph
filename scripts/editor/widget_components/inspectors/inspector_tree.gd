@@ -16,7 +16,8 @@ Creates the tree structure with the active level's nodes.
 func create_tree():
 	tree.clear() ## Clean the tree before we create it...
 	var root : TreeItem = tree.create_item()
-	root.set_text(0, active_level.name)
+	if active_level:
+		root.set_text(0, active_level.name)
 
 	## TODO: Fill the tree with the main node's, creating sub items for their connections.
 

@@ -110,7 +110,6 @@ packs the level connections and it's node's within a dictionary and save's it a 
 @return A dictionary of the level's packed state, or null if the save failed.
 """
 func save_level(_file_name = name) -> Dictionary[StringName, Variant]:
-	## TODO: Save a global Node ID that tracks the current ID.
 	manager._change_state(GraphManager.GraphState.SAVING)
 	name = _file_name
 	var _state : Dictionary[StringName, Variant]
@@ -132,7 +131,6 @@ Loads a level's previous state from disk.
 @param _file - the level file to load.
 """
 func load_level(_data):
-	## TODO: Load a global Node ID That tracks the current ID.
 	manager._change_state(GraphManager.GraphState.LOADING)
 	name = _data["name"]
 	level_data.level_id = _data["id"]

@@ -43,7 +43,7 @@ func on_application_close():
 		PromptSelection.SAVE:
 			for level in unsaved_levels:
 				FileManager.save_file(level.name, FileManager.FileType.LEVEL, level.save_level())
-	
+
 	## Save the current project to open on the next launch...
 	persistent_project()
 	get_tree().quit()
@@ -136,7 +136,7 @@ func unsaved_progress():
 		var unsaved_level_names = ""
 		for level in unsaved_levels:
 			unsaved_level_names += "%s%s" % [level.name, "\n"]
-			
+
 		save_win.set_unsaved_progress_text(unsaved_level_names)
 		return await save_win.on_selection
 

@@ -38,3 +38,11 @@ func open_level():
 
 func on_level_opened(path : String):
 	FileManager.load_file_by_path(path)
+
+## Connection from the new level window in the level's container.
+func _on_open_existing_level_pressed() -> void:
+	open_level()
+
+## Sends the signal to the level container to create a new level.
+func _on_create_new_pressed() -> void:
+	new_level_request.emit()

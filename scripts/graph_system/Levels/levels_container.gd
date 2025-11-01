@@ -88,7 +88,7 @@ func save_request(_type):
 		else:
 			save(_active_level.name, _type)
 
-## Prompt the user to name the level if it hasn't been named yet. 
+## Prompt the user to name the level if it hasn't been named yet.
 func new_save(_type):
 	var save_window : SaveWindow = SAVE_NEW_WINDOW.instantiate()
 	save_window.title = SAVE_WINDOW_TITLE
@@ -116,3 +116,6 @@ func load_level(_data):
 	add_child(loaded_level)
 	loaded_level.load_level(_data)
 	FileManager.post_level_load.emit(loaded_level)
+
+func _on_create_new_Level_pressed() -> void:
+	create_new_level()
