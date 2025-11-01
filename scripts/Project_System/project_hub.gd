@@ -10,7 +10,7 @@ signal on_selection(_project : String)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	close_requested.connect(queue_free)
+	close_requested.connect(on_close_request)
 	add_projects()
 
 
@@ -40,7 +40,8 @@ func _on_import_pressed() -> void:
 	element.set_project_path(project.values()[0])
 
 func _on_close_pressed() -> void:
-	queue_free()
+	if FileManager.is_in_active_project():
+		queue_free()
 
 func add_projects():
 	# element.set_icon() #TODO: when project settings are created add this...
@@ -58,3 +59,7 @@ func project_selected(_project):
 	on_selection.emit(_project)
 	FileManager.open_project(_project)
 	queue_free()
+
+func on_close_request():
+	if FileManager.is_in_active_project():
+		queue_free()
