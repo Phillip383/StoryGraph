@@ -16,6 +16,8 @@ signal post_level_load(_level : Level)
 
 signal save_focused_requested(_type : FileManager.FileType)
 
+signal project_changed()
+
 # signal template_create_requested()
 # signal on_template_load_request(_template)
 
@@ -152,6 +154,7 @@ func open_project(project_path : String) -> Error:
 		_current_project_dir = project_path
 		## Set the window name to the project directory name
 		set_application_title()
+		project_changed.emit()
 		return OK
 	return ERR_DOES_NOT_EXIST
 

@@ -20,12 +20,17 @@ func _ready() -> void:
 	FileManager.level_create_requested.connect(create_new_level)
 	FileManager.save_focused_requested.connect(save_request)
 	FileManager.on_level_load_request.connect(load_level)
+	FileManager.project_changed.connect(clear_levels)
 	connect_for_updates()
 
 	## Setup tabs for closing
 	get_tab_bar().set_tab_close_display_policy(TabBar.CLOSE_BUTTON_SHOW_ALWAYS)
 	get_tab_bar().tab_close_pressed.connect(on_tab_closed)
 
+func clear_levels():
+	for child in get_children():
+		if child as Level:
+			child.queue_free()
 
 func on_tab_closed(tab : int):
 	if get_child_count() == 1: ## Always need a level open.

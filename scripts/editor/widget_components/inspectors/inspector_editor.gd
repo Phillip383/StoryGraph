@@ -53,5 +53,5 @@ func on_level_changed(_level: Level) -> void:
 		customize_property_widget.clear_widget()
 	if editor:
 		editor.queue_free()
-	if not _level.node_deselected.is_connected(_on_graph_node_deselected):
+	if _level and not _level.node_deselected.is_connected(_on_graph_node_deselected):
 		_level.node_deselected.connect(_on_graph_node_deselected)

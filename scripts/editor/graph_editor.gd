@@ -22,19 +22,13 @@ func _ready() -> void:
 func increment_level_id():
 	_level_id += 1
 
-func decrement_level_id():
-	_level_id -= 1
-
-"""
-Handles the close request.
-"""
+##Handles the close request.
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		on_application_close()
 
-"""
-Save the current state of the editor for next launch.
-"""
+
+##Save the current state of the editor for next launch.
 func on_application_close():
 	var selection = await unsaved_progress()
 	match selection:
@@ -49,9 +43,7 @@ func on_application_close():
 	get_tree().quit()
 
 
-"""
-Opens the editor config file and sets the current project to the last open project, if no project was found, then it start's the application with a create project dialog. Will save the list of recent projects also at some point.
-"""
+##Opens the editor config file and sets the current project to the last open project, if no project was found, then it start's the application with a create project dialog. Will save the list of recent projects also at some point.
 func on_application_open():
 	var hub= PROJECT_HUB.instantiate()
 	get_tree().current_scene.add_child(hub)
