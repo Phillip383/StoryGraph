@@ -29,6 +29,9 @@ func get_story_data() -> Dictionary[StringName, Variant]:
 func get_story_data_key() -> Array[StringName]:
 	return story_data.keys()
 
+func set_node_id(id : int):
+	node_data.node_id = id
+
 ## @return: returns true if a property already exists and false otherwise.
 func does_property_exist(key : StringName) -> bool:
 	return true if story_data.get(key) else false

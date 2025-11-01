@@ -10,9 +10,6 @@ const LAST_OPEN_PROJ_KEY = "last_open_project"
 const LAST_OPEN_LEVELS = "open_levels"
 const PROJECT_LIST = "project_list"
 
-## TODO: Move this to the level class, as a level will be responsible for id'ing it's nodes. need to link to the signal for add_node or delete node and set the ID on the node, or decrement it here upon deletion.
-var _node_id : int ## This will increment whenever a node is added or decrement on delete
-
 ## TODO: use this level id for levels, make it unique! A level can be a table, and the composite key between a unique level id and a unique node id will ensure the correct linking of nodes between levels. Increment this when a level is created, decrement when a level is deleted.
 var _level_id : int
 
@@ -21,12 +18,6 @@ func _ready() -> void:
 	get_tree().auto_accept_quit = false
 	OS.low_processor_usage_mode = true
 	await on_application_open()
-
-func increment_node_id():
-	_node_id += 1
-
-func decrement_node_id():
-	_node_id -= 1
 
 func increment_level_id():
 	_level_id += 1

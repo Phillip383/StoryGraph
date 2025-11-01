@@ -16,7 +16,12 @@ signal on_edited(level : Level) ## A signal that will emit when any change occur
 
 var node_details : NodeDetailsInspector
 
+var _node_id = -1 ## DO NOT CHANGE THIS WITHOUT THE METHODS!!!!
 var node_connections : Array[Dictionary]
+
+func get_next_node_id():
+	_node_id += 1
+	return _node_id
 
 func _ready() -> void:
 	name = DEFAULT_NAME
@@ -26,6 +31,7 @@ func _ready() -> void:
 	node_deselected.connect(on_node_deselected)
 	node_selected.connect(on_node_selected)
 	begin_node_move.connect(on_node_begin_move)
+	delete_nodes_request.connect(delete_nodes)
 
 	## Have to do this in _ready for every graph spawned, signals connected in the editor, are unique.
 	node_details = get_tree().get_first_node_in_group("Node Details")
@@ -48,12 +54,19 @@ func _on_popup_request(_location : Vector2):
 Listens for the add node request from the context menu.
 """
 func add_node(node : GraphNode):
-	##TODO: Increment node ID, and assign it.
 	node.on_data_changed.connect(on_node_changed)
 	node.position_offset = (get_local_mouse_position() + scroll_offset) / zoom + - node.size / 2
 	add_child(node)
+	node.set_node_id(get_next_node_id())
 	manager._change_state(GraphManager.GraphState.EDITING)
 	on_edited.emit(self)
+
+func delete_nodes(nodes : Array[StringName]):
+	for node_name in nodes:
+		var node = get_node("%s" % node_name)
+		## remove the connections to the deleted node
+		node_connections = node_connections.filter( func(p) : return p["from_node"] != node.title and p["to_node"] != node.title)
+		node.queue_free()
 
 """
 Listens for the connection request of the graph.
@@ -103,6 +116,7 @@ func save_level(_file_name = name) -> Dictionary[StringName, Variant]:
 	var _state : Dictionary[StringName, Variant]
 	_state["name"] = _file_name
 	_state["id"] = level_data.level_id
+	_state["node_id"] = _node_id
 	_state["con"] = node_connections
 	_state["nodes"] = []
 
@@ -123,6 +137,7 @@ func load_level(_data):
 	name = _data["name"]
 	level_data.level_id = _data["id"]
 	level_data.level_name = name
+	_node_id = _data.get_or_add("node_id")
 	node_connections = _data["con"]
 	var nodes = _data["nodes"]
 
