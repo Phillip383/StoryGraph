@@ -19,16 +19,15 @@ func _ready() -> void:
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
-		var mouse_pos = get_viewport().get_mouse_position()
-		menu.position = mouse_pos
-		menu.visible = true
-		menu.add_items()
+		show_menu()
 
-func file_menu_request(_file : Node):
+
+func show_menu():
 	var mouse_pos = get_viewport().get_mouse_position()
 	menu.position = mouse_pos
 	menu.visible = true
-	menu.add_items_file_clicked()
+	menu.add_items()
+
 
 func open_project_directory() -> DirAccess:
 	_project_directory_path = FileManager.get_current_project_dir()
