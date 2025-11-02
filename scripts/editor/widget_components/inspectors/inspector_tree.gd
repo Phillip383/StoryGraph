@@ -67,6 +67,7 @@ func on_story_line_added(node: BaseStoryNode) -> void:
 	story_lines[node.title] = node
 	var line : TreeItem = root_item.create_child()
 	line.set_text(0, node.title)
+	tree_items[node.title] = line
 
 
 func on_story_lines_removed(_names: Array[StringName]) -> void:
