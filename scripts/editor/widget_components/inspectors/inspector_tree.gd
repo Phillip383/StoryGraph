@@ -8,6 +8,8 @@ var root_item : TreeItem
 var active_level : Level
 var story_lines : Dictionary[String, Node] ## Stored as a dictionary for fast lookup when a node is clicked in the tree to move graph view to focus that node.
 
+var tree_items : Dictionary[String, TreeItem]
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	super._ready()
@@ -26,6 +28,7 @@ func create_tree() -> void:
 		for story in story_lines:
 			var line : TreeItem = root_item.create_child()
 			line.set_text(0, story)
+			tree_items[story] = line
 
 
 func find_level_story_lines() -> void:
@@ -67,12 +70,8 @@ func on_story_line_added(node: BaseStoryNode) -> void:
 
 
 func on_story_lines_removed(_names: Array[StringName]) -> void:
-	## TODO: Refactor this so it's not n * k time.
-	## Without reconstructing the entire tree as well.
 	for node_name in _names:
-		for item in root_item.get_children():
-			if node_name == item.get_text(0):
-				item.free()
+		root_item.remove_child(tree_items[node_name])
 
 func focus_selected_story_line() -> void:
 	var _item_text : String = tree.get_selected().get_text(0)
