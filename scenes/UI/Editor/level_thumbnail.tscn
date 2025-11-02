@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://c63qvj6jb18ws"]
+
+[ext_resource type="Script" uid="uid://g0wqx62wm30o" path="res://scenes/UI/Editor/level_thumbnail.gd" id="1_w10kl"]
+[ext_resource type="Texture2D" uid="uid://c1rg3caxvv1ks" path="res://assets/Icons/level_file_thumbnail.svg" id="1_w83rs"]
+
+[node name="FileThumbnail" type="VBoxContainer"]
+custom_minimum_size = Vector2(100, 120)
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_w10kl")
+
+[node name="FileThumbnail" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("1_w83rs")
+expand_mode = 1
+
+[node name="Name" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 15
+text = "name"
+horizontal_alignment = 1

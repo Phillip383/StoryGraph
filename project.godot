@@ -22,11 +22,6 @@ config/icon="uid://duqsok6xitndw"
 FileManager="*res://scripts/Save_Load_System/file_manager.gd"
 GraphEditor="*res://scripts/editor/graph_editor.gd"
 
-[debug]
-
-gdscript/warnings/unsafe_property_access=1
-gdscript/warnings/unsafe_method_access=1
-
 [display]
 
 window/size/viewport_width=1980

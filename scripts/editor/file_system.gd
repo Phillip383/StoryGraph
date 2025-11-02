@@ -2,8 +2,11 @@ extends PanelContainer
 
 const ROOT_NAME : String = "Content"
 
+@export_file var level_thumbnail
+
+
 @onready var tree : Tree = $MarginContainer/HSplitContainer/ScrollContainer/Tree
-@onready var grid : GridContainer = $MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/MarginContainer2/GridContainer
+@onready var grid : GridContainer = $MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/MarginContainer2/ScrollContainer/GridContainer
 
 var _project_directory_path : String
 var _project_directory : DirAccess
@@ -11,7 +14,7 @@ var _project_directory : DirAccess
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	FileManager.project_changed.connect(on_project_directory_changed)
-	pass # Replace with function body.
+	tree.item_selected.connect(on_item_selected)
 
 func open_project_directory() -> DirAccess:
 	_project_directory_path = FileManager.get_current_project_dir()
@@ -26,16 +29,19 @@ func create_root() -> TreeItem:
 func create_dir(parent : TreeItem, item_name : StringName) -> TreeItem:
 	var dir : DirAccess = DirAccess.open(_project_directory_path + "/" + item_name)
 	var new_dir : TreeItem = parent.create_child()
-	var files : PackedStringArray = dir.get_files()
-	for file in files:
-		var new_file : TreeItem = new_dir.create_child()
-		new_file.set_text(0, file)
+
 	new_dir.set_text(0, item_name)
+	## TODO: Set Directory Icon
+
+	var dirs : PackedStringArray = dir.get_directories()
+	for dir_name in dirs:
+		create_dir(new_dir, dir_name) ## Recurse any nested directories...
 	return new_dir
 
 func create_file(parent : TreeItem, item_name: StringName) -> TreeItem:
 	var new_item : TreeItem = parent.create_child()
 	new_item.set_text(0, item_name)
+	## TODO: Set File Icon
 	return new_item
 
 ## Create a tree list of the project root directory.
@@ -49,15 +55,29 @@ func create_tree() -> void:
 		create_dir(_root_item, dir)
 
 
-## Create thubmnails of directories and files within the grid container based on the active directory.
+## Create thumbnails of directories and files within the grid container based on the active directory.
 func create_thumbnails() -> void:
-	pass
+	clear_thumbnails()
+	var selected_dir_path = _project_directory_path + "/" + tree.get_selected().get_text(0)
+	var files = DirAccess.get_files_at(selected_dir_path)
+	for file in files:
+		var thumbnail : LevelThumbnail = load(level_thumbnail).instantiate()
+		grid.add_child(thumbnail)
+		thumbnail.set_thumbnail_name(file)
+
 
 func on_item_selected() -> void:
-	pass
+		create_thumbnails()
+
+
+func clear_thumbnails() -> void:
+	for thumbnail in grid.get_children():
+		thumbnail.queue_free()
+
 
 func on_project_directory_changed() -> void:
 	tree.clear()
+	clear_thumbnails()
 	create_tree()
 
 
