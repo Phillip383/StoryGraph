@@ -12,13 +12,11 @@ class_name LevelThumbnail
 func _ready() -> void:
 	mouse_entered.connect(on_hovered)
 	mouse_exited.connect(on_hover_end)
-	pass # Replace with function body.
 
 func set_thumbnail_name(_name : String):
 	_name_label.text = _name
 
 func _gui_input(event: InputEvent) -> void:
-	## TODO: Handle hover event's
 	if event is InputEventMouseButton and event.double_click:
 		var status = []
 		FileManager.load_file_by_name(_name_label.text, FileManager.FileType.LEVEL, status)
