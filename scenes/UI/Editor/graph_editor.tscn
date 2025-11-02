@@ -10,7 +10,7 @@
 [ext_resource type="Script" uid="uid://dvrwd3nqg7lk0" path="res://scripts/graph_system/Levels/levels_container.gd" id="6_w61rn"]
 [ext_resource type="PackedScene" uid="uid://bjg65kvgcmtp7" path="res://scenes/UI/Popups/save_window.tscn" id="6_xmt7k"]
 [ext_resource type="PackedScene" uid="uid://d2eujlaoqe32p" path="res://scenes/UI/Editor/node_details_container.tscn" id="8_w61rn"]
-[ext_resource type="PackedScene" uid="uid://dld0uhok1cub8" path="res://scenes/UI/Editor/file_system.tscn" id="11_xmt7k"]
+[ext_resource type="PackedScene" uid="uid://dld0uhok1cub8" path="res://scenes/UI/Editor/file_system/file_system.tscn" id="11_xmt7k"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fgo7h"]
 bg_color = Color(0.019607844, 0.019607844, 0.019607844, 0.8352941)

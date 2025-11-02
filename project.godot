@@ -42,6 +42,7 @@ enabled=PackedStringArray("res://addons/filesystem_drawer/plugin.cfg", "res://ad
 Inspectors=""
 Levels=""
 "Node Details"=""
+"File System"=""
 
 [gui]
 

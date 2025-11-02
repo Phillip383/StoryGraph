@@ -7,6 +7,7 @@ const ROOT_NAME : String = "Content"
 
 @onready var tree : Tree = $MarginContainer/HSplitContainer/ScrollContainer/Tree
 @onready var grid : GridContainer = $MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/MarginContainer2/ScrollContainer/GridContainer
+@onready var menu : FileContextMenu = $FileSystemMenu
 
 var _project_directory_path : String
 var _project_directory : DirAccess
@@ -15,6 +16,19 @@ var _project_directory : DirAccess
 func _ready() -> void:
 	FileManager.project_changed.connect(on_project_directory_changed)
 	tree.item_selected.connect(on_item_selected)
+
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
+		var mouse_pos = get_viewport().get_mouse_position()
+		menu.position = mouse_pos
+		menu.visible = true
+		menu.add_items()
+
+func file_menu_request(_file : Node):
+	var mouse_pos = get_viewport().get_mouse_position()
+	menu.position = mouse_pos
+	menu.visible = true
+	menu.add_items_file_clicked()
 
 func open_project_directory() -> DirAccess:
 	_project_directory_path = FileManager.get_current_project_dir()
