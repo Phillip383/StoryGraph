@@ -138,6 +138,7 @@ func load_file_by_path(_path : String):
 ## Checks if a file of a given type with given name already exists
 func file_exists(_name : String, _type : FileType) -> bool:
 	var _path : String
+	## If the name doesn't have the type appended already, append it.
 	match _type:
 		FileType.LEVEL:
 			_path = get_level_by_name(_name)
@@ -167,6 +168,9 @@ func get_levels_directory():
 
 ## Returns the path of the level object
 func get_level_by_name(level_name : String) -> String:
+	var _path : String = ""
+	if level_name.contains(LEVEL_FILE_TYPE):
+		return "%s/%s" % [get_levels_directory(), level_name]
 	return "%s/%s.%s" % [get_levels_directory(), level_name, LEVEL_FILE_TYPE]
 
 ## Returns the path of the templates directory
@@ -174,6 +178,8 @@ func get_templates_directory():
 	return "%s/templates" % _current_project_dir
 
 func get_template_by_name(_name : String) -> String:
+	if _name.contains(TEMPLATE_FILE_TYPE):
+		return "%s/%s" % [get_templates_directory(), _name]
 	return "%s/%s.%s" % [get_templates_directory(), _name, TEMPLATE_FILE_TYPE]
 
 ## Returns the path of the story.project file
