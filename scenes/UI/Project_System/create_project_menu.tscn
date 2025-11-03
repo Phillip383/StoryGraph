@@ -75,14 +75,17 @@ size_flags_horizontal = 4
 theme_override_constants/separation = 250
 
 [node name="Cancel" type="Button" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Buttons"]
+custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 text = "Cancel"
 
 [node name="OpenExisting" type="Button" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Buttons"]
+custom_minimum_size = Vector2(110, 0)
 layout_mode = 2
 text = "Open Project"
 
 [node name="Create" type="Button" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Buttons"]
+custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 text = "Create"
 

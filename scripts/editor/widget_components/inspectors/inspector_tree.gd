@@ -2,7 +2,7 @@ extends InspectorChildBase
 
 class_name LevelInspector
 
-@onready var tree : Tree = $Tree
+@onready var tree : Tree = $VBoxContainer/Tree
 
 var root_item : TreeItem
 var active_level : Level

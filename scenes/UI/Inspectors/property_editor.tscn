@@ -1,21 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://cfhnqaiw8smg4"]
+[gd_scene load_steps=4 format=3 uid="uid://cfhnqaiw8smg4"]
 
 [ext_resource type="PackedScene" uid="uid://dlquk3hpta50p" path="res://scenes/UI/Inspectors/inspector_child_base.tscn" id="1_we54b"]
-[ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://themes/story_graph_theme.tres" id="2_2ut7c"]
 [ext_resource type="Script" uid="uid://er2gvecqy6lp" path="res://scripts/editor/widget_components/inspectors/inspector_editor.gd" id="2_ls5qa"]
 [ext_resource type="PackedScene" uid="uid://c0ng6gf8elp2h" path="res://scenes/UI/Property_Editor/Customize_Property/customize_property.tscn" id="4_e8vas"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ut7c"]
-bg_color = Color(0, 0, 0, 0.85490197)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0, 0.6901961, 1, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
 
 [node name="InspectorEditor" instance=ExtResource("1_we54b")]
 script = ExtResource("2_ls5qa")
@@ -26,8 +13,6 @@ editor_description = "This container will be the parent of the type of editor sp
 
 IE. for StringName it'll be a text block, or for String it'll be Text Edit. Booleans will be a radio box, etc..."
 layout_mode = 2
-theme = ExtResource("2_2ut7c")
-theme_override_styles/panel = SubResource("StyleBoxFlat_2ut7c")
 
 [node name="CustomizeProperty" parent="Value_Editor_C" index="0" instance=ExtResource("4_e8vas")]
 visible = false

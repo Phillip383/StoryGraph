@@ -2,6 +2,9 @@ extends PanelContainer
 
 class_name ProjectListElement
 
+@export var normal_style : StyleBox
+@export var hover_style : StyleBox
+
 signal on_selection(_project_path : String)
 
 @onready var icon : TextureRect = $HBoxContainer/MarginContainer/Icon
@@ -36,11 +39,8 @@ func _on_rename_pressed() -> void:
 	pass # Replace with function body.
 
 func show_hover():
-	var style : StyleBoxFlat = StyleBoxFlat.new()
-	style.bg_color = "#63858a33"
-	style.border_color = "#6769f3ff"
-	style.set_border_width_all(4)
-	add_theme_stylebox_override("panel", style)
+	add_theme_stylebox_override("panel", hover_style)
 
 func hide_hover():
-	remove_theme_stylebox_override("panel")
+	add_theme_stylebox_override("panel", normal_style)
+

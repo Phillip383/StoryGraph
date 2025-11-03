@@ -1,13 +1,26 @@
-[gd_scene load_steps=4 format=3 uid="uid://b1ruqpcnl1fhv"]
+[gd_scene load_steps=5 format=3 uid="uid://b1ruqpcnl1fhv"]
 
 [ext_resource type="PackedScene" uid="uid://dlquk3hpta50p" path="res://scenes/UI/Inspectors/inspector_child_base.tscn" id="1_4ct5r"]
 [ext_resource type="Script" uid="uid://y7m5e5mlr3u5" path="res://scripts/editor/widget_components/inspectors/inspector_tree.gd" id="2_g2rpe"]
 [ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://themes/story_graph_theme.tres" id="2_kbgnl"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g2rpe"]
+bg_color = Color(0.11764706, 0.11764706, 0.11764706, 1)
+
 [node name="InspectorTree" instance=ExtResource("1_4ct5r")]
 script = ExtResource("2_g2rpe")
 tab_name = "Levels"
 
-[node name="Tree" type="Tree" parent="." index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="." index="0"]
 layout_mode = 2
+
+[node name="Search" type="LineEdit" parent="VBoxContainer" index="0"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_g2rpe")
+placeholder_text = "search"
+keep_editing_on_text_submit = true
+
+[node name="Tree" type="Tree" parent="VBoxContainer" index="1"]
+layout_mode = 2
+size_flags_vertical = 3
 theme = ExtResource("2_kbgnl")

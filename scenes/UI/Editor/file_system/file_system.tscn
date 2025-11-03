@@ -3,20 +3,20 @@
 [ext_resource type="Script" uid="uid://bdwieva6houra" path="res://scripts/editor/file_system/file_system.gd" id="1_bref1"]
 [ext_resource type="PackedScene" uid="uid://bjk0rmj702kfu" path="res://scenes/UI/Editor/file_system/file_system_menu.tscn" id="2_u1x8l"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2td0w"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-border_color = Color(0, 0.6901961, 1, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u1x8l"]
+bg_color = Color(0.23921569, 0.23921569, 0.23921569, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.03137255, 0.03137255, 0.03137255, 1)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bref1"]
-bg_color = Color(0.05490196, 0.05490196, 0.05490196, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2td0w"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
 border_color = Color(0, 0.6901961, 1, 1)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
@@ -29,6 +29,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_u1x8l")
 script = ExtResource("1_bref1")
 level_thumbnail = "uid://c63qvj6jb18ws"
 
@@ -57,7 +58,6 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxFlat_bref1")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/PanelContainer"]
 layout_mode = 2

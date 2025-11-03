@@ -10,7 +10,7 @@
 [node name="ProjectHub" type="Window"]
 oversampling_override = 1.0
 initial_position = 2
-size = Vector2i(800, 600)
+size = Vector2i(800, 700)
 wrap_controls = true
 transient = true
 exclusive = true
@@ -40,6 +40,7 @@ layout_mode = 2
 [node name="Controls" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+size_flags_vertical = 0
 theme_override_constants/separation = 10
 
 [node name="Search" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/Controls"]
@@ -51,16 +52,18 @@ placeholder_text = "search"
 
 [node name="VSeparator" type="VSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/Controls"]
 layout_mode = 2
-theme_override_constants/separation = 80
+theme_override_constants/separation = 50
 theme_override_styles/separator = SubResource("StyleBoxEmpty_v3ui7")
 
 [node name="New" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Controls"]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 text = "Create New"
 
 [node name="Import" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Controls"]
+custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -68,10 +71,11 @@ text = "Import"
 
 [node name="VSeparator2" type="VSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/Controls"]
 layout_mode = 2
-theme_override_constants/separation = 190
+theme_override_constants/separation = 150
 theme_override_styles/separator = SubResource("StyleBoxEmpty_v3ui7")
 
 [node name="Close" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Controls"]
+custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
