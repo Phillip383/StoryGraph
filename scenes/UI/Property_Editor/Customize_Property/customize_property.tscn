@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://c0ng6gf8elp2h"]
 
-[ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="1_2iog6"]
+[ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://themes/story_graph_theme.tres" id="1_2iog6"]
 [ext_resource type="Script" uid="uid://5f2rdnh54i77" path="res://scripts/graph_system/Options_Widgets/customize_properties_widgets/customize_property.gd" id="1_j24oq"]
 
 [node name="CustomizeProperty" type="CenterContainer"]

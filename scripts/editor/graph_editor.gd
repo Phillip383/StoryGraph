@@ -45,6 +45,11 @@ func on_application_close():
 
 ##Opens the editor config file and sets the current project to the last open project, if no project was found, then it start's the application with a create project dialog. Will save the list of recent projects also at some point.
 func on_application_open():
+	## Create the config file if it's missing.
+	if not FileAccess.file_exists(get_editor_conf_path()):
+		var config = FileAccess.open(get_editor_conf_path(), FileAccess.WRITE)
+		config.close()		
+
 	var hub= PROJECT_HUB.instantiate()
 	get_tree().current_scene.add_child(hub)
 	## TODO: Enable this when editor settings are complete.
@@ -64,7 +69,7 @@ func get_editor_conf_path():
 
 ## Appends a project to the end of the project list in the editor config.
 func add_project_to_list(_value : Dictionary[String, String]) -> Error:
-	var config = get_or_add_editor_config()
+	var config = get_editor_conf_path()
 	var _file : FileAccess = FileAccess.open(config, FileAccess.READ_WRITE)
 	var content = {}
 	if _file:
@@ -85,15 +90,6 @@ func add_project_to_list(_value : Dictionary[String, String]) -> Error:
 	else:
 		return FileAccess.get_open_error()
 
-## Gets the editor config path, or create's it, if it doesn't exist.
-func get_or_add_editor_config():
-	var con_path = get_editor_conf_path()
-	if FileAccess.file_exists(con_path):
-		return con_path
-	var _file = FileAccess.open(con_path, FileAccess.WRITE)
-	_file.close()
-	return get_editor_conf_path()
-
 func remove_project_from_list(_project_name : String):
 	var proj_list = get_project_list()
 	var content
@@ -113,7 +109,7 @@ func remove_project_from_list(_project_name : String):
 ## Get's the project list from the editor config.
 func get_project_list():
 	var config : FileAccess = FileAccess.open(get_editor_conf_path(), FileAccess.READ)
-	if config:
+	if config and config.get_length() > 0:
 		var content = JSON.parse_string(config.get_as_text())
 		config.close()
 		if content:

@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://du7x8jpfvub1w" path="res://scenes/UI/Editor/menu_bar.tscn" id="1_fgo7h"]
 [ext_resource type="PackedScene" uid="uid://c8qxe00r5a84q" path="res://scenes/UI/Graph/level.tscn" id="1_ot8g1"]
-[ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="1_wjrqj"]
+[ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://themes/story_graph_theme.tres" id="1_xmt7k"]
 [ext_resource type="PackedScene" uid="uid://bsdca22cutwdk" path="res://scenes/UI/Inspectors/inspector_container.tscn" id="4_h0swr"]
 [ext_resource type="PackedScene" uid="uid://b1ruqpcnl1fhv" path="res://scenes/UI/Inspectors/inspector_tree.tscn" id="4_tixvr"]
 [ext_resource type="PackedScene" uid="uid://cw0mfi2ihphk2" path="res://scenes/UI/Popups/unsaved_close_prompt.tscn" id="6_51ho3"]
@@ -25,18 +25,18 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme = ExtResource("1_wjrqj")
+theme = ExtResource("1_xmt7k")
 theme_override_styles/panel = SubResource("StyleBoxFlat_fgo7h")
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
 layout_mode = 2
-theme = ExtResource("1_wjrqj")
+theme = ExtResource("1_xmt7k")
 
 [node name="Main_C" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme = ExtResource("1_wjrqj")
+theme = ExtResource("1_xmt7k")
 
 [node name="MenuBar" parent="PanelContainer/MarginContainer/Main_C" instance=ExtResource("1_fgo7h")]
 layout_mode = 2
@@ -44,13 +44,13 @@ layout_mode = 2
 [node name="VSplitContainer" type="VSplitContainer" parent="PanelContainer/MarginContainer/Main_C"]
 layout_mode = 2
 size_flags_vertical = 3
-theme = ExtResource("1_wjrqj")
+theme = ExtResource("1_xmt7k")
 
 [node name="StoryLines_Graph_C" type="HSplitContainer" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer"]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 size_flags_vertical = 3
-theme = ExtResource("1_wjrqj")
+theme = ExtResource("1_xmt7k")
 theme_override_constants/separation = 3
 theme_override_constants/minimum_grab_thickness = 3
 
@@ -76,7 +76,7 @@ LEVEL_SCENE = ExtResource("1_ot8g1")
 custom_minimum_size = Vector2(0, 300)
 layout_mode = 2
 size_flags_vertical = 3
-theme = ExtResource("1_wjrqj")
+theme = ExtResource("1_xmt7k")
 theme_override_constants/separation = 3
 theme_override_constants/minimum_grab_thickness = 3
 
@@ -96,7 +96,7 @@ current_tab = 0
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_wjrqj")
+theme = ExtResource("1_xmt7k")
 metadata/_tab_index = 0
 
 [node name="FileSystem" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Property_Editor_C" instance=ExtResource("11_xmt7k")]

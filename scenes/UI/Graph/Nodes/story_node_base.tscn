@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dhrg7t8ktb4jq"]
 
-[ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="1_ma2pr"]
+[ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://themes/story_graph_theme.tres" id="1_ma2pr"]
 [ext_resource type="Script" uid="uid://g4pu8n7nwddi" path="res://scripts/graph_system/Nodes/story_node_base.gd" id="2_p0nie"]
 [ext_resource type="Script" uid="uid://bibkbqwmh1qfi" path="res://scripts/node_data.gd" id="3_p0nie"]
 

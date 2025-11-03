@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dc7tyol3idpog"]
 
-[ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://story_graph_theme.tres" id="1_ef6xx"]
+[ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://themes/story_graph_theme.tres" id="1_ef6xx"]
 [ext_resource type="Script" uid="uid://bolg0nrpt513k" path="res://scripts/graph_system/Options_Widgets/type_option.gd" id="2_4deag"]
 
 [node name="TypeOption" type="OptionButton"]
