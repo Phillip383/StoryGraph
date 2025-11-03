@@ -4,4 +4,5 @@
 
 [node name="FileSystemMenu" type="PopupMenu"]
 oversampling_override = 1.0
+visible = true
 script = ExtResource("1_c2reh")

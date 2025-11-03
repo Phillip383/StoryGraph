@@ -58,7 +58,7 @@ func get_editor_conf_path():
 		var exec_dir = exec_path.get_base_dir()
 		return exec_dir + "/config.json"
 	else:
-		var running_in_editor_path = "C:/dev/projects/Godot/story-graph/build/debug"
+		var running_in_editor_path = "C:/dev/projects/Godot/story-graph/build/Windows/Debug"
 		if DirAccess.dir_exists_absolute(running_in_editor_path):
 			return running_in_editor_path + "/config.json"
 

@@ -3,7 +3,7 @@ extends Window
 """
 The types of graph nodes that can be added to the graph
 """
-@export var node_types : Dictionary[NodeData.NodeType, PackedScene]
+@export var node_scene : PackedScene
 
 const REQUIRED_NAME_LENGTH = 2
 const NAME_LENGTH_MESSAGE = "The required length for node names is %d" % REQUIRED_NAME_LENGTH
@@ -34,11 +34,9 @@ func _on_cancel_pressed() -> void:
 
 ## creates a node of selected type and names the node; add's it to the parent graph of the window. Destroys itself once done.
 func _on_confirm_pressed() -> void:
-	var new_node : BaseStoryNode = node_types[_selected_type].instantiate()
+	var new_node : BaseStoryNode = node_scene.instantiate()
 	new_node.set_node_title(_name)
-	new_node.set_node_type(_selected_type)
-	get_parent().add_node(new_node)
-	new_node._set_slots_by_type()
+	get_parent().add_node(new_node, _selected_type)
 	queue_free()
 
 ## TODO: Check the graph for any node's with existing name, disable confirm button.
@@ -74,4 +72,5 @@ func check_for_existing_node() -> bool:
 	return false
 
 func on_submitted(_text):
-	_on_confirm_pressed()
+	if confirm_button.disabled == false:
+		_on_confirm_pressed()

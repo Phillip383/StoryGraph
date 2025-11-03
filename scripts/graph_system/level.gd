@@ -61,11 +61,13 @@ func _on_popup_request(_location : Vector2):
 """
 Listens for the add node request from the context menu.
 """
-func add_node(node : GraphNode):
+func add_node(node : GraphNode, _type : NodeData.NodeType = 0):
 	add_child(node)
 	node.on_data_changed.connect(on_node_changed)
 	node.position_offset = (get_local_mouse_position() + scroll_offset) / zoom + - node.size / 2
 	node.set_node_id(get_next_node_id())
+	node.set_node_type(_type)
+	node._set_slots_by_type()
 	manager._change_state(GraphManager.GraphState.EDITING)
 	if node.get_node_type() == NodeData.NodeType.ENTRY:
 		on_story_line_added.emit(node) ## Tell the tree and other elements a story line was added.

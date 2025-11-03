@@ -15,12 +15,7 @@ title = "New Node"
 size = Vector2i(350, 200)
 theme = ExtResource("1_4r8f6")
 script = ExtResource("2_ml3k4")
-node_types = Dictionary[int, PackedScene]({
-0: ExtResource("3_qavgm"),
-1: ExtResource("3_qavgm"),
-2: ExtResource("3_qavgm"),
-3: ExtResource("3_qavgm")
-})
+node_scene = ExtResource("3_qavgm")
 
 [node name="MarginContainer" type="PanelContainer" parent="."]
 anchors_preset = 15
