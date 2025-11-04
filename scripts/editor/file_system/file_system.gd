@@ -12,10 +12,13 @@ const ROOT_NAME : String = "Content"
 var _project_directory_path : String
 var _project_directory : DirAccess
 
+var _active_thumbnail
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	FileManager.project_changed.connect(on_project_directory_changed)
 	tree.item_selected.connect(on_item_selected)
+	menu.id_pressed.connect(on_menu_item_selected)
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
@@ -77,11 +80,32 @@ func create_thumbnails() -> void:
 		var thumbnail : LevelThumbnail = load(level_thumbnail).instantiate()
 		grid.add_child(thumbnail)
 		thumbnail.set_thumbnail_name(file)
+		thumbnail.set_resource_path(selected_dir_path + "/" + file)
 
+func _on_thumbnail_menu_selected(thumbnail):
+	_active_thumbnail = thumbnail
 
 func on_item_selected() -> void:
 		create_thumbnails()
 
+func on_menu_item_selected(id : int):
+	match id:
+		FileOptions.CREATE_TEMPLATE:
+			_create_template()
+		FileOptions.CREATE_DIR:
+			_create_directory()
+		FileOptions.CREATE_LEVEL:
+			_create_level()
+
+
+func _create_template():
+	pass
+
+func _create_directory():
+	pass
+
+func _create_level():
+	pass
 
 func clear_thumbnails() -> void:
 	for thumbnail in grid.get_children():

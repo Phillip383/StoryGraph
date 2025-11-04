@@ -18,6 +18,9 @@ signal save_focused_requested(_type : FileManager.FileType)
 
 signal project_changed()
 
+signal level_deleted(_name : StringName)
+signal level_renamed(_old_name : StringName, _new_name : StringName)
+
 # signal template_create_requested()
 # signal on_template_load_request(_template)
 
@@ -50,6 +53,20 @@ func get_current_project_dir():
 func is_in_active_project():
 	return FileAccess.file_exists(get_project_file())
 
+func rename_file(_path : String, _name : StringName, _type : FileType):
+	var _new_name = _path.substr(0, _path.rfind("/") + 1) + _name
+	DirAccess.rename_absolute(_path, _new_name)
+	match _type:
+		FileType.LEVEL:
+			var _old_name = _path.substr(_path.rfind("/"))
+			level_renamed.emit(_old_name, _new_name)
+
+func delete_file(_path : String, _type : FileType):
+	DirAccess.remove_absolute(_path)
+	match _type:
+		FileType.LEVEL:
+			var _name = _path.substr(_path.rfind("/"))
+			level_deleted.emit(_name)
 
 ## Opens a file, with only the name and type required, the method will append the correct file type.
 
