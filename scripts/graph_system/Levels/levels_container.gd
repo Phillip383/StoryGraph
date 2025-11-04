@@ -22,10 +22,26 @@ func _ready() -> void:
 	FileManager.save_focused_requested.connect(save_request)
 	FileManager.on_level_load_request.connect(load_level)
 	FileManager.project_changed.connect(clear_levels)
-
+	FileManager.level_deleted.connect(level_deleted)
+	FileManager.level_renamed.connect(level_renamed)
 	## Setup tabs for closing
 	get_tab_bar().set_tab_close_display_policy(TabBar.CLOSE_BUTTON_SHOW_ALWAYS)
 	get_tab_bar().tab_close_pressed.connect(on_tab_closed)
+
+func level_deleted(_name : StringName):
+	print("Level Deleted")
+	for i in range(get_child_count()):
+		var level = get_tab_control(i) as Level
+		if level and level.level_data.level_name == _name:
+			level.queue_free()
+
+func level_renamed(_old_name : StringName, _new_name : StringName):
+	print("Level Renamed")
+	for i in range(get_child_count()):
+		var level = get_tab_control(i) as Level
+		if level and level.level_data.level_name == _old_name: ##TODO: This isn't working because of the .level ext.
+			level.level_data.level_name = _new_name
+			set_tab_title(i, _new_name)
 
 func clear_levels():
 	for child in get_children():

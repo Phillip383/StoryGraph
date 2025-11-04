@@ -2,10 +2,6 @@ extends PanelContainer
 
 class_name LevelThumbnail
 
-
-@export var hover_box : StyleBox
-@export var normal_box : StyleBox
-
 ## SIGNALS
 
 signal thumbnail_menu_requested(thumbnail)
@@ -43,7 +39,7 @@ func _gui_input(event: InputEvent) -> void:
 		assert(status[0] == OK, "Level failed to load from thumbnail. :: Error: " + error_string(status[0]))
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
 		show_menu()
-	
+
 	if event.is_action_pressed("ui_cancel"):
 		_rename_canceled()
 
@@ -72,11 +68,13 @@ func turn_off_menu():
 
 func selected():
 	_active = true
-	add_theme_stylebox_override("panel", hover_box)
+	var style = get_theme_stylebox("Hover")
+	add_theme_stylebox_override("panel", style)
 
 func deselect():
 	_active = false
-	add_theme_stylebox_override("panel", normal_box)
+	var style = get_theme_stylebox("Panel")
+	add_theme_stylebox_override("panel", style)
 
 func _rename_active():
 	_name_label.editable = true
@@ -99,4 +97,3 @@ func _delete_file():
 func _on_name_text_submitted(new_text: String) -> void:
 	if not FileManager.file_exists(new_text, FileManager.FileType.LEVEL):
 		_rename_file(new_text)
-

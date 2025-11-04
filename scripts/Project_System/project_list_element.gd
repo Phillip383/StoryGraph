@@ -2,9 +2,6 @@ extends PanelContainer
 
 class_name ProjectListElement
 
-@export var normal_style : StyleBox
-@export var hover_style : StyleBox
-
 signal on_selection(_project_path : String)
 
 @onready var icon : TextureRect = $HBoxContainer/MarginContainer/Icon
@@ -14,6 +11,7 @@ var _project_path : String
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	add_theme_stylebox_override("panel", get_theme_stylebox("Panel"))
 	mouse_entered.connect(show_hover)
 	mouse_exited.connect(hide_hover)
 
@@ -34,13 +32,8 @@ func _on_delete_pressed() -> void:
 	GraphEditor.remove_project_from_list(project_name.text)
 	queue_free()
 
-func _on_rename_pressed() -> void:
-	## TODO: Add rename feature
-	pass # Replace with function body.
-
 func show_hover():
-	add_theme_stylebox_override("panel", hover_style)
+	add_theme_stylebox_override("panel", get_theme_stylebox("Hover"))
 
 func hide_hover():
-	add_theme_stylebox_override("panel", normal_style)
-
+	add_theme_stylebox_override("panel", get_theme_stylebox("Panel"))

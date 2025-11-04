@@ -1,9 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://sjaxai4a83t3"]
+[gd_scene load_steps=5 format=3 uid="uid://sjaxai4a83t3"]
 
 [ext_resource type="Texture2D" uid="uid://duqsok6xitndw" path="res://assets/Icons/Story_Graph_Icon.svg" id="1_ihwlf"]
 [ext_resource type="Script" uid="uid://detv1hbr1exwf" path="res://scripts/Project_System/project_list_element.gd" id="1_n6igp"]
-[ext_resource type="StyleBox" uid="uid://d0x56gdffatbp" path="res://scenes/UI/Project_System/project_list_normal.tres" id="1_nfian"]
-[ext_resource type="StyleBox" uid="uid://bnnptguiujagc" path="res://scenes/UI/Project_System/project_list_hover.tres" id="2_3ovrg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n6igp"]
 bg_color = Color(0.11764706, 0.11764706, 0.11764706, 1)
@@ -20,10 +18,8 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 104.0
 grow_horizontal = 2
-theme_override_styles/panel = ExtResource("1_nfian")
+theme_type_variation = &"PanelButton"
 script = ExtResource("1_n6igp")
-normal_style = ExtResource("1_nfian")
-hover_style = ExtResource("2_3ovrg")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 custom_minimum_size = Vector2(0, 150)
