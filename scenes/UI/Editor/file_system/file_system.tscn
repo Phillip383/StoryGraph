@@ -88,6 +88,6 @@ layout_mode = 2
 [node name="GridContainer" type="GridContainer" parent="MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/MarginContainer2/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-columns = 10
+columns = 7
 
 [node name="FileSystemMenu" parent="." instance=ExtResource("2_u1x8l")]

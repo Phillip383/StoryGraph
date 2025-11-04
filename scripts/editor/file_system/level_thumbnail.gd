@@ -6,17 +6,23 @@ class_name LevelThumbnail
 @export var hover_box : StyleBox
 @export var normal_box : StyleBox
 
+## SIGNALS
+
+signal thumbnail_menu_requested(thumbnail)
+signal thumbnail_hover_end()
+signal file_renamed(_name : StringName)
+
 ## The path to the file this thumbnail represents.
 var _resource_path : String
+var _active : bool = false
 
-@onready var _name_label : Label = $HBox/Name
-@onready var menu : FileContextMenu = $FileSystemMenu
+@onready var _name_label : LineEdit = $HBox/Name
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	mouse_entered.connect(on_hovered)
-	mouse_exited.connect(on_hover_end)
-	menu.id_pressed.connect(_on_menu_item_selected)
+	mouse_entered.connect(_on_mouse_entered)
+	_name_label.focus_exited.connect(_rename_canceled)
+	_name_label.gui_input.connect(_gui_input)
 
 func _process(_delta: float) -> void:
 	turn_off_menu()
@@ -37,45 +43,60 @@ func _gui_input(event: InputEvent) -> void:
 		assert(status[0] == OK, "Level failed to load from thumbnail. :: Error: " + error_string(status[0]))
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
 		show_menu()
+	
+	if event.is_action_pressed("ui_cancel"):
+		_rename_canceled()
+
+func _on_mouse_entered():
+	selected()
 
 func show_menu():
 	selected()
-	menu.position = get_viewport().get_mouse_position()
-	menu.visible = true
-	menu.add_items_file_clicked()
+	thumbnail_menu_requested.emit(self)
 
-func on_hovered():
-	selected()
-
-func on_hover_end():
-	if menu.visible == false:
-		deselect()
+func on_menu_selection(id : int, thumbnail):
+	match id:
+		FileOptions.RENAME:
+			thumbnail._rename_active()
+		FileOptions.DELETE:
+			thumbnail._delete_file()
 
 func turn_off_menu():
+	if not _active:
+		return
 	var mouse_pos = get_global_mouse_position()
 	var rect = get_global_rect()
 	if not rect.has_point(mouse_pos):
-		menu.visible = false
 		deselect()
+		thumbnail_hover_end.emit()
 
 func selected():
+	_active = true
 	add_theme_stylebox_override("panel", hover_box)
 
 func deselect():
+	_active = false
 	add_theme_stylebox_override("panel", normal_box)
 
-func _on_menu_item_selected(id : int):
-	match id:
-		FileOptions.RENAME:
-			_rename_file()
-		FileOptions.DELETE:
-			_delete_file()
+func _rename_active():
+	_name_label.editable = true
+	_name_label.select_all()
+	_name_label.grab_focus()
 
+func _rename_canceled():
+	release_focus()
+	_name_label.editable = false
 
-func _rename_file():
-	##TODO: Make the label editable to get the name, once it's submitted, set it.
-	FileManager.rename_file(_resource_path, "Dragon.level", FileManager.FileType.LEVEL)
+func _rename_file(_new_name : StringName):
+	_name_label.editable = false
+	FileManager.rename_file(_resource_path, _new_name, FileManager.FileType.LEVEL)
+	file_renamed.emit(_new_name)
 
 func _delete_file():
 	FileManager.delete_file(_resource_path, FileManager.FileType.LEVEL)
 	queue_free()
+
+func _on_name_text_submitted(new_text: String) -> void:
+	if not FileManager.file_exists(new_text, FileManager.FileType.LEVEL):
+		_rename_file(new_text)
+

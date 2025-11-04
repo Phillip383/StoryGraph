@@ -1,12 +1,27 @@
-[gd_scene load_steps=7 format=3 uid="uid://c63qvj6jb18ws"]
+[gd_scene load_steps=9 format=3 uid="uid://c63qvj6jb18ws"]
 
 [ext_resource type="StyleBox" uid="uid://dljp0tpyscvy3" path="res://scenes/UI/Editor/file_system/level_thumbnail_normal.tres" id="1_w10kl"]
 [ext_resource type="Texture2D" uid="uid://c1rg3caxvv1ks" path="res://assets/Icons/level_file_thumbnail.svg" id="1_w83rs"]
 [ext_resource type="Script" uid="uid://g0wqx62wm30o" path="res://scripts/editor/file_system/level_thumbnail.gd" id="2_tsg1s"]
 [ext_resource type="StyleBox" uid="uid://b2qm54bw8xoeo" path="res://scenes/UI/Editor/file_system/level_thumbnail_hover.tres" id="3_x1atd"]
-[ext_resource type="PackedScene" uid="uid://bjk0rmj702kfu" path="res://scenes/UI/Editor/file_system/file_system_menu.tscn" id="5_udytr"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_x1atd"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bba8y"]
+bg_color = Color(0.23921569, 0.23921569, 0.23921569, 0.4627451)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_udytr"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bba8y"]
 
 [node name="Panel" type="PanelContainer"]
 material = SubResource("ShaderMaterial_x1atd")
@@ -30,11 +45,18 @@ size_flags_vertical = 3
 texture = ExtResource("1_w83rs")
 expand_mode = 3
 
-[node name="Name" type="Label" parent="HBox"]
+[node name="Name" type="LineEdit" parent="HBox"]
 layout_mode = 2
-size_flags_vertical = 1
 theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_bba8y")
+theme_override_styles/read_only = SubResource("StyleBoxFlat_udytr")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_bba8y")
 text = "name"
-horizontal_alignment = 1
+alignment = 1
+editable = false
+context_menu_enabled = false
+emoji_menu_enabled = false
+selecting_enabled = false
 
-[node name="FileSystemMenu" parent="." instance=ExtResource("5_udytr")]
+[connection signal="text_changed" from="HBox/Name" to="." method="_on_name_text_changed"]
+[connection signal="text_submitted" from="HBox/Name" to="." method="_on_name_text_submitted"]

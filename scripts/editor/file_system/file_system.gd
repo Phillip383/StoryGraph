@@ -4,6 +4,10 @@ const ROOT_NAME : String = "Content"
 
 @export_file var level_thumbnail
 
+## SIGNALS
+
+signal menu_selection(id : int, thumbnail)
+signal clear_thumbnail_focus()
 
 @onready var tree : Tree = $MarginContainer/HSplitContainer/ScrollContainer/Tree
 @onready var grid : GridContainer = $MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/MarginContainer2/ScrollContainer/GridContainer
@@ -11,8 +15,6 @@ const ROOT_NAME : String = "Content"
 
 var _project_directory_path : String
 var _project_directory : DirAccess
-
-var _active_thumbnail
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -23,7 +25,8 @@ func _ready() -> void:
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
 		show_menu()
-
+	if event is InputEventMouseButton:
+		clear_thumbnail_focus.emit()
 
 func show_menu():
 	var mouse_pos = get_viewport().get_mouse_position()
@@ -31,6 +34,16 @@ func show_menu():
 	menu.visible = true
 	menu.add_items()
 
+func show_thumbnail_menu(thumbnail):
+	var mouse_pos = get_viewport().get_mouse_position()
+	menu.position = mouse_pos
+	menu.visible = true
+	menu.add_items_file_clicked()
+	var id = await menu.id_pressed
+	menu_selection.emit(id, thumbnail)
+
+func destory_thumbnail_menu():
+	menu.visible = false
 
 func open_project_directory() -> DirAccess:
 	_project_directory_path = FileManager.get_current_project_dir()
@@ -79,11 +92,7 @@ func create_thumbnails() -> void:
 	for file in files:
 		var thumbnail : LevelThumbnail = load(level_thumbnail).instantiate()
 		grid.add_child(thumbnail)
-		thumbnail.set_thumbnail_name(file)
-		thumbnail.set_resource_path(selected_dir_path + "/" + file)
-
-func _on_thumbnail_menu_selected(thumbnail):
-	_active_thumbnail = thumbnail
+		connect_thumbnail(thumbnail, file, selected_dir_path)
 
 func on_item_selected() -> void:
 		create_thumbnails()
@@ -96,7 +105,6 @@ func on_menu_item_selected(id : int):
 			_create_directory()
 		FileOptions.CREATE_LEVEL:
 			_create_level()
-
 
 func _create_template():
 	pass
@@ -132,3 +140,13 @@ func on_directory_removed() -> void:
 
 func on_file_removed() -> void:
 	pass
+
+## Connects various signals for to handle actions on the thumbnails
+func connect_thumbnail(thumbnail, file, path):
+	thumbnail.set_thumbnail_name(file)
+	thumbnail.set_resource_path(path + "/" + file)
+	thumbnail.thumbnail_menu_requested.connect(show_thumbnail_menu)
+	thumbnail.thumbnail_hover_end.connect(destory_thumbnail_menu)
+	menu_selection.connect(thumbnail.on_menu_selection)
+	clear_thumbnail_focus.connect(thumbnail._rename_canceled)
+
