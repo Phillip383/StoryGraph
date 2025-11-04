@@ -24,3 +24,5 @@ keep_editing_on_text_submit = true
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("2_kbgnl")
+
+[connection signal="text_changed" from="VBoxContainer/Search" to="." method="_on_search_text_changed"]

@@ -4,6 +4,7 @@ class_name LevelInspector
 
 @onready var tree : Tree = $VBoxContainer/Tree
 
+
 var root_item : TreeItem
 var active_level : Level
 var story_lines : Dictionary[String, Node] ## Stored as a dictionary for fast lookup when a node is clicked in the tree to move graph view to focus that node.
@@ -81,3 +82,16 @@ func focus_selected_story_line() -> void:
 	active_level.scroll_offset = (node.position_offset * active_level.zoom) - level_center + (node.size / 2.0)
 	active_level.zoom = 1.4
 	active_level.set_selected(node)
+
+
+func _on_search_text_changed(new_text: String) -> void:
+			
+	for item in root_item.get_children():
+		if item.get_text(0).contains(new_text):
+			item.visible = true
+		else:
+			item.visible = false
+
+	if new_text.length() == 0:
+		for item in root_item.get_children():
+			item.visible = true
