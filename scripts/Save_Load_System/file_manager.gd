@@ -54,27 +54,35 @@ func is_in_active_project():
 	return FileAccess.file_exists(get_project_file())
 
 ## Returns a path to the renamed file...
-func rename_file(_path : String, _name : StringName, _type : FileType) -> String:
-	var _new_name = _path.substr(0, _path.rfind("/") + 1) + _name + ".%s" % LEVEL_FILE_TYPE
-	DirAccess.rename_absolute(_path, _new_name)
-	match _type:
+func rename_file(_path : String, _name : StringName) -> String:
+	match get_type_by_path(_path):
 		FileType.LEVEL:
-			## Get the file name without the extension for the old and new.
-			var _old_name = _path.substr(_path.rfind("/") + 1).get_slice(".", 0)
-			var _new = _new_name.substr(_path.rfind("/") + 1).get_slice(".", 0)
-			level_renamed.emit(_old_name, _new)
-			return _new_name
+			return _rename_level(_path, _name)
 	return ""
 
-func delete_file(_path : String, _type : FileType):
+func _rename_level(_path : String, _name : StringName) -> String:
+	var _new_path = _path.substr(0, _path.rfind("/") + 1) + _name + ".%s" % LEVEL_FILE_TYPE
+	DirAccess.rename_absolute(_path, _new_path)
+	## Get the file name without the extension for the old and new.
+	var _old_name = _path.substr(_path.rfind("/") + 1).get_slice(".", 0)
+	var _new_name = _new_path.substr(_path.rfind("/") + 1).get_slice(".", 0)
+	level_renamed.emit(_old_name, _new_name)
+	return _new_name
+
+func get_type_by_path(_path : String):
+	if _path.contains(LEVEL_FILE_TYPE):
+		return FileType.LEVEL
+	elif _path.contains(TEMPLATE_FILE_TYPE):
+		return FileType.TEMPLATE
+
+func delete_file(_path : String):
 	DirAccess.remove_absolute(_path)
-	match _type:
+	match get_type_by_path(_path):
 		FileType.LEVEL:
 			var _name = _path.substr(_path.rfind("/"))
 			level_deleted.emit(_name)
 
 ## Opens a file, with only the name and type required, the method will append the correct file type.
-
 ## @param _name: the name of the file to open.
 ## @param _type: the type of file it is, IE. Level or template, see FileManager->LevelTypes
 ## @param _access: The mode to open it in, IE, FileAccess.WRITE, see FilAccess for more modes
@@ -170,6 +178,15 @@ func file_exists(_name : String, _type : FileType) -> bool:
 		FileType.TEMPLATE:
 			_path = get_template_by_name(_name)
 	return FileAccess.file_exists(_path)
+
+func file_exists_by_path(_path : String, _name) -> bool:
+	var path : String = _path.substr(0, _path.rfind("/") + 1) + _name
+	match get_type_by_path(_path):
+		FileType.LEVEL:
+			path = path + ".%s" % LEVEL_FILE_TYPE
+		FileType.TEMPLATE:
+			pass ## TODO: add template check...
+	return FileAccess.file_exists(path)
 
 func open_project(project_path : String) -> Error:
 	##Already open

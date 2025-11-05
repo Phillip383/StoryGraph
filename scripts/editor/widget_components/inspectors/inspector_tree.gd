@@ -46,7 +46,7 @@ func update_tree(_parent : Node, _item : Variant) -> void:
 
 func _on_level_renamed(_old : StringName, _new : StringName):
 	## If it's the active level, rename the root.
-	if root_item.get_text(0) == _old:
+	if root_item and root_item.get_text(0) == _old:
 		root_item.set_text(0, _new)
 
 func _on_level_changed(level: Level) -> void:

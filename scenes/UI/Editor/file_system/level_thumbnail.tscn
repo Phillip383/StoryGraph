@@ -57,7 +57,3 @@ alignment = 1
 editable = false
 context_menu_enabled = false
 emoji_menu_enabled = false
-selecting_enabled = false
-
-[connection signal="text_changed" from="HBox/Name" to="." method="_on_name_text_changed"]
-[connection signal="text_submitted" from="HBox/Name" to="." method="_on_name_text_submitted"]

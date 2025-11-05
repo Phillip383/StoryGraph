@@ -149,4 +149,3 @@ func connect_thumbnail(thumbnail, file, path):
 	thumbnail.thumbnail_hover_end.connect(destory_thumbnail_menu)
 	menu_selection.connect(thumbnail.on_menu_selection)
 	clear_thumbnail_focus.connect(thumbnail._rename_canceled)
-
