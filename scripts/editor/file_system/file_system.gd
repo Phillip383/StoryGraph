@@ -90,9 +90,7 @@ func create_thumbnails() -> void:
 	var selected_dir_path = _project_directory_path + "/" + tree.get_selected().get_text(0)
 	var files = DirAccess.get_files_at(selected_dir_path)
 	for file in files:
-		var thumbnail : LevelThumbnail = load(level_thumbnail).instantiate()
-		grid.add_child(thumbnail)
-		connect_thumbnail(thumbnail, file, selected_dir_path)
+		create_thumbnail(selected_dir_path, file)
 
 func on_item_selected() -> void:
 		create_thumbnails()
@@ -142,10 +140,26 @@ func on_file_removed() -> void:
 	pass
 
 ## Connects various signals for to handle actions on the thumbnails
-func connect_thumbnail(thumbnail, file, path):
-	thumbnail.set_thumbnail_name(file)
-	thumbnail.set_resource_path(path + "/" + file)
+func connect_thumbnail(thumbnail):
 	thumbnail.thumbnail_menu_requested.connect(show_thumbnail_menu)
 	thumbnail.thumbnail_hover_end.connect(destory_thumbnail_menu)
 	menu_selection.connect(thumbnail.on_menu_selection)
 	clear_thumbnail_focus.connect(thumbnail._rename_canceled)
+
+func create_thumbnail(selected_dir_path, file):
+	var thumbnail : LevelThumbnail = load(level_thumbnail).instantiate()
+	grid.add_child(thumbnail)
+	thumbnail.set_thumbnail_name(file)
+	thumbnail.set_resource_path(selected_dir_path + "/" + file)
+	connect_thumbnail(thumbnail)
+
+func does_thumbnail_exist(_name : String) -> bool:
+	for thumbnail in grid.get_children():
+		if thumbnail.get_thumbnail_name() == _name:
+			return true
+	return false
+
+func _on_level_save(active_level: Level) -> void:
+	if does_thumbnail_exist(active_level.name):
+		return
+	create_thumbnail(FileManager.get_levels_directory(), active_level.name)

@@ -28,6 +28,9 @@ func _gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		_rename_canceled()
 
+func get_thumbnail_name():
+	return _name_label.text
+
 func set_thumbnail_name(_name : String):
 	_name_label.text = _name.get_slice(".", 0) ## Name without extension
 
