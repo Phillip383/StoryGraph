@@ -13,14 +13,16 @@ func _ready() -> void:
 	close_requested.connect(on_close_request)
 	add_projects()
 
-
-func _on_search_text_submitted(new_text: String) -> void:
-	pass # Replace with function body.
-
-
 func _on_search_text_changed(new_text: String) -> void:
-	pass # Replace with function body.
-
+	var projects = project_list.get_children() as Array[ProjectListElement]
+	for project in projects:
+		if not project.get_project_name().contains(new_text):
+			project.visible = false
+		else:
+			project.visible = true
+	if new_text.length() <= 0:
+		for project in projects:
+			project.visible = true
 
 func _on_new_pressed() -> void:
 	var window = NEW_PROJECT_WINDOW.instantiate()

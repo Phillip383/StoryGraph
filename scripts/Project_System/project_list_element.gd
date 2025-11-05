@@ -21,6 +21,9 @@ func set_icon(_texture : Texture2D):
 func set_project_name(_text : String):
 	project_name.text = _text
 
+func get_project_name():
+	return project_name.text
+
 func set_project_path(_path : String):
 	_project_path = _path
 
