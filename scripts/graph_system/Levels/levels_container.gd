@@ -135,12 +135,22 @@ func save(_file_name, _type):
 	return error
 
 func load_level(_data):
+	if is_level_open(_data["name"]):
+		return
+
 	var loaded_level : Level = LEVEL_SCENE.instantiate()
 	add_child(loaded_level)
 	loaded_level.load_level(_data)
 	current_tab = get_tab_idx_from_control(loaded_level)
 	connect_for_updates(loaded_level)
 	FileManager.post_level_load.emit(loaded_level)
+
+func is_level_open(_name : StringName) -> bool:
+	for i in range(get_child_count()):
+		if get_tab_title(i) == _name:
+			current_tab = i
+			return true
+	return false
 
 func _on_create_new_Level_pressed() -> void:
 	create_new_level()

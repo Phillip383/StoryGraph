@@ -90,7 +90,7 @@ func focus_selected_story_line() -> void:
 
 
 func _on_search_text_changed(new_text: String) -> void:
-			
+
 	for item in root_item.get_children():
 		if item.get_text(0).contains(new_text):
 			item.visible = true
