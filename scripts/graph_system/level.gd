@@ -33,11 +33,7 @@ func _ready() -> void:
 	begin_node_move.connect(on_node_begin_move)
 	delete_nodes_request.connect(delete_nodes)
 	## Add the additional valid connection types.
-	add_valid_connection_type(NodeData.NodeType.ENTRY, NodeData.NodeType.EXIT)
-	add_valid_connection_type(NodeData.NodeType.ENTRY, NodeData.NodeType.TRANSIT)
-	add_valid_connection_type(NodeData.NodeType.LINK, NodeData.NodeType.TRANSIT)
-	add_valid_connection_type(NodeData.NodeType.TRANSIT, NodeData.NodeType.EXIT)
-
+	_init_connection_types()
 	## Have to do this in _ready for every graph spawned, signals connected in the editor, are unique.
 	node_details = get_tree().get_first_node_in_group("Node Details")
 
@@ -50,6 +46,13 @@ func get_current_state() -> GraphManager.GraphState:
 
 func set_level_name(_name : StringName):
 	level_name = _name
+
+func _init_connection_types():
+	add_valid_connection_type(NodeData.NodeType.ENTRY, NodeData.NodeType.EXIT)
+	add_valid_connection_type(NodeData.NodeType.ENTRY, NodeData.NodeType.TRANSIT)
+	add_valid_connection_type(NodeData.NodeType.LINK, NodeData.NodeType.TRANSIT)
+	add_valid_connection_type(NodeData.NodeType.TRANSIT, NodeData.NodeType.EXIT)
+
 
 ##Listens for the popup request of the graph. Used primarily to make the context menu visible at the mouse location
 func _on_popup_request(_location : Vector2):

@@ -79,7 +79,7 @@ func delete_file(_path : String):
 	DirAccess.remove_absolute(_path)
 	match get_type_by_path(_path):
 		FileType.LEVEL:
-			var _name = _path.substr(_path.rfind("/"))
+			var _name = _path.substr(_path.rfind("/") + 1)
 			level_deleted.emit(_name)
 
 ## Opens a file, with only the name and type required, the method will append the correct file type.
