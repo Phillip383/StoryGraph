@@ -6,7 +6,6 @@ const NODE_SCENE = preload("res://scenes/UI/Graph/Nodes/story_node_base.tscn")
 const DEFAULT_NAME = "(unsaved)"
 
 ## EXPORTS
-@export var level_data : LevelData ## This is handled internally, no need to change values in the editor, it's export for debugging purposes, and is unique per level instance.
 @export var _node_id : int ## DO NOT CHANGE THIS WITHOUT THE METHODS!!!!
 
 ## SIGNALS
@@ -17,14 +16,16 @@ signal on_story_lines_removed(_name : Array[StringName])
 
 @onready var context_menu = $"GraphNodeMenu"
 @onready var manager = $GraphManager ## Handles the state of the level.
+@onready var level_name : StringName = DEFAULT_NAME
 
 var node_details : NodeDetailsInspector
 
 var node_connections : Array[Dictionary]
 
+var level_id : int = -1
+
 func _ready() -> void:
-	name = DEFAULT_NAME
-	level_data = LevelData.new()
+	name = level_name
 	popup_request.connect(_on_popup_request)
 	connection_request.connect(_on_connection)
 	node_deselected.connect(on_node_deselected)
@@ -47,9 +48,10 @@ func get_next_node_id():
 func get_current_state() -> GraphManager.GraphState:
 	return manager.current_state
 
-"""
-Listens for the popup request of the graph. Used primarily to make the context menu visible at the mouse location
-"""
+func set_level_name(_name : StringName):
+	level_name = _name
+
+##Listens for the popup request of the graph. Used primarily to make the context menu visible at the mouse location
 func _on_popup_request(_location : Vector2):
 	var clicked_node : BaseStoryNode = get_node_at_position(_location)
 	if is_instance_valid(clicked_node):
@@ -58,9 +60,8 @@ func _on_popup_request(_location : Vector2):
 		context_menu.position = get_viewport().get_mouse_position()
 		context_menu.show()
 
-"""
-Listens for the add node request from the context menu.
-"""
+
+##Listens for the add node request from the context menu.
 func add_node(node : GraphNode, _type : NodeData.NodeType = 0):
 	add_child(node)
 	node.on_data_changed.connect(on_node_changed)
@@ -86,9 +87,7 @@ func delete_nodes(nodes : Array[StringName]):
 	if story_lines.size() > 0:
 		on_story_lines_removed.emit(story_lines) ##Inform the tree and editor of the deleted nodes.
 
-"""
-Listens for the connection request of the graph.
-"""
+##Listens for the connection request of the graph.
 func _on_connection(from_node: StringName, from_port: int, to_node: StringName, to_port: int):
 	## Get the node's being connected names
 	var f_node = get_node("%s" % from_node).title
@@ -106,9 +105,8 @@ func _on_connection(from_node: StringName, from_port: int, to_node: StringName, 
 	manager._change_state(GraphManager.GraphState.EDITING)
 	on_edited.emit(self)
 
-"""
-This methods intended functionality is to check if the user right clicks on a node to keep the graph from consuming the input for it's context menu signal.
-"""
+
+##This methods intended functionality is to check if the user right clicks on a node to keep the graph from consuming the input for it's context menu signal.
 func get_node_at_position(_location: Vector2):
 	for child in get_children():
 		if child is BaseStoryNode: ## Check if the child is a story node.
@@ -118,21 +116,20 @@ func get_node_at_position(_location: Vector2):
 				return node
 	return null
 
-"""
-packs the level connections and it's node's within a dictionary and save's it a .level file. The level_state dictionary structure:
-	name, - The level name.
-	id, - The level id
-	con, - An array of dictionaries for the connections of the graph.
-	nodes - An array of all the node's within the graph
-@param _file_name: the name to give the saved level.
-@return A dictionary of the level's packed state, or null if the save failed.
-"""
+
+##packs the level connections and it's node's within a dictionary and save's it a .level file. The level_state dictionary structure:
+##	name, - The level name.
+##	id, - The level id
+##	con, - An array of dictionaries for the connections of the graph.
+##	nodes - An array of all the node's within the graph
+##@param _file_name: the name to give the saved level.
+##@return A dictionary of the level's packed state, or null if the save failed.
 func save_level(_file_name = name) -> Dictionary[StringName, Variant]:
 	manager._change_state(GraphManager.GraphState.SAVING)
 	name = _file_name
 	var _state : Dictionary[StringName, Variant]
 	_state["name"] = _file_name
-	_state["id"] = level_data.level_id
+	_state["id"] = level_id
 	_state["node_id"] = _node_id if _node_id else -1
 	_state["con"] = node_connections
 	_state["nodes"] = []
@@ -144,15 +141,13 @@ func save_level(_file_name = name) -> Dictionary[StringName, Variant]:
 	manager._change_state(GraphManager.GraphState.IDLE)
 	return _state
 
-"""
-Loads a level's previous state from disk.
-@param _file - the level file to load.
-"""
+
+##Loads a level's previous state from disk.
+##@param _file - the level file to load.
 func load_level(_data):
 	manager._change_state(GraphManager.GraphState.LOADING)
 	name = _data["name"]
-	level_data.level_id = _data["id"]
-	level_data.level_name = name
+	level_id = _data["id"]
 	_node_id = _data["node_id"] if _data.get("node_id") else -1
 	node_connections = _data["con"]
 	var nodes = _data["nodes"]

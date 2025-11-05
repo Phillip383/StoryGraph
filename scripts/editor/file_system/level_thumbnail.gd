@@ -6,7 +6,6 @@ class_name LevelThumbnail
 
 signal thumbnail_menu_requested(thumbnail)
 signal thumbnail_hover_end()
-signal file_renamed(_name : StringName)
 
 ## The path to the file this thumbnail represents.
 var _resource_path : String
@@ -24,7 +23,7 @@ func _process(_delta: float) -> void:
 	turn_off_menu()
 
 func set_thumbnail_name(_name : String):
-	_name_label.text = _name
+	_name_label.text = _name.get_slice(".", 0) ## Name without extension
 
 func get_resource_path():
 	return _resource_path
@@ -87,8 +86,7 @@ func _rename_canceled():
 
 func _rename_file(_new_name : StringName):
 	_name_label.editable = false
-	FileManager.rename_file(_resource_path, _new_name, FileManager.FileType.LEVEL)
-	file_renamed.emit(_new_name)
+	_resource_path = FileManager.rename_file(_resource_path, _new_name, FileManager.FileType.LEVEL)
 
 func _delete_file():
 	FileManager.delete_file(_resource_path, FileManager.FileType.LEVEL)

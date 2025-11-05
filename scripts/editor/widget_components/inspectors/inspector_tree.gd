@@ -16,6 +16,7 @@ func _ready() -> void:
 	super._ready()
 	tree.item_selected.connect(focus_selected_story_line)
 	FileManager.post_level_load.connect(_on_level_load)
+	FileManager.level_renamed.connect(_on_level_renamed)
 
 ## Creates the tree structure with the active level's nodes.
 func create_tree() -> void:
@@ -43,6 +44,8 @@ func find_level_story_lines() -> void:
 func update_tree(_parent : Node, _item : Variant) -> void:
 	pass
 
+func _on_level_renamed(_old : StringName, _new : StringName):
+	root_item.set_text(0, _new)
 
 func _on_level_changed(level: Level) -> void:
 	if active_level == level:

@@ -29,18 +29,19 @@ func _ready() -> void:
 	get_tab_bar().tab_close_pressed.connect(on_tab_closed)
 
 func level_deleted(_name : StringName):
-	print("Level Deleted")
+	_name = _name.get_slice(".", 0)
 	for i in range(get_child_count()):
 		var level = get_tab_control(i) as Level
-		if level and level.level_data.level_name == _name:
-			level.queue_free()
+		if level:
+			var to_find_name = level.name.get_slice(".", 0)
+			if to_find_name == _name:
+				level.queue_free()
 
 func level_renamed(_old_name : StringName, _new_name : StringName):
-	print("Level Renamed")
 	for i in range(get_child_count()):
 		var level = get_tab_control(i) as Level
-		if level and level.level_data.level_name == _old_name: ##TODO: This isn't working because of the .level ext.
-			level.level_data.level_name = _new_name
+		if level and level.name == _old_name:
+			level.name = _new_name ## The signal in FileManager appends the file extension.
 			set_tab_title(i, _new_name)
 
 func clear_levels():

@@ -53,13 +53,18 @@ func get_current_project_dir():
 func is_in_active_project():
 	return FileAccess.file_exists(get_project_file())
 
-func rename_file(_path : String, _name : StringName, _type : FileType):
-	var _new_name = _path.substr(0, _path.rfind("/") + 1) + _name
+## Returns a path to the renamed file...
+func rename_file(_path : String, _name : StringName, _type : FileType) -> String:
+	var _new_name = _path.substr(0, _path.rfind("/") + 1) + _name + ".%s" % LEVEL_FILE_TYPE
 	DirAccess.rename_absolute(_path, _new_name)
 	match _type:
 		FileType.LEVEL:
-			var _old_name = _path.substr(_path.rfind("/"))
-			level_renamed.emit(_old_name, _new_name)
+			## Get the file name without the extension for the old and new.
+			var _old_name = _path.substr(_path.rfind("/") + 1).get_slice(".", 0)
+			var _new = _new_name.substr(_path.rfind("/") + 1).get_slice(".", 0)
+			level_renamed.emit(_old_name, _new)
+			return _new_name
+	return ""
 
 func delete_file(_path : String, _type : FileType):
 	DirAccess.remove_absolute(_path)
@@ -128,6 +133,7 @@ func load_file_by_name(_file_name : String, _type : FileType, _status) -> Dictio
 		var _file = open_file(_file_name, _type, FileAccess.READ)
 		if _file:
 			contents = _file.get_var()
+			contents["name"] = _file_name ## If the file has been renamed since it's last open.
 			on_level_load_request.emit(contents)
 		else:
 			_status.append(FileAccess.get_open_error())
@@ -146,6 +152,8 @@ func load_file_by_path(_path : String):
 	if _file:
 		## TODO: Change this to json and encrypt it, this isn't safe.
 		var _data = _file.get_var()
+		## Get the name of the file and store it, if the file has been renamed since it's last open and save.
+		_data["name"] = _path.substr(_path.rfind("/") + 1, _path.rfind("."))
 		on_level_load_request.emit(_data)
 		_file.close()
 	else:
