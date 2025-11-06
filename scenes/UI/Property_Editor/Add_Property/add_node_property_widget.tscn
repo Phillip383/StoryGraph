@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://b7n8ikp3s06y0"]
 
 [ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://themes/story_graph_theme.tres" id="1_f6su1"]
-[ext_resource type="Script" uid="uid://ccca6o6qxu7eq" path="res://scripts/graph_system/Options_Widgets/add_node_property_widget.gd" id="1_xtj4v"]
+[ext_resource type="Script" uid="uid://ccca6o6qxu7eq" path="res://scripts/graph_system/PropertyEditor/add_node_property_widget.gd" id="1_xtj4v"]
 [ext_resource type="PackedScene" uid="uid://dc7tyol3idpog" path="res://scenes/UI/Property_Editor/type_option.tscn" id="2_mvx2r"]
 [ext_resource type="PackedScene" uid="uid://ca1n3r2xqkoun" path="res://scenes/UI/Property_Editor/container_size_widget.tscn" id="3_14ajs"]
 

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bsdca22cutwdk"]
 
 [ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://themes/story_graph_theme.tres" id="1_5lhxr"]
-[ext_resource type="Script" uid="uid://cfqs3n206pom4" path="res://scripts/editor/widget_components/inspector_container.gd" id="2_xeajo"]
+[ext_resource type="Script" uid="uid://cfqs3n206pom4" path="res://scripts/editor/widget_components/inspectors/inspector_container.gd" id="2_xeajo"]
 
 [node name="InspectorContainer" type="TabContainer" groups=["Inspectors"]]
 custom_minimum_size = Vector2(300, 0)
