@@ -4,7 +4,7 @@ extends Window
 @export var IMPORT_WINDOW : PackedScene
 @export var PROJECT_LIST_ELEMENT : PackedScene
 
-@onready var project_list : VBoxContainer = $PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/ProjectList
+@onready var _project_list_container : VBoxContainer = $PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/ProjectList
 
 signal on_selection(_project : String)
 
@@ -14,15 +14,9 @@ func _ready() -> void:
 	add_projects()
 
 func _on_search_text_changed(new_text: String) -> void:
-	var projects = project_list.get_children() as Array[ProjectListElement]
+	var projects = _project_list_container.get_children() as Array[ProjectListElement]
 	for project in projects:
-		if not project.get_project_name().contains(new_text):
-			project.visible = false
-		else:
-			project.visible = true
-	if new_text.length() <= 0:
-		for project in projects:
-			project.visible = true
+			project.visible = new_text.is_empty() or project.get_project_name().contains(new_text)
 
 func _on_new_pressed() -> void:
 	var window = NEW_PROJECT_WINDOW.instantiate()
@@ -37,7 +31,7 @@ func _on_import_pressed() -> void:
 	FileManager.add_project_to_list(project)
 	var element : ProjectListElement = PROJECT_LIST_ELEMENT.instantiate()
 	element.on_selection.connect(project_selected)
-	project_list.add_child(element)
+	_project_list_container.add_child(element)
 	element.set_project_name(project.keys()[0])
 	element.set_project_path(project.values()[0])
 
@@ -47,19 +41,19 @@ func _on_close_pressed() -> void:
 
 func add_projects():
 	# element.set_icon() #TODO: when project settings are created add this...
-	var proj_list = GraphEditor.get_project_list()
-	if proj_list:
-		for proj in proj_list:
-			for proj_name in proj:
+	var project_list = GraphEditor.get_project_list()
+	if project_list:
+		for project in project_list:
+			for project_name in project:
 				var element : ProjectListElement = PROJECT_LIST_ELEMENT.instantiate()
+				_project_list_container.add_child(element)
 				element.on_selection.connect(project_selected)
-				project_list.add_child(element)
-				element.set_project_name(proj_name)
-				element.set_project_path(proj[proj_name])
+				element.set_project_name(project_name)
+				element.set_project_path(project[project_name])
 
-func project_selected(_project):
-	on_selection.emit(_project)
-	FileManager.open_project(_project)
+func project_selected(project):
+	on_selection.emit(project)
+	FileManager.open_project(project)
 	queue_free()
 
 func on_close_request():
