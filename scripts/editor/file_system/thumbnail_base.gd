@@ -7,19 +7,22 @@ signal thumbnail_hover_end()
 ## The path to the file this thumbnail represents.
 var _resource_path : String
 var _active : bool = false
+var _is_menu_open : bool = false
 
 @onready var _name_label : LineEdit = $HBox/Name
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	mouse_entered.connect(_on_mouse_entered)
+	mouse_exited.connect(_on_mouse_exited)
 	_name_label.focus_exited.connect(_rename_canceled)
 	_name_label.gui_input.connect(_gui_input)
 	_name_label.text_submitted.connect(_on_name_text_submitted)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	turn_off_menu()
+func _process(_delta: float) -> void:
+	if _is_menu_open:
+		turn_off_menu()
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
@@ -43,8 +46,13 @@ func set_resource_path(_path : String):
 func _on_mouse_entered():
 	selected()
 
+func _on_mouse_exited():
+	if not _is_menu_open:
+		deselect()
+
 func show_menu():
 	selected()
+	_is_menu_open = true
 	thumbnail_menu_requested.emit(self)
 
 func on_menu_selection(id : int, thumbnail):
@@ -55,12 +63,11 @@ func on_menu_selection(id : int, thumbnail):
 			thumbnail._delete_file()
 
 func turn_off_menu():
-	if not _active:
-		return
 	var mouse_pos = get_global_mouse_position()
 	var rect = get_global_rect()
 	if not rect.has_point(mouse_pos):
 		deselect()
+		_is_menu_open = false
 		thumbnail_hover_end.emit()
 
 func selected():
