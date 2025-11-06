@@ -70,9 +70,10 @@ func _rename_level(_path : String, _name : StringName) -> String:
 	return _new_name
 
 func get_type_by_path(_path : String):
-	if _path.contains(LEVEL_FILE_TYPE):
+	var extension = _path.get_extension()
+	if extension == LEVEL_FILE_TYPE:
 		return FileType.LEVEL
-	elif _path.contains(TEMPLATE_FILE_TYPE):
+	elif extension == TEMPLATE_FILE_TYPE:
 		return FileType.TEMPLATE
 
 func delete_file(_path : String):
@@ -93,11 +94,9 @@ func open_file(_name : String, _type : FileType, _access : FileAccess.ModeFlags,
 	var _path : String
 	match _type:
 		FileType.LEVEL:
-			_path = get_level_by_name(_name)
-			_file = FileAccess.open(_path, _access)
+			_file = _open_level_by_name(_name, _access)
 		FileType.TEMPLATE:
-			_path = get_template_by_name(_name)
-			_file = FileAccess.open(_path, _access)
+			_file = _open_template_by_name(_name, _access)
 
 	if not _file:
 		_status.append(FileAccess.get_open_error()) ## If opening failed, return the error
@@ -105,6 +104,13 @@ func open_file(_name : String, _type : FileType, _access : FileAccess.ModeFlags,
 
 	return _file
 
+func _open_level_by_name(_name, access) -> FileAccess:
+	var path = get_level_by_name(_name)
+	return FileAccess.open(path, access)
+
+func _open_template_by_name(_name, access) -> FileAccess:
+	var path = get_template_by_name(_name)
+	return FileAccess.open(path, access)
 
 ## Saves the given data to a file of a relevant file type given the enum _type. Will create the file if it doesn't already exist.
 ## @param _name: the name of the file to save.
@@ -231,3 +237,14 @@ func get_project_file():
 func set_application_title():
 	var tokens = _current_project_dir.split("/")
 	get_tree().root.title = "%s - Project - %s" % [ProjectSettings.get_setting("application/config/name"), tokens[tokens.size() - 1]]
+
+func create_directory(_path : String, _name : StringName = "New Folder"):
+	_path = _path + "/%s" % _name
+	DirAccess.make_dir_recursive_absolute(_path)
+
+func move_file(_from_path : String, _to_path : String):
+	var err = DirAccess.copy_absolute(_from_path, _to_path)
+	assert(err == OK, "move file failed: " + error_string(err))
+	if err == OK:
+		if DirAccess.dir_exists_absolute(_from_path):
+			DirAccess.remove_absolute(_from_path)

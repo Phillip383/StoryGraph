@@ -1,0 +1,57 @@
+[gd_scene load_steps=8 format=3 uid="uid://b2jonllgikwpk"]
+
+[ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://themes/story_graph_theme.tres" id="1_nb5q8"]
+[ext_resource type="Script" uid="uid://dpkxqcyug7brw" path="res://scripts/editor/file_system/thumbnail_base.gd" id="2_vav5y"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x1atd"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_udytr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bba8y"]
+bg_color = Color(0.23921569, 0.23921569, 0.23921569, 0.4627451)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_udytr"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bba8y"]
+
+[node name="Panel" type="PanelContainer"]
+material = SubResource("ShaderMaterial_x1atd")
+custom_minimum_size = Vector2(150, 175)
+offset_right = 219.0
+offset_bottom = 175.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_nb5q8")
+theme_type_variation = &"PanelButton"
+theme_override_styles/panel = SubResource("StyleBoxEmpty_udytr")
+script = ExtResource("2_vav5y")
+
+[node name="HBox" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(150, 80)
+layout_mode = 2
+
+[node name="Icon" type="TextureRect" parent="HBox"]
+layout_mode = 2
+size_flags_vertical = 3
+expand_mode = 3
+
+[node name="Name" type="LineEdit" parent="HBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_bba8y")
+theme_override_styles/read_only = SubResource("StyleBoxFlat_udytr")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_bba8y")
+text = "name"
+alignment = 1
+editable = false
+context_menu_enabled = false
+emoji_menu_enabled = false

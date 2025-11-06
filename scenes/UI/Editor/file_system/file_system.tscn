@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://dld0uhok1cub8"]
+[gd_scene load_steps=6 format=3 uid="uid://dld0uhok1cub8"]
 
 [ext_resource type="Script" uid="uid://bdwieva6houra" path="res://scripts/editor/file_system/file_system.gd" id="1_bref1"]
+[ext_resource type="PackedScene" uid="uid://chh5caygrmqp1" path="res://scenes/UI/Editor/file_system/dir_thumbnail.tscn" id="2_07mp2"]
 [ext_resource type="PackedScene" uid="uid://bjk0rmj702kfu" path="res://scenes/UI/Editor/file_system/file_system_menu.tscn" id="2_u1x8l"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u1x8l"]
@@ -32,6 +33,7 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_u1x8l")
 script = ExtResource("1_bref1")
 level_thumbnail = "uid://c63qvj6jb18ws"
+dir_thumbnail = ExtResource("2_07mp2")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
