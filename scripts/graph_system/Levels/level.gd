@@ -2,7 +2,7 @@ extends GraphEdit
 
 class_name Level
 
-const NODE_SCENE = preload("res://scenes/UI/Graph/Nodes/story_node_base.tscn")
+@export var NODE_SCENE : PackedScene
 const DEFAULT_NAME = "(unsaved)"
 
 ## EXPORTS

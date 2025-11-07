@@ -1,7 +1,7 @@
 extends Window
 
-const OPEN_PROJECT_DIALOG = preload("res://scenes/UI/Project_System/open_project_dialog.tscn")
-const WARNING_POPUP = preload("res://scenes/UI/Popups/warning_popup.tscn")
+@export var OPEN_PROJECT_DIALOG : PackedScene
+@export var WARNING_POPUP : PackedScene
 const DIRECTORY_NOT_FOUND_MSG = "Directory Not Found!"
 const DIRECTORY_FAILURE = "Failed To Create Directory! Check Path"
 const FILE_FAILURE = "Failed To Create File!"

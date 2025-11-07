@@ -2,7 +2,7 @@ extends Window
 
 class_name SaveWindow
 
-const WARNING_POPUP = preload("res://scenes/UI/Popups/warning_popup.tscn")
+@export var WARNING_POPUP : PackedScene
 const WARNING_EXISTS = "Level with name already exists."
 const WARNING_NO_NAME = "Please Name The Level."
 

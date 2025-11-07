@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://c8qxe00r5a84q"]
+[gd_scene load_steps=5 format=3 uid="uid://c8qxe00r5a84q"]
 
 [ext_resource type="Script" uid="uid://bsn1hb3q51yd1" path="res://scripts/State_Machine/graph_manager.gd" id="1_8ctcl"]
 [ext_resource type="Script" uid="uid://duh4yccltdvp" path="res://scripts/graph_system/Levels/level.gd" id="1_rqtha"]
-[ext_resource type="PackedScene" uid="uid://c7xdg8k5bdgco" path="res://scenes/UI/Graph/Menus/graph_context_menu.tscn" id="2_pehdu"]
+[ext_resource type="PackedScene" uid="uid://dhrg7t8ktb4jq" path="res://scenes/Graph/Nodes/story_node_base.tscn" id="2_j0e33"]
+[ext_resource type="PackedScene" uid="uid://c7xdg8k5bdgco" path="res://scenes/Graph/Menus/graph_context_menu.tscn" id="2_pehdu"]
 
 [node name="Level" type="GraphEdit" groups=["Levels"]]
 anchors_preset = 15
@@ -13,6 +14,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_rqtha")
+NODE_SCENE = ExtResource("2_j0e33")
 
 [node name="GraphManager" type="Control" parent="."]
 anchors_preset = 0

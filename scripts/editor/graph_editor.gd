@@ -2,7 +2,7 @@ extends Node
 
 var unsaved_levels : Array[Level]
 
-@export var PROJECT_HUB : PackedScene = preload("res://scenes/UI/Project_System/project_hub.tscn")
+@export var PROJECT_HUB : PackedScene = preload("res://scenes/Project_System/project_hub.tscn")
 
 
 ## Const string literals for storing the state of the editor upon closing and opening.
@@ -48,7 +48,7 @@ func on_application_open():
 	## Create the config file if it's missing.
 	if not FileAccess.file_exists(get_editor_conf_path()):
 		var config = FileAccess.open(get_editor_conf_path(), FileAccess.WRITE)
-		config.close()		
+		config.close()
 
 	var hub= PROJECT_HUB.instantiate()
 	get_tree().current_scene.add_child(hub)

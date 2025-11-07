@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://dve5m4oenyl6c"]
+[gd_scene load_steps=7 format=3 uid="uid://dve5m4oenyl6c"]
 
 [ext_resource type="Script" uid="uid://qq4eta1y80aj" path="res://scripts/Project_System/create_project_menu.gd" id="1_b5g5k"]
 [ext_resource type="Texture2D" uid="uid://cdxsj8rowihyu" path="res://assets/Icons/Folder_Icon.svg" id="2_b5g5k"]
+[ext_resource type="PackedScene" uid="uid://cyrnjdcvfxucg" path="res://scenes/Project_System/open_project_dialog.tscn" id="2_dyr8p"]
+[ext_resource type="PackedScene" uid="uid://6lf7jg8ji8um" path="res://scenes/Popups/warning_popup.tscn" id="3_17sq0"]
 [ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://themes/story_graph_theme.tres" id="3_bl1ch"]
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_flodl"]
@@ -18,6 +20,8 @@ wrap_controls = true
 transient = true
 exclusive = true
 script = ExtResource("1_b5g5k")
+OPEN_PROJECT_DIALOG = ExtResource("2_dyr8p")
+WARNING_POPUP = ExtResource("3_17sq0")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 anchors_preset = 15

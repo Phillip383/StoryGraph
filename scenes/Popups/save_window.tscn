@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bjg65kvgcmtp7"]
+[gd_scene load_steps=3 format=3 uid="uid://bjg65kvgcmtp7"]
 
 [ext_resource type="Script" uid="uid://1tdwxmiis6ng" path="res://scripts/Popups/save_window.gd" id="1_b1jpx"]
+[ext_resource type="PackedScene" uid="uid://6lf7jg8ji8um" path="res://scenes/Popups/warning_popup.tscn" id="2_rf8lh"]
 
 [node name="SaveWindow" type="Window"]
 oversampling_override = 1.0
@@ -11,6 +12,7 @@ wrap_controls = true
 transient = true
 exclusive = true
 script = ExtResource("1_b1jpx")
+WARNING_POPUP = ExtResource("2_rf8lh")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 custom_minimum_size = Vector2(300, 200)

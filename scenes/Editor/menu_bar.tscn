@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://d02ibhobc3ulp" path="res://scripts/editor/Menus/menu_bar.gd" id="1_hemlw"]
 [ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://themes/story_graph_theme.tres" id="1_ohdrm"]
-[ext_resource type="PackedScene" uid="uid://dve5m4oenyl6c" path="res://scenes/UI/Project_System/create_project_menu.tscn" id="2_3mfyf"]
-[ext_resource type="PackedScene" uid="uid://bhc6x433xunet" path="res://scenes/UI/Project_System/project_hub.tscn" id="3_uteul"]
-[ext_resource type="PackedScene" uid="uid://cyrnjdcvfxucg" path="res://scenes/UI/Project_System/open_project_dialog.tscn" id="4_31a45"]
+[ext_resource type="PackedScene" uid="uid://dve5m4oenyl6c" path="res://scenes/Project_System/create_project_menu.tscn" id="2_3mfyf"]
+[ext_resource type="PackedScene" uid="uid://bhc6x433xunet" path="res://scenes/Project_System/project_hub.tscn" id="3_uteul"]
+[ext_resource type="PackedScene" uid="uid://cyrnjdcvfxucg" path="res://scenes/Project_System/open_project_dialog.tscn" id="4_31a45"]
 
 [node name="PanelContainer" type="PanelContainer"]
 custom_minimum_size = Vector2(0, 25)

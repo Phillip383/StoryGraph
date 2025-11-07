@@ -11,7 +11,7 @@ instead of via the editor.
 """
 var ADD_NODE_ID := 0
 
-const NEW_NODE_MENU = preload("res://scenes/UI/Graph/Nodes/new_node.tscn")
+@export var NEW_NODE_MENU : PackedScene
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

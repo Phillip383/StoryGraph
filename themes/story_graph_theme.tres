@@ -1,7 +1,7 @@
 [gd_resource type="Theme" load_steps=34 format=3 uid="uid://wro5ncgxmqmq"]
 
-[ext_resource type="StyleBox" uid="uid://b2qm54bw8xoeo" path="res://scenes/UI/Editor/file_system/level_thumbnail_hover.tres" id="1_dkp04"]
-[ext_resource type="StyleBox" uid="uid://dljp0tpyscvy3" path="res://scenes/UI/Editor/file_system/level_thumbnail_normal.tres" id="2_m4s2e"]
+[ext_resource type="StyleBox" uid="uid://b2qm54bw8xoeo" path="res://scenes/Editor/file_system/level_thumbnail_hover.tres" id="1_dkp04"]
+[ext_resource type="StyleBox" uid="uid://dljp0tpyscvy3" path="res://scenes/Editor/file_system/level_thumbnail_normal.tres" id="2_m4s2e"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vx0gl"]
 bg_color = Color(0, 0.6901961, 1, 0.24705882)

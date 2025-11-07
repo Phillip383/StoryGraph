@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cyrnjdcvfxucg"]
 
 [ext_resource type="Script" uid="uid://da3o41k52bv2i" path="res://scripts/Project_System/open_project_dialog.gd" id="1_13nhy"]
-[ext_resource type="PackedScene" uid="uid://6lf7jg8ji8um" path="res://scenes/UI/Popups/warning_popup.tscn" id="2_qnsq0"]
+[ext_resource type="PackedScene" uid="uid://6lf7jg8ji8um" path="res://scenes/Popups/warning_popup.tscn" id="2_qnsq0"]
 
 [node name="OpenProjectDialog" type="FileDialog"]
 oversampling_override = 1.0

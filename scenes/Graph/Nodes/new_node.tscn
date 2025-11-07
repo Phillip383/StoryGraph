@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=3 uid="uid://b6r5vcqluu23c"]
 
 [ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://themes/story_graph_theme.tres" id="1_4r8f6"]
-[ext_resource type="PackedScene" uid="uid://sal8elh8wlh6" path="res://scenes/UI/Graph/Nodes/node_type_selection.tscn" id="1_xcrec"]
+[ext_resource type="PackedScene" uid="uid://sal8elh8wlh6" path="res://scenes/Graph/Nodes/node_type_selection.tscn" id="1_xcrec"]
 [ext_resource type="Script" uid="uid://dtai0uvp3h0hr" path="res://scripts/graph_system/Nodes/new_node_window.gd" id="2_ml3k4"]
-[ext_resource type="PackedScene" uid="uid://dhrg7t8ktb4jq" path="res://scenes/UI/Graph/Nodes/story_node_base.tscn" id="3_qavgm"]
+[ext_resource type="PackedScene" uid="uid://dhrg7t8ktb4jq" path="res://scenes/Graph/Nodes/story_node_base.tscn" id="3_qavgm"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4r8f6"]
 bg_color = Color(0.12941177, 0.12941177, 0.12941177, 1)
