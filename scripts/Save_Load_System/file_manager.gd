@@ -55,19 +55,13 @@ func is_in_active_project():
 
 ## Returns a path to the renamed file...
 func rename_file(_path : String, _name : StringName) -> String:
-	match get_type_by_path(_path):
-		FileType.LEVEL:
-			return _rename_level(_path, _name)
-	return ""
-
-func _rename_level(_path : String, _name : StringName) -> String:
-	var _new_path = _path.substr(0, _path.rfind("/") + 1) + _name + ".%s" % LEVEL_FILE_TYPE
-	DirAccess.rename_absolute(_path, _new_path)
-	## Get the file name without the extension for the old and new.
-	var _old_name = _path.substr(_path.rfind("/") + 1).get_slice(".", 0)
-	var _new_name = _new_path.substr(_path.rfind("/") + 1).get_slice(".", 0)
-	level_renamed.emit(_old_name, _new_name)
-	return _new_name
+	var ext = _path.get_extension()
+	var dir_name = _name
+	var file_name : StringName = "%s.%s" % [_name, ext]
+	_name = file_name if not ext.is_empty() else dir_name
+	var new_path = _path.substr(0, _path.rfind("/") + 1) + _name
+	DirAccess.rename_absolute(_path, new_path)
+	return new_path
 
 func get_type_by_path(_path : String):
 	var extension = _path.get_extension()
@@ -76,12 +70,24 @@ func get_type_by_path(_path : String):
 	elif extension == TEMPLATE_FILE_TYPE:
 		return FileType.TEMPLATE
 
+## Will recursivly delete directories...
 func delete_file(_path : String):
+	if DirAccess.dir_exists_absolute(_path):
+		recurse_remove_dirs(_path)
+
 	DirAccess.remove_absolute(_path)
 	match get_type_by_path(_path):
 		FileType.LEVEL:
 			var _name = _path.substr(_path.rfind("/") + 1)
 			level_deleted.emit(_name)
+
+func recurse_remove_dirs(_path : String):
+	var dir = DirAccess.open(_path)
+	var dirs = dir.get_directories()
+	if dirs.size() > 0:
+		for d in dirs:
+			delete_file(_path + "/" + d) ## Recursivly remove directories...
+
 
 ## Opens a file, with only the name and type required, the method will append the correct file type.
 ## @param _name: the name of the file to open.
@@ -248,3 +254,6 @@ func move_file(_from_path : String, _to_path : String):
 	if err == OK:
 		if DirAccess.dir_exists_absolute(_from_path):
 			DirAccess.remove_absolute(_from_path)
+
+func rename_directory(_from : String, _to : String) -> int:
+	return DirAccess.rename_absolute(_from, _to)

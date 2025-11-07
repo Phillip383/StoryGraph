@@ -3,6 +3,7 @@ class_name ThumbnailBase
 
 signal thumbnail_menu_requested(thumbnail)
 signal thumbnail_hover_end()
+signal thumbnail_deleted()
 
 ## The path to the file this thumbnail represents.
 var _resource_path : String
@@ -91,6 +92,7 @@ func _rename_file(_new_name : StringName):
 
 func _delete_file():
 	FileManager.delete_file(_resource_path)
+	thumbnail_deleted.emit()	
 	queue_free()
 
 func _rename_canceled():

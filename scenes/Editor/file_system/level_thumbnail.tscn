@@ -1,68 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://c63qvj6jb18ws"]
+[gd_scene load_steps=4 format=3 uid="uid://c1b04l3kgkbvy"]
 
-[ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://themes/story_graph_theme.tres" id="1_brl2k"]
+[ext_resource type="PackedScene" uid="uid://b2jonllgikwpk" path="res://scenes/Editor/file_system/thumbnail_base.tscn" id="1_g6bw5"]
 [ext_resource type="Script" uid="uid://g0wqx62wm30o" path="res://scripts/editor/file_system/level_thumbnail.gd" id="2_6ub5j"]
 [ext_resource type="Texture2D" uid="uid://c1rg3caxvv1ks" path="res://assets/Icons/level_file_thumbnail.svg" id="3_dbysm"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_x1atd"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_udytr"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bba8y"]
-bg_color = Color(0.23921569, 0.23921569, 0.23921569, 0.4627451)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_udytr"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bba8y"]
-
-[node name="Panel" type="PanelContainer"]
-material = SubResource("ShaderMaterial_x1atd")
-custom_minimum_size = Vector2(150, 175)
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -99.0
-offset_top = -87.5
-offset_right = 99.0
-offset_bottom = 87.5
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme = ExtResource("1_brl2k")
-theme_type_variation = &"PanelButton"
-theme_override_styles/panel = SubResource("StyleBoxEmpty_udytr")
+[node name="Panel" instance=ExtResource("1_g6bw5")]
 script = ExtResource("2_6ub5j")
 
-[node name="HBox" type="VBoxContainer" parent="."]
-custom_minimum_size = Vector2(150, 80)
-layout_mode = 2
-
-[node name="Icon" type="TextureRect" parent="HBox"]
-layout_mode = 2
-size_flags_vertical = 3
+[node name="Icon" parent="HBox" index="0"]
 texture = ExtResource("3_dbysm")
-expand_mode = 3
-
-[node name="Name" type="LineEdit" parent="HBox"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-theme_override_styles/normal = SubResource("StyleBoxFlat_bba8y")
-theme_override_styles/read_only = SubResource("StyleBoxFlat_udytr")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_bba8y")
-text = "name"
-alignment = 1
-editable = false
-context_menu_enabled = false
-emoji_menu_enabled = false

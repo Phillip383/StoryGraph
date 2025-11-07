@@ -6,7 +6,6 @@ const ROOT_NAME : String = "Content"
 @export var dir_thumbnail : PackedScene
 
 ## SIGNALS
-
 signal menu_selection(id : int, thumbnail)
 signal clear_thumbnail_focus()
 
@@ -60,8 +59,8 @@ func create_root() -> TreeItem:
 func create_dir(parent : TreeItem, item_name : StringName) -> TreeItem:
 	var dir : DirAccess = DirAccess.open(_project_directory_path + "/" + item_name)
 	var new_dir : TreeItem = parent.create_child()
-
-	new_dir.set_text(0, item_name)
+	new_dir.set_meta("abs_path", "/" + item_name)
+	new_dir.set_text(0, item_name.substr(item_name.rfind("/") + 1, item_name.length()))
 	var dirs : PackedStringArray = dir.get_directories()
 	for dir_name in dirs:
 		create_dir(new_dir, item_name + "/" + dir_name) ## Recurse any nested directories...
@@ -85,7 +84,7 @@ func create_tree() -> void:
 ## Create thumbnails of directories and files within the grid container based on the active directory.
 func create_thumbnails() -> void:
 	clear_thumbnails()
-	var selected_dir_path = _project_directory_path + "/" + tree.get_selected().get_text(0)
+	var selected_dir_path = _project_directory_path + "/" + tree.get_selected().get_meta("abs_path")
 	var files = DirAccess.get_files_at(selected_dir_path)
 	for file in files:
 		create_level_thumbnail(selected_dir_path, file)
@@ -109,9 +108,11 @@ func _create_template():
 	pass
 
 func _create_directory():
-	var path : String = _project_directory_path + "/" + tree.get_selected().get_text(0)
+	var path : String = _project_directory_path + "/" + tree.get_selected().get_meta("abs_path")
 	var new_dir : DirThumbnail = create_dir_thumbnail(path, "New Folder")
 	var new_dir_name = await new_dir.name_new_dir()
+	on_directory_added(new_dir_name)
+	new_dir.set_resource_path(path + "/%s" % new_dir_name)
 	FileManager.create_directory(path, new_dir_name)
 
 func _create_level():
@@ -128,27 +129,27 @@ func on_project_directory_changed() -> void:
 	create_tree()
 
 
-func on_directory_added() -> void:
-	pass
+func on_directory_added(dir_name : StringName) -> void:
+	## Add the tree element to the path.
+	var parent = tree.get_selected()
+	var abs_path = parent.get_meta("abs_path") + "/" + dir_name
+	var new_dir : TreeItem = parent.create_child()
+	new_dir.set_text(0, dir_name)
+	new_dir.set_meta("abs_path", abs_path)
 
-
-func on_file_added() -> void:
-	pass
-
-
+## Remove the directory from the tree
 func on_directory_removed() -> void:
-	pass
-
-
-func on_file_removed() -> void:
-	pass
+	tree.clear()
+	create_tree()
 
 ## Connects various signals for to handle actions on the thumbnails
 func connect_thumbnail(thumbnail):
 	thumbnail.thumbnail_menu_requested.connect(show_thumbnail_menu)
 	thumbnail.thumbnail_hover_end.connect(destory_thumbnail_menu)
+	thumbnail.thumbnail_deleted.connect(on_directory_removed)
 	menu_selection.connect(thumbnail.on_menu_selection)
 	clear_thumbnail_focus.connect(thumbnail._rename_canceled)
+
 
 func create_level_thumbnail(selected_dir_path, file):
 	var thumbnail : LevelThumbnail = load(level_thumbnail).instantiate()

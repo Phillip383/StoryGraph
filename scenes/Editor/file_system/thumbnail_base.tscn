@@ -51,7 +51,7 @@ layout_mode = 2
 [node name="Icon" type="TextureRect" parent="HBox"]
 layout_mode = 2
 size_flags_vertical = 3
-expand_mode = 3
+expand_mode = 1
 
 [node name="Name" type="LineEdit" parent="HBox"]
 layout_mode = 2
