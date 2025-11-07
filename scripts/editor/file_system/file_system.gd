@@ -56,14 +56,14 @@ func create_root() -> TreeItem:
 	tree.hide_root = true
 	return root_item
 
-func create_dir(parent : TreeItem, item_name : StringName) -> TreeItem:
+func create_tree_item(parent : TreeItem, item_name : StringName) -> TreeItem:
 	var dir : DirAccess = DirAccess.open(_project_directory_path + "/" + item_name)
 	var new_dir : TreeItem = parent.create_child()
 	new_dir.set_meta("abs_path", "/" + item_name)
 	new_dir.set_text(0, item_name.substr(item_name.rfind("/") + 1, item_name.length()))
 	var dirs : PackedStringArray = dir.get_directories()
 	for dir_name in dirs:
-		create_dir(new_dir, item_name + "/" + dir_name) ## Recurse any nested directories...
+		create_tree_item(new_dir, item_name + "/" + dir_name) ## Recurse any nested directories...
 	return new_dir
 
 func create_file(parent : TreeItem, item_name: StringName) -> TreeItem:
@@ -78,8 +78,7 @@ func create_tree() -> void:
 	var _root_item : TreeItem = create_root()
 	var _dirs : PackedStringArray = _project_directory.get_directories()
 	for dir in _dirs:
-		create_dir(_root_item, dir)
-
+		create_tree_item(_root_item, dir)
 
 ## Create thumbnails of directories and files within the grid container based on the active directory.
 func create_thumbnails() -> void:
@@ -93,7 +92,7 @@ func create_thumbnails() -> void:
 		create_dir_thumbnail(selected_dir_path, dir)
 
 func on_item_selected() -> void:
-		create_thumbnails()
+	create_thumbnails()
 
 func on_menu_item_selected(id : int):
 	match id:

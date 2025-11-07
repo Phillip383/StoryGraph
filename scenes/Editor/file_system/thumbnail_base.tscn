@@ -25,7 +25,7 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [node name="Panel" type="PanelContainer"]
 material = SubResource("ShaderMaterial_x1atd")
-custom_minimum_size = Vector2(150, 175)
+custom_minimum_size = Vector2(150, 150)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -34,7 +34,7 @@ anchor_bottom = 0.5
 offset_left = -75.0
 offset_top = -87.5
 offset_right = 75.0
-offset_bottom = 87.5
+offset_bottom = 62.5
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
@@ -49,9 +49,11 @@ custom_minimum_size = Vector2(150, 80)
 layout_mode = 2
 
 [node name="Icon" type="TextureRect" parent="HBox"]
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 size_flags_vertical = 3
 expand_mode = 1
+stretch_mode = 5
 
 [node name="Name" type="LineEdit" parent="HBox"]
 layout_mode = 2
