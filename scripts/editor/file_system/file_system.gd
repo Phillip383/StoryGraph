@@ -53,17 +53,20 @@ func open_project_directory() -> DirAccess:
 func create_root() -> TreeItem:
 	var root_item : TreeItem = tree.create_item()
 	root_item.set_text(0, ROOT_NAME)
+	root_item.set_meta("abs_path", _project_directory_path)
 	tree.hide_root = true
 	return root_item
 
 func create_tree_item(parent : TreeItem, item_name : StringName) -> TreeItem:
-	var dir : DirAccess = DirAccess.open(_project_directory_path + "/" + item_name)
+	var parent_path : String = parent.get_meta("abs_path")
+	var dir : DirAccess = DirAccess.open(parent_path + "/" + item_name)
 	var new_dir : TreeItem = parent.create_child()
-	new_dir.set_meta("abs_path", "/" + item_name)
+	new_dir.set_meta("abs_path", parent_path + "/" + item_name)
 	new_dir.set_text(0, item_name.substr(item_name.rfind("/") + 1, item_name.length()))
-	var dirs : PackedStringArray = dir.get_directories()
-	for dir_name in dirs:
-		create_tree_item(new_dir, item_name + "/" + dir_name) ## Recurse any nested directories...
+	if dir:
+		var dirs : PackedStringArray = dir.get_directories()
+		for dir_name in dirs:
+			create_tree_item(new_dir, dir_name) ## Recurse any nested directories...
 	return new_dir
 
 func create_file(parent : TreeItem, item_name: StringName) -> TreeItem:
@@ -77,13 +80,12 @@ func create_tree() -> void:
 	assert(DirAccess.get_open_error() == OK, "Open Project Failure: " + error_string(DirAccess.get_open_error()))
 	var _root_item : TreeItem = create_root()
 	var _dirs : PackedStringArray = _project_directory.get_directories()
-	for dir in _dirs:
-		create_tree_item(_root_item, dir)
+	for directory in _dirs:
+		create_tree_item(_root_item, directory)
 
 ## Create thumbnails of directories and files within the grid container based on the active directory.
-func create_thumbnails() -> void:
+func create_thumbnails(selected_dir_path : String) -> void:
 	clear_thumbnails()
-	var selected_dir_path = _project_directory_path + "/" + tree.get_selected().get_meta("abs_path")
 	var files = DirAccess.get_files_at(selected_dir_path)
 	for file in files:
 		create_level_thumbnail(selected_dir_path, file)
@@ -92,7 +94,9 @@ func create_thumbnails() -> void:
 		create_dir_thumbnail(selected_dir_path, dir)
 
 func on_item_selected() -> void:
-	create_thumbnails()
+	var path = tree.get_selected().get_meta("abs_path")
+	create_thumbnails(path)
+	## TODO: Create the thumbnails for the resource path of the selected items children...
 
 func on_menu_item_selected(id : int):
 	match id:
@@ -158,12 +162,18 @@ func create_level_thumbnail(selected_dir_path, file):
 	connect_thumbnail(thumbnail)
 
 func create_dir_thumbnail(selected_dir_path : String, _name : String) -> DirThumbnail:
-	var new_dir = dir_thumbnail.instantiate()
+	var new_dir : DirThumbnail = dir_thumbnail.instantiate()
 	grid.add_child(new_dir)
 	new_dir.set_thumbnail_name(_name)
 	new_dir.set_resource_path(selected_dir_path + "/" + _name)
+	new_dir.directory_selected.connect(_on_dir_thumbnail_opened)
 	connect_thumbnail(new_dir)
 	return new_dir
+
+func _on_dir_thumbnail_opened(_path : String):
+	create_thumbnails(_path)
+	## TODO: clear the thumbnails and create the thumbnails with the resource path.
+	pass
 
 func does_thumbnail_exist(_name : String) -> bool:
 	for thumbnail in grid.get_children():

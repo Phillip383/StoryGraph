@@ -17,7 +17,6 @@ signal on_story_lines_removed(_name : Array[StringName])
 @onready var context_menu = $"GraphNodeMenu"
 @onready var manager = $GraphManager ## Handles the state of the level.
 @onready var level_name : StringName = DEFAULT_NAME
-
 var node_details : NodeDetailsInspector
 
 var node_connections : Array[Dictionary]

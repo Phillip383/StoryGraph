@@ -2,6 +2,8 @@ extends ThumbnailBase
 
 class_name DirThumbnail
 
+signal directory_selected(_resource_path)
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	super._ready()
@@ -9,6 +11,10 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	super._process(delta)
+
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.double_click:
+		directory_selected.emit(_resource_path)
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
 	if _can_drop_data(at_position, data):

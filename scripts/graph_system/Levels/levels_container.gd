@@ -11,6 +11,9 @@ signal on_level_save(active_level : Level)
 signal on_story_line_added(node : BaseStoryNode)
 signal on_story_lines_removed(_names : Array[StringName])
 
+## Invokes various commands, IE. Save/Undo/Redo for the currently active level.
+@onready var command_invoker : CommandInvoker = CommandInvoker.new()
+
 var _active_level : Level
 
 # Called when the node enters the scene tree for the first time.
@@ -27,6 +30,21 @@ func _ready() -> void:
 	## Setup tabs for closing
 	get_tab_bar().set_tab_close_display_policy(TabBar.CLOSE_BUTTON_SHOW_ALWAYS)
 	get_tab_bar().tab_close_pressed.connect(on_tab_closed)
+
+## Listen for command short cut actions.
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("save"):
+		command_invoker.set_command(SaveCommand.new(get_active_level())) ## Pass the active level to the save command.
+		command_invoker.execute_command()
+	## TODO: Add the commands associated with the actions
+	elif event.is_action_pressed("save_all"):
+		pass
+	elif event.is_action_pressed("undo"):
+		pass
+	elif event.is_action_pressed("redo"):
+		pass
+	elif event.is_action_pressed("new_level"):
+		pass
 
 func level_deleted(_name : StringName):
 	_name = _name.get_slice(".", 0)

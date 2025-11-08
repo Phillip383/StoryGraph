@@ -37,11 +37,11 @@ var _current_project_dir := ""
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("new_level"):
 		level_create_requested.emit()
-	elif event.is_action_pressed("save"):
-		var focused = get_viewport().gui_get_focus_owner()
-		if focused and focused.is_in_group("Levels"):
-			save_focused_requested.emit(FileManager.FileType.LEVEL)
-			return
+#	elif event.is_action_pressed("save"):
+#		var focused = get_viewport().gui_get_focus_owner()
+#		if focused and focused.is_in_group("Levels"):
+#			save_focused_requested.emit(FileManager.FileType.LEVEL)
+#			return
 	elif event.is_action_pressed("save_all"):
 		##TODO: Add everything I want to save to a group, gather it, loop over them calling their save function. This will require a refactor.
 		pass
