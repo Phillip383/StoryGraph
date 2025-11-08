@@ -132,7 +132,6 @@ func _on_level_edited(level : Level):
 
 func on_saved(context):
 	on_level_save.emit(context)
-	print(context.name)
 	set_tab_title(get_tab_idx_from_control(context), context.name)
 	_command = null
 

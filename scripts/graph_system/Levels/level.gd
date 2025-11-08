@@ -16,7 +16,6 @@ signal on_story_lines_removed(_name : Array[StringName])
 
 @onready var context_menu = $"GraphNodeMenu"
 @onready var manager = $GraphManager ## Handles the state of the level.
-@onready var level_name : StringName = DEFAULT_NAME
 
 var node_details : NodeDetailsInspector
 
@@ -26,7 +25,7 @@ var level_id : int = -1
 var _resource_path : String
 
 func _ready() -> void:
-	name = level_name
+	name = DEFAULT_NAME
 	popup_request.connect(_on_popup_request)
 	connection_request.connect(_on_connection)
 	node_deselected.connect(on_node_deselected)
@@ -44,9 +43,6 @@ func get_next_node_id():
 
 func get_current_state() -> GraphManager.GraphState:
 	return manager.current_state
-
-func set_level_name(_name : StringName):
-	level_name = _name
 
 func get_resource_path() -> String:
 	return _resource_path
