@@ -159,7 +159,9 @@ func connect_thumbnail(thumbnail):
 	clear_thumbnail_focus.connect(thumbnail._rename_canceled)
 
 
-func create_level_thumbnail(selected_dir_path, file):
+func create_level_thumbnail(selected_dir_path : String, file : String):
+	if selected_dir_path != tree.get_selected().get_meta("abs_path"):
+		return
 	var thumbnail : LevelThumbnail = load(level_thumbnail).instantiate()
 	grid.add_child(thumbnail)
 	thumbnail.set_thumbnail_name(file)
