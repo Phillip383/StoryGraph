@@ -34,7 +34,7 @@ func _ready() -> void:
 
 ## Listen for command short cut actions.
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("save"):
+	if event.is_action_pressed("save") and _active_level:
 		_command = SaveCommand.new(get_active_level())
 		_command.save_complete.connect(on_saved)
 		command_invoker.set_command(_command).execute_command()
@@ -141,6 +141,9 @@ func on_saved(context):
 
 ## TODO: Move to a load/open level command
 func load_level(_data, path = ""):
+	if !_data:
+		return
+
 	var level_name = get_level_name_from_path(path)
 	if is_level_open(level_name):
 		return

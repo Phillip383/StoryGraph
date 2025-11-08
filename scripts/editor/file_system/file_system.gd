@@ -16,6 +16,8 @@ signal clear_thumbnail_focus()
 var _project_directory_path : String
 var _project_directory : DirAccess
 
+@onready var _command_invoker : CommandInvoker = CommandInvoker.new()
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	FileManager.project_changed.connect(on_project_directory_changed)
@@ -105,21 +107,25 @@ func on_menu_item_selected(id : int):
 		FileOptions.CREATE_DIR:
 			_create_directory()
 		FileOptions.CREATE_LEVEL:
-			_create_level()
+			await _create_level()
 
 func _create_template():
 	pass
 
 func _create_directory():
-	var path : String = _project_directory_path + "/" + tree.get_selected().get_meta("abs_path")
+	var path : String = tree.get_selected().get_meta("abs_path")
 	var new_dir : DirThumbnail = create_dir_thumbnail(path, "New Folder")
 	var new_dir_name = await new_dir.name_new_dir()
 	on_directory_added(new_dir_name)
-	new_dir.set_resource_path(path + "/%s" % new_dir_name)
-	FileManager.create_directory(path, new_dir_name)
+	path = path + "/%s" % new_dir_name
+	new_dir.set_resource_path(path)
+	_command_invoker.set_command(NewDirectoryCommand.new(path)).execute_command()
 
 func _create_level():
-	FileManager.level_create_requested.emit()
+	var new_lvl_cmd = NewLevelCommand.new()
+	_command_invoker.set_command(new_lvl_cmd).execute_command()
+	#var path : String = await new_lvl_cmd.creation_completed
+	#var lvl_name : String = path.substr(path.rfind("/"))
 
 func clear_thumbnails() -> void:
 	for thumbnail in grid.get_children():
@@ -181,7 +187,7 @@ func does_thumbnail_exist(_name : String) -> bool:
 			return true
 	return false
 
-func _on_level_save(active_level: Level) -> void:
-	if does_thumbnail_exist(active_level.name):
-		return
-	create_level_thumbnail(FileManager.get_levels_directory(), active_level.name)
+func _on_levels_level_created(level: Level) -> void:
+	var lvl_name = level.get_resource_path().substr(level.get_resource_path().rfind("/") + 1).split(".")[0]
+	var path = level.get_resource_path().substr(0, level.get_resource_path().rfind("/"))
+	create_level_thumbnail(path, lvl_name)

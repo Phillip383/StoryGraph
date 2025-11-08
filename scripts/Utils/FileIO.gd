@@ -15,6 +15,9 @@ func create_file(path : String):
 	GraphEditor.file_added.emit(path)
 
 func open_file(path : String):
+	if FileAccess.get_file_as_string(path).is_empty():
+		return
+
 	var ext = ".%s" % path.get_extension()
 	var data = JSON.parse_string(FileAccess.get_file_as_string(path))
 	match ext:

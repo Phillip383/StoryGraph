@@ -172,8 +172,9 @@ func load_level(_data):
 		loaded_node.on_data_changed.connect(on_node_changed) ## Need to reconnect to the signal for updates to the node.
 
 	## Add the connections, using the nodes titles
-	for connection in node_connections:
-		connect_node(node_map[connection["from_node"]], connection["from_port"], node_map[connection["to_node"]], connection["to_port"])
+	if node_connections:
+		for connection in node_connections:
+			connect_node(node_map[connection["from_node"]], connection["from_port"], node_map[connection["to_node"]], connection["to_port"])
 
 	manager._change_state(GraphManager.GraphState.IDLE)
 

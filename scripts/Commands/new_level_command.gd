@@ -3,6 +3,8 @@ class_name NewLevelCommand
 
 @export_file var NEW_FILE_WINDOW = "res://scenes/Popups/create_new_file.tscn"
 
+signal creation_completed(path)
+
 func _init() -> void:
 	pass
 
@@ -14,6 +16,7 @@ func execute() -> void:
 	var scene_tree : SceneTree = Engine.get_main_loop()
 	var level_container : LevelContainer = scene_tree.get_first_node_in_group("Level Container")
 	level_container.create_new_level(path)
+	creation_completed.emit(path)
 
 ##Opens a new file window, awaits for submission and returns the path of the new file
 func open_new_level_window():
