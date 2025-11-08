@@ -1,4 +1,5 @@
 extends InspectorContainer
+class_name LevelContainer
 
 
 @export var SAVE_NEW_WINDOW : PackedScene
@@ -7,12 +8,14 @@ const SAVE_WINDOW_TITLE = "Save Level"
 @export var LEVEL_SCENE : PackedScene
 
 signal on_level_changed(level : Level)
+signal level_created(level : Level)
 signal on_level_save(active_level : Level)
 signal on_story_line_added(node : BaseStoryNode)
 signal on_story_lines_removed(_names : Array[StringName])
 
 ## Invokes various commands, IE. Save/Undo/Redo for the currently active level.
 @onready var command_invoker : CommandInvoker = CommandInvoker.new()
+var _command : Command ## Free after command is completed and all signals have fired.
 
 var _active_level : Level
 
@@ -21,8 +24,6 @@ func _ready() -> void:
 	super._ready()
 	tab_changed.connect(on_tab_switched)
 	child_entered_tree.connect(on_child_added)
-	FileManager.level_create_requested.connect(create_new_level)
-	FileManager.save_focused_requested.connect(save_request)
 	FileManager.on_level_load_request.connect(load_level)
 	FileManager.project_changed.connect(clear_levels)
 	FileManager.level_deleted.connect(level_deleted)
@@ -34,8 +35,9 @@ func _ready() -> void:
 ## Listen for command short cut actions.
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("save"):
-		command_invoker.set_command(SaveCommand.new(get_active_level())) ## Pass the active level to the save command.
-		command_invoker.execute_command()
+		_command = SaveCommand.new(get_active_level())
+		_command.save_complete.connect(on_saved)
+		command_invoker.set_command(_command).execute_command()
 	## TODO: Add the commands associated with the actions
 	elif event.is_action_pressed("save_all"):
 		pass
@@ -46,6 +48,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("new_level"):
 		pass
 
+## TODO: Move to a delete command
 func level_deleted(_name : StringName):
 	_name = _name.get_slice(".", 0)
 	for i in range(get_child_count()):
@@ -55,6 +58,7 @@ func level_deleted(_name : StringName):
 			if to_find_name == _name:
 				level.queue_free()
 
+##TODO: Move this to a rename command...
 func level_renamed(_old_name : StringName, _new_name : StringName):
 	for i in range(get_child_count()):
 		var level = get_tab_control(i) as Level
@@ -67,6 +71,7 @@ func clear_levels():
 		if child as Level:
 			child.queue_free()
 
+##TODO: Move most of this logic to a close command.
 func on_tab_closed(tab : int):
 	if get_child_count() == 1: ## Always need a level open.
 		return
@@ -76,11 +81,9 @@ func on_tab_closed(tab : int):
 		add_child(prompt)
 		var selection = await prompt.on_selection
 		if selection == true:
-			save(level.name, FileManager.FileType.LEVEL)
+			var save_command : SaveCommand = SaveCommand.new(get_active_level())
+			command_invoker.set_command(save_command).execute_command()
 			level.queue_free()
-	elif level.get_current_state() == GraphManager.GraphState.EDITING:
-		await new_save(FileManager.FileType.LEVEL)
-		level.queue_free()
 	else:
 		level.queue_free()
 
@@ -109,59 +112,54 @@ func on_child_added(child : Node):
 		if not on_level_changed.is_connected(level.on_level_changed):
 			on_level_changed.connect(level.on_level_changed)
 
-func create_new_level():
-	var new_level = LEVEL_SCENE.instantiate()
+## Creates a new level, sets it's resource path and name, and add's it to the level's container.
+func create_new_level(_path : String):
+	var new_level : Level = LEVEL_SCENE.instantiate()
 	add_child(new_level)
-
-func _on_menu_bar_new_level_request() -> void:
-	create_new_level()
+	new_level.set_resource_path(_path)
+	var new_level_name = _path.substr(_path.rfind("/") + 1) ## Get the name between the extension and directory.
+	new_level_name = new_level_name.get_slice(".", 0)
+	new_level.set_level_name(new_level_name)
+	var new_level_index = get_tab_idx_from_control(new_level)
+	current_tab = new_level_index
+	set_tab_title(new_level_index, new_level_name)
+	level_created.emit(new_level)
 
 # When the level is edited, we flag the title to illustrate unsaved work.
 func _on_level_edited(level : Level):
 	set_tab_title(get_tab_idx_from_control(level), level.name + "*")
-
-## Connected signal from the FileManager, if the requested save type is of LEVEL, the save the active level.
-func save_request(_type):
-	if _type == FileManager.FileType.LEVEL:
-		## Prompt a save window to name the level if there is no name.
-		if _active_level.name == _active_level.DEFAULT_NAME:
-			await new_save(_type) ## Await the save window confirmation
-		else:
-			save(_active_level.name, _type)
-
-## Prompt the user to name the level if it hasn't been named yet.
-func new_save(_type):
-	var save_window : SaveWindow = SAVE_NEW_WINDOW.instantiate()
-	save_window.title = SAVE_WINDOW_TITLE
-	save_window.set_file_type(_type)
-	add_child(save_window)
-	save_window.on_save.connect(save, _type)
-	await save_window.on_save
 
 ## Saves the active level in the tab container.
 #@param: _file_name, either passed by the tab containers existing active level name, or by the save prompt window if the name is default.
 #@param: _type, the type of file needing to be saved.
 #@return: Returns an Error code.
 ##
-func save(_file_name, _type):
-	var _level_data = _active_level.save_level(_file_name)
-	on_level_save.emit(_active_level)
-	var error = FileManager.save_file(_file_name, _type, _level_data)
-	if error == OK:
-		## Set the title bar back to a saved state.
-		set_tab_title(get_tab_idx_from_control(_active_level), _active_level.name)
-	return error
+func on_saved(context):
+	on_level_save.emit(context)
+	set_tab_title(get_tab_idx_from_control(context), context.name)
+	_command = null
 
-func load_level(_data):
-	if is_level_open(_data["name"]):
+## TODO: Move to a load/open level command
+func load_level(_data, path = ""):
+	var level_name = get_level_name_from_path(path)
+	if is_level_open(level_name):
 		return
 
 	var loaded_level : Level = LEVEL_SCENE.instantiate()
 	add_child(loaded_level)
+	_data["name"] = level_name
 	loaded_level.load_level(_data)
-	current_tab = get_tab_idx_from_control(loaded_level)
+	var level_idx = get_tab_idx_from_control(loaded_level)
+	current_tab = level_idx
+	set_tab_title(level_idx, loaded_level.name)
 	connect_for_updates(loaded_level)
+	loaded_level.set_resource_path(path)
 	FileManager.post_level_load.emit(loaded_level)
+
+func get_level_name_from_path(path : String) -> String:
+	var level_name = path.substr(path.rfind("/") + 1)
+	level_name = level_name.get_slice(".", 0)
+	return level_name
 
 func is_level_open(_name : StringName) -> bool:
 	for i in range(get_child_count()):
@@ -169,9 +167,6 @@ func is_level_open(_name : StringName) -> bool:
 			current_tab = i
 			return true
 	return false
-
-func _on_create_new_Level_pressed() -> void:
-	create_new_level()
 
 func _story_line_added(node : BaseStoryNode):
 	on_story_line_added.emit(node)

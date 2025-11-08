@@ -1,6 +1,6 @@
 extends CenterContainer
 
-const VALUE_EDITOR_RESOURCE = "res://scenes/UI/Property_Editor/Add_Property/add_property_default_values_widget.tscn"
+@export_file var VALUE_EDITOR_RESOURCE = "res://scenes/Property_Editor/Add_Property/add_property_default_values_widget.tscn"
 
 signal on_edit_canceled()
 signal on_edit_confirmed()

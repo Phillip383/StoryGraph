@@ -4,8 +4,9 @@ extends RefCounted
 
 var _command : Command
 
-func set_command(command : Command):
-    _command = command
+func set_command(command : Command) -> CommandInvoker:
+	_command = command
+	return self
 
 func execute_command():
-    _command.execute()
+	_command.execute()

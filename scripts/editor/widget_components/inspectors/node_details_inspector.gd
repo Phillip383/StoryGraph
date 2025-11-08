@@ -31,7 +31,7 @@ func get_node_properties() -> Array[Node]:
 Adds the selected nodes properties in the current graph to this widget.
 The method clears the current properties before adding the new properties.
 """
-func set_node_properties(property_names : Array[StringName]):
+func set_node_properties(property_names : Array):
 	clear_node_properties()
 	for property in property_names:
 		_property_list.add_item(property)

@@ -12,6 +12,5 @@ func _process(_delta: float) -> void:
 func _gui_input(event: InputEvent) -> void:
 	super._gui_input(event)
 	if event is InputEventMouseButton and event.double_click and event.button_index != MOUSE_BUTTON_RIGHT:
-		var status = []
-		FileManager.load_file_by_name(_name_label.text, FileManager.FileType.LEVEL, status)
-		assert(status[0] == OK, "Level failed to load from thumbnail. :: Error: " + error_string(status[0]))
+		command_invoker.set_command(OpenFileCommand.new(_resource_path))
+		command_invoker.execute_command()

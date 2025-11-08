@@ -1,19 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://bjg65kvgcmtp7"]
+[gd_scene load_steps=3 format=3 uid="uid://cggmw6ca6tru6"]
 
-[ext_resource type="Script" uid="uid://1tdwxmiis6ng" path="res://scripts/Popups/save_window.gd" id="1_b1jpx"]
-[ext_resource type="PackedScene" uid="uid://6lf7jg8ji8um" path="res://scenes/Popups/warning_popup.tscn" id="2_rf8lh"]
-[ext_resource type="Texture2D" uid="uid://cdxsj8rowihyu" path="res://assets/Icons/Folder_Icon.svg" id="3_8yov2"]
+[ext_resource type="Script" uid="uid://dq10d67tevu4h" path="res://scripts/Popups/create_new_file_window.gd" id="1_oy4j1"]
+[ext_resource type="Texture2D" uid="uid://cdxsj8rowihyu" path="res://assets/Icons/Folder_Icon.svg" id="2_hiqc4"]
 
-[node name="SaveWindow" type="Window"]
+[node name="CreateNewFile" type="Window"]
 oversampling_override = 1.0
-title = "Save {file}"
-initial_position = 2
-size = Vector2i(351, 200)
+title = "Create File"
+initial_position = 1
+size = Vector2i(351, 206)
 wrap_controls = true
 transient = true
 exclusive = true
-script = ExtResource("1_b1jpx")
-WARNING_POPUP = ExtResource("2_rf8lh")
+script = ExtResource("1_oy4j1")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 custom_minimum_size = Vector2(300, 200)
@@ -46,6 +44,17 @@ size_flags_horizontal = 4
 placeholder_text = "file name"
 alignment = 1
 
+[node name="OptionButton" type="OptionButton" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+item_count = 3
+popup/item_0/text = "Level"
+popup/item_0/id = 0
+popup/item_1/text = "Template"
+popup/item_1/id = 1
+popup/item_2/text = "Enum"
+popup/item_2/id = 2
+
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer"]
 layout_mode = 2
 
@@ -54,18 +63,19 @@ custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 placeholder_text = "path"
 
-[node name="TextureButton" type="TextureButton" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+[node name="FileExplorerButton" type="TextureButton" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer"]
 self_modulate = Color(1, 0.78431374, 0.39607844, 1)
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture_normal = ExtResource("3_8yov2")
+texture_normal = ExtResource("2_hiqc4")
 ignore_texture_size = true
 stretch_mode = 4
 
 [node name="Buttons" type="HBoxContainer" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
 theme_override_constants/separation = 25
 
 [node name="Cancel" type="Button" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Buttons"]
@@ -78,7 +88,9 @@ text = "Save"
 
 [connection signal="text_changed" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Filename" to="." method="_on_filename_text_changed"]
 [connection signal="text_submitted" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Filename" to="." method="_on_filename_text_submitted"]
+[connection signal="item_selected" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/OptionButton" to="." method="_on_option_button_item_selected"]
 [connection signal="text_changed" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/FilePath" to="." method="_on_file_path_text_changed"]
 [connection signal="text_submitted" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/FilePath" to="." method="_on_file_path_text_submitted"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/FileExplorerButton" to="." method="_on_file_explorer_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Buttons/Cancel" to="." method="_on_cancel_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Buttons/Save" to="." method="_on_save_pressed"]

@@ -11,6 +11,7 @@ var _active : bool = false
 var _is_menu_open : bool = false
 
 @onready var _name_label : LineEdit = $HBox/Name
+@onready var command_invoker : CommandInvoker = CommandInvoker.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

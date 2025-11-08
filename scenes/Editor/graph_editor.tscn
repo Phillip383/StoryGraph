@@ -62,7 +62,7 @@ current_tab = 0
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="Levels" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C" instance=ExtResource("4_h0swr")]
+[node name="Levels" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C" groups=["Level Container"] instance=ExtResource("4_h0swr")]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/tab_separation = 15
@@ -97,6 +97,7 @@ custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_xmt7k")
+ADD_PROPERTY_EDITOR = "res://scenes/Property_Editor/Add_Property/add_node_property_widget.tscn"
 metadata/_tab_index = 0
 
 [node name="FileSystem" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Property_Editor_C" instance=ExtResource("11_xmt7k")]
@@ -104,7 +105,7 @@ visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[connection signal="new_level_request" from="PanelContainer/MarginContainer/Main_C/MenuBar" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels" method="_on_menu_bar_new_level_request"]
+[connection signal="level_created" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Inspector_Left_Top_C/StoryLines" method="_on_level_created"]
 [connection signal="on_level_changed" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Inspector_Left_Top_C/StoryLines" method="_on_level_changed"]
 [connection signal="on_level_changed" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Inspector_Left_Bottom_C/Node Details" method="on_level_changed"]
 [connection signal="on_level_changed" from="PanelContainer/MarginContainer/Main_C/VSplitContainer/StoryLines_Graph_C/Levels" to="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Property_Editor_C/Property Editor" method="on_level_changed"]

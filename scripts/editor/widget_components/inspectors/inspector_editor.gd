@@ -1,6 +1,6 @@
 extends InspectorChildBase
 
-const ADD_PROPERTY_EDITOR = "res://scenes/UI/Property_Editor/Add_Property/add_node_property_widget.tscn"
+@export_file var ADD_PROPERTY_EDITOR = "res://scenes/Property_Editor/Add_Property/add_node_property_widget.tscn"
 
 ## SIGNALS
 signal property_added(active_node : Node)

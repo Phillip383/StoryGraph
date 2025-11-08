@@ -9,7 +9,7 @@ class_name BaseStoryNode
 signal on_data_changed(data) ## Emitted when a property is added, removed, or it's value is updated. Useful to inform the editor of unsaved work.
 
 @export_category("Story Data")
-@export var story_data : Dictionary[StringName, Variant]
+@export var story_data : Dictionary
 
 @export_category("Node Data")
 @export var node_data : NodeData ## Helpful data for saving the node and keeping track of their id's, it is unique per node, any default values will be erased at runtime.
@@ -72,12 +72,12 @@ func set_node_id(id : int) -> void:
 
 
 ## @return story_data: the properties currently on this node.
-func get_story_data() -> Dictionary[StringName, Variant]:
+func get_story_data() -> Dictionary:
 	return story_data
 
 
 ## @return story_data keys: returns the keys of the properties on this node.
-func get_story_data_key() -> Array[StringName]:
+func get_story_data_key() -> Array:
 	return story_data.keys()
 
 
@@ -145,11 +145,17 @@ func save_node() -> Dictionary:
 #	data - the properties that were added to this node.
 func load_node(_state) -> void:
 	title = _state[NAME]
-	node_data.node_id = _state[ID]
-	node_data.node_type = _state[TYPE]
-	position_offset = _state[POSITION]
+	node_data.node_id = _state[ID] as int
+	node_data.node_type = _state[TYPE] as int
+	position_offset = parse_position( _state[POSITION])
 	story_data = _state[DATA]
 	_set_slots_by_type()
+
+func parse_position(pos : String) -> Vector2:
+	pos = pos.trim_prefix("(")
+	pos = pos.trim_suffix(")")
+	var pos_parts : Array = pos.split(",")
+	return Vector2(pos_parts[0] as float, pos_parts[1] as float)
 
 ## Packs the node into a dictionary format of {name : data} and add's the node's incoming connections from other node's.
 ## @param prerequisites - takes the node's incoming connections and adds them to story data with a const string literal as the key, the key can be set in the project settings.

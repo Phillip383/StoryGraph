@@ -24,9 +24,9 @@ func create_tree() -> void:
 	story_lines.clear()
 
 	root_item = tree.create_item()
+	tree.hide_root = true
 	if active_level:
 		find_level_story_lines()
-		root_item.set_text(0, active_level.name)
 		for story in story_lines:
 			var line : TreeItem = root_item.create_child()
 			line.set_text(0, story)
@@ -50,9 +50,6 @@ func _on_level_renamed(_old : StringName, _new : StringName):
 		root_item.set_text(0, _new)
 
 func _on_level_changed(level: Level) -> void:
-	if active_level == level:
-		return
-
 	active_level = level
 	create_tree()
 
@@ -100,3 +97,8 @@ func _on_search_text_changed(new_text: String) -> void:
 	if new_text.length() == 0:
 		for item in root_item.get_children():
 			item.visible = true
+
+
+func _on_level_created(level: Level) -> void:
+	active_level = level
+	create_tree()

@@ -4,6 +4,8 @@ var unsaved_levels : Array[Level]
 
 @export var PROJECT_HUB : PackedScene = preload("res://scenes/Project_System/project_hub.tscn")
 
+##SIGNALS
+signal file_added(path : String) ## Used when a file is added to inform various components of the editor. For example if a new level is created from the button or shortcut, this signal will inform the file system of that change in state. Passes the path of the newly created file.
 
 ## Const string literals for storing the state of the editor upon closing and opening.
 const LAST_OPEN_PROJ_KEY = "last_open_project"
@@ -36,7 +38,7 @@ func on_application_close():
 			return
 		PromptSelection.SAVE:
 			for level in unsaved_levels:
-				FileManager.save_file(level.name, FileManager.FileType.LEVEL, level.save_level())
+				FileManager.save_file(level.name, FileManager.FileType.LEVEL, level.save())
 
 	## Save the current project to open on the next launch...
 	persistent_project()

@@ -17,11 +17,13 @@ signal on_story_lines_removed(_name : Array[StringName])
 @onready var context_menu = $"GraphNodeMenu"
 @onready var manager = $GraphManager ## Handles the state of the level.
 @onready var level_name : StringName = DEFAULT_NAME
+
 var node_details : NodeDetailsInspector
 
-var node_connections : Array[Dictionary]
+var node_connections
 
 var level_id : int = -1
+var _resource_path : String
 
 func _ready() -> void:
 	name = level_name
@@ -45,6 +47,12 @@ func get_current_state() -> GraphManager.GraphState:
 
 func set_level_name(_name : StringName):
 	level_name = _name
+
+func get_resource_path() -> String:
+	return _resource_path
+
+func set_resource_path(path : String):
+	_resource_path = path
 
 func _init_connection_types():
 	add_valid_connection_type(NodeData.NodeType.ENTRY, NodeData.NodeType.EXIT)
@@ -107,7 +115,6 @@ func _on_connection(from_node: StringName, from_port: int, to_node: StringName, 
 	manager._change_state(GraphManager.GraphState.EDITING)
 	on_edited.emit(self)
 
-
 ##This methods intended functionality is to check if the user right clicks on a node to keep the graph from consuming the input for it's context menu signal.
 func get_node_at_position(_location: Vector2):
 	for child in get_children():
@@ -126,7 +133,7 @@ func get_node_at_position(_location: Vector2):
 ##	nodes - An array of all the node's within the graph
 ##@param _file_name: the name to give the saved level.
 ##@return A dictionary of the level's packed state, or null if the save failed.
-func save_level(_file_name = name) -> Dictionary[StringName, Variant]:
+func save(_file_name = name) -> Dictionary[StringName, Variant]:
 	manager._change_state(GraphManager.GraphState.SAVING)
 	name = _file_name
 	var _state : Dictionary[StringName, Variant]

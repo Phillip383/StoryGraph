@@ -8,8 +8,7 @@ const OPEN_LEVEL_ID = 3
 @export var OPEN_PROJECT_WINDOW : PackedScene
 @export var OPEN_LEVEL_DIALOG : PackedScene
 
-## Emitted when a new level is requested to be created from the menu bar.
-signal new_level_request()
+@onready var command_invoker : CommandInvoker = CommandInvoker.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -22,8 +21,6 @@ func _on_file_id_pressed(id: int) -> void:
 	elif id == OPEN_PROJECT_ID:
 		var open_project_dialog = OPEN_PROJECT_WINDOW.instantiate()
 		get_tree().current_scene.add_child(open_project_dialog)
-	elif id == NEW_LEVEL_ID:
-		new_level_request.emit()
 	elif id == OPEN_LEVEL_ID:
 		open_level()
 
@@ -45,4 +42,5 @@ func _on_open_existing_level_pressed() -> void:
 
 ## Sends the signal to the level container to create a new level.
 func _on_create_new_pressed() -> void:
-	new_level_request.emit()
+	command_invoker.set_command(NewLevelCommand.new())
+	command_invoker.execute_command()
