@@ -124,8 +124,7 @@ func _create_directory():
 func _create_level():
 	var new_lvl_cmd = NewLevelCommand.new()
 	_command_invoker.set_command(new_lvl_cmd).execute_command()
-	#var path : String = await new_lvl_cmd.creation_completed
-	#var lvl_name : String = path.substr(path.rfind("/"))
+
 
 func clear_thumbnails() -> void:
 	for thumbnail in grid.get_children():
@@ -167,6 +166,7 @@ func create_level_thumbnail(selected_dir_path, file):
 	thumbnail.set_resource_path(selected_dir_path + "/" + file)
 	connect_thumbnail(thumbnail)
 
+
 func create_dir_thumbnail(selected_dir_path : String, _name : String) -> DirThumbnail:
 	var new_dir : DirThumbnail = dir_thumbnail.instantiate()
 	grid.add_child(new_dir)
@@ -176,10 +176,11 @@ func create_dir_thumbnail(selected_dir_path : String, _name : String) -> DirThum
 	connect_thumbnail(new_dir)
 	return new_dir
 
+
 func _on_dir_thumbnail_opened(_path : String):
 	create_thumbnails(_path)
 	## TODO: clear the thumbnails and create the thumbnails with the resource path.
-	pass
+
 
 func does_thumbnail_exist(_name : String) -> bool:
 	for thumbnail in grid.get_children():

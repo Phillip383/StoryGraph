@@ -119,7 +119,7 @@ func create_new_level(_path : String):
 	new_level.set_resource_path(_path)
 	var new_level_name = _path.substr(_path.rfind("/") + 1) ## Get the name between the extension and directory.
 	new_level_name = new_level_name.get_slice(".", 0)
-	new_level.set_level_name(new_level_name)
+	new_level.name = new_level_name
 	var new_level_index = get_tab_idx_from_control(new_level)
 	current_tab = new_level_index
 	set_tab_title(new_level_index, new_level_name)
@@ -129,13 +129,10 @@ func create_new_level(_path : String):
 func _on_level_edited(level : Level):
 	set_tab_title(get_tab_idx_from_control(level), level.name + "*")
 
-## Saves the active level in the tab container.
-#@param: _file_name, either passed by the tab containers existing active level name, or by the save prompt window if the name is default.
-#@param: _type, the type of file needing to be saved.
-#@return: Returns an Error code.
-##
+
 func on_saved(context):
 	on_level_save.emit(context)
+	print(context.name)
 	set_tab_title(get_tab_idx_from_control(context), context.name)
 	_command = null
 
