@@ -98,7 +98,6 @@ func create_thumbnails(selected_dir_path : String) -> void:
 func on_item_selected() -> void:
 	var path = tree.get_selected().get_meta("abs_path")
 	create_thumbnails(path)
-	## TODO: Create the thumbnails for the resource path of the selected items children...
 
 func on_menu_item_selected(id : int):
 	match id:
@@ -180,9 +179,27 @@ func create_dir_thumbnail(selected_dir_path : String, _name : String) -> DirThum
 
 
 func _on_dir_thumbnail_opened(_path : String):
-	create_thumbnails(_path)
-	## TODO: clear the thumbnails and create the thumbnails with the resource path.
+	var selected_dir = select_active_directory(tree.get_root(), _path)
+	if selected_dir != null:
+		tree.set_selected(selected_dir, 0)
+		tree.queue_redraw()
 
+	create_thumbnails(_path)
+
+
+func select_active_directory(item: TreeItem, dir_path : String) -> TreeItem:
+	var current_child = item.get_first_child()
+	while current_child:
+		if current_child.get_meta("abs_path") == dir_path:
+			return current_child
+
+		var found_item = select_active_directory(current_child, dir_path)
+		if found_item:
+			return found_item
+
+		current_child = current_child.get_next()
+
+	return null
 
 func does_thumbnail_exist(_name : String) -> bool:
 	for thumbnail in grid.get_children():
