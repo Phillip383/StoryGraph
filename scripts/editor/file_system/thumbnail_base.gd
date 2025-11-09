@@ -89,11 +89,12 @@ func _rename_active():
 
 func _rename_file(_new_name : StringName):
 	_name_label.editable = false
-	_resource_path = FileManager.rename_file(_resource_path, _new_name)
+	var rename_command : RenameCommand = RenameCommand.new(_resource_path, _new_name)
+	command_invoker.set_command(rename_command).execute_command()
 
 func _delete_file():
 	FileManager.delete_file(_resource_path)
-	thumbnail_deleted.emit()	
+	thumbnail_deleted.emit()
 	queue_free()
 
 func _rename_canceled():

@@ -7,6 +7,18 @@ static var LEVEL_EXT = ".level"
 static var TEMPLATE_EXT = ".template"
 static var ENUM_EXT = ".enum"
 
+## Renames a file
+#@param: path - the path to the file needing to be renamed.
+#@param: to_name - the new name
+static func rename_file(path : String, to_name : String) -> String:
+	var ext = path.get_extension()
+	var dir_name = to_name
+	var file_name : StringName = "%s.%s" % [to_name, ext]
+	to_name = file_name if not ext.is_empty() else dir_name
+	var new_path = path.substr(0, path.rfind("/") + 1) + to_name
+	DirAccess.rename_absolute(path, new_path)
+	return new_path
+
 func create_file(path : String):
 	var file = FileAccess.open(path, FileAccess.WRITE)
 	var err = FileAccess.get_open_error()
@@ -55,8 +67,6 @@ func delete_file(path : String):
 func move_file(path : String):
 	pass
 
-func rename_file(path : String):
-	pass
 
 ## Returns the path entered in the save window.
 func show_save_window() -> String:

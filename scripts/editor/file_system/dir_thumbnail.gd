@@ -13,6 +13,7 @@ func _process(delta: float) -> void:
 	super._process(delta)
 
 func _gui_input(event: InputEvent) -> void:
+	super._gui_input(event)
 	if event is InputEventMouseButton and event.double_click:
 		directory_selected.emit(_resource_path)
 
