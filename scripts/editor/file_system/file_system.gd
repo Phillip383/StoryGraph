@@ -18,6 +18,7 @@ signal Template_deleted(_name : String)
 
 var _project_directory_path : String
 var _project_directory : DirAccess
+var root : TreeItem = null
 
 @onready var _command_invoker : CommandInvoker = CommandInvoker.new()
 
@@ -56,10 +57,11 @@ func open_project_directory() -> DirAccess:
 
 ## Creates the root item of the file tree.
 func create_root() -> TreeItem:
+	_project_directory = open_project_directory()
 	var root_item : TreeItem = tree.create_item()
 	root_item.set_text(0, ROOT_NAME)
 	root_item.set_meta("abs_path", _project_directory_path)
-	tree.hide_root = true
+	tree.hide_root = false
 	return root_item
 
 func create_tree_item(parent : TreeItem, item_name : StringName) -> TreeItem:
@@ -81,12 +83,14 @@ func create_file(parent : TreeItem, item_name: StringName) -> TreeItem:
 
 ## Create a tree list of the project root directory.
 func create_tree() -> void:
-	_project_directory = open_project_directory()
-	assert(DirAccess.get_open_error() == OK, "Open Project Failure: " + error_string(DirAccess.get_open_error()))
-	var _root_item : TreeItem = create_root()
-	var _dirs : PackedStringArray = _project_directory.get_directories()
-	for directory in _dirs:
-		create_tree_item(_root_item, directory)
+	tree.clear()
+	root = create_root()
+
+	var dirs : PackedStringArray = _project_directory.get_directories()
+	for directory in dirs:
+		create_tree_item(root, directory)
+
+	tree.set_selected(root, 0)
 
 ## Create thumbnails of directories and files within the grid container based on the active directory.
 func create_thumbnails(selected_dir_path : String) -> void:
@@ -134,7 +138,6 @@ func clear_thumbnails() -> void:
 
 
 func on_project_directory_changed() -> void:
-	tree.clear()
 	clear_thumbnails()
 	create_tree()
 
@@ -149,7 +152,6 @@ func on_directory_added(dir_name : StringName) -> void:
 
 ## Remove the directory from the tree
 func on_thumbnail_removed(_resource_path : String) -> void:
-	tree.clear()
 	create_tree()
 	notify_delete(_resource_path)
 
@@ -191,6 +193,7 @@ func create_dir_thumbnail(selected_dir_path : String, _name : String) -> DirThum
 	new_dir.set_thumbnail_name(_name)
 	new_dir.set_resource_path(selected_dir_path + "/" + _name)
 	new_dir.directory_selected.connect(_on_dir_thumbnail_opened)
+	new_dir.directory_moved.connect(_on_directory_moved)
 	connect_thumbnail(new_dir)
 	return new_dir
 
@@ -203,6 +206,15 @@ func _on_dir_thumbnail_opened(_path : String):
 
 	create_thumbnails(_path)
 
+func _on_directory_moved(from : String, to : String):
+	update_tree(from, to)
+	create_tree()
+
+## Returns the directory at which the directory was moved to.
+func update_tree(from : String, to : String) -> TreeItem:
+	var from_item = select_active_directory(tree.get_root(), from)
+	from_item.set_meta("abs_path", to)
+	return select_active_directory(from_item, to)
 
 func select_active_directory(item: TreeItem, dir_path : String) -> TreeItem:
 	var current_child = item.get_first_child()

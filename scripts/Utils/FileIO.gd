@@ -25,11 +25,8 @@ static func does_file_exist(_path : String, _name) -> bool:
 	return FileAccess.file_exists(path)
 
 static func move_file(from_path : String, to_path : String):
-	var err = DirAccess.copy_absolute(from_path, to_path)
+	var err = DirAccess.rename_absolute(from_path, to_path)
 	assert(err == OK, "move file failed: " + error_string(err))
-	if err == OK:
-		## Ensure the copy was successful
-		DirAccess.remove_absolute(from_path)
 
 ## Full feature delete method, recursive delete directories.
 ## Returns the name of the file deleted.

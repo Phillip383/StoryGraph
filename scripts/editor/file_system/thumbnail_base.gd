@@ -107,7 +107,7 @@ func _on_name_text_submitted(new_text: String) -> void:
 		_rename_file(new_text)
 
 func _get_drag_data(at_position: Vector2) -> Variant:
-	print("drag started: ", at_position)
 	var drag_preview = self.duplicate()
+	drag_preview.deselect()
 	set_drag_preview(drag_preview)
 	return self
