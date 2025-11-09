@@ -26,7 +26,6 @@ func _ready() -> void:
 	child_entered_tree.connect(on_child_added)
 	FileManager.on_level_load_request.connect(load_level)
 	FileManager.project_changed.connect(clear_levels)
-	FileManager.level_deleted.connect(level_deleted)
 	FileManager.level_renamed.connect(level_renamed)
 	## Setup tabs for closing
 	get_tab_bar().set_tab_close_display_policy(TabBar.CLOSE_BUTTON_SHOW_ALWAYS)
@@ -48,7 +47,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("new_level"):
 		pass
 
-## TODO: Move to a delete command
 func level_deleted(_name : StringName):
 	_name = _name.get_slice(".", 0)
 	for i in range(get_child_count()):
@@ -58,7 +56,6 @@ func level_deleted(_name : StringName):
 			if to_find_name == _name:
 				level.queue_free()
 
-##TODO: Move this to a rename command...
 func level_renamed(_old_name : StringName, _new_name : StringName):
 	for i in range(get_child_count()):
 		var level = get_tab_control(i) as Level
@@ -123,6 +120,7 @@ func create_new_level(_path : String):
 	var new_level_index = get_tab_idx_from_control(new_level)
 	current_tab = new_level_index
 	set_tab_title(new_level_index, new_level_name)
+	command_invoker.set_command(SaveCommand.new(new_level)).execute_command() ## Save with default data.
 	level_created.emit(new_level)
 
 # When the level is edited, we flag the title to illustrate unsaved work.
@@ -172,3 +170,7 @@ func _story_line_added(node : BaseStoryNode):
 
 func _story_lines_removed(_names : Array[StringName]) -> void:
 	on_story_lines_removed.emit(_names)
+
+
+func _on_file_system_level_deleted(_name: String) -> void:
+	level_deleted(_name)

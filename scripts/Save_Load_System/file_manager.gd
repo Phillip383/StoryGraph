@@ -14,8 +14,6 @@ signal level_create_requested()
 signal on_level_load_request(_level_data)
 signal post_level_load(_level : Level)
 
-signal save_focused_requested(_type : FileManager.FileType)
-
 signal project_changed()
 
 signal level_deleted(_name : StringName)
@@ -40,152 +38,12 @@ func get_current_project_dir():
 func is_in_active_project():
 	return FileAccess.file_exists(get_project_file())
 
-## Returns a path to the renamed file...
-func rename_file(_path : String, _name : StringName) -> String:
-	var ext = _path.get_extension()
-	var dir_name = _name
-	var file_name : StringName = "%s.%s" % [_name, ext]
-	_name = file_name if not ext.is_empty() else dir_name
-	var new_path = _path.substr(0, _path.rfind("/") + 1) + _name
-	DirAccess.rename_absolute(_path, new_path)
-	return new_path
-
 func get_type_by_path(_path : String):
 	var extension = _path.get_extension()
 	if extension == LEVEL_FILE_TYPE:
 		return FileType.LEVEL
 	elif extension == TEMPLATE_FILE_TYPE:
 		return FileType.TEMPLATE
-
-## Will recursivly delete directories...
-func delete_file(_path : String):
-	if DirAccess.dir_exists_absolute(_path):
-		recurse_remove_dirs(_path)
-
-	DirAccess.remove_absolute(_path)
-	match get_type_by_path(_path):
-		FileType.LEVEL:
-			var _name = _path.substr(_path.rfind("/") + 1)
-			level_deleted.emit(_name)
-
-func recurse_remove_dirs(_path : String):
-	var dir = DirAccess.open(_path)
-	var dirs = dir.get_directories()
-	if dirs.size() > 0:
-		for d in dirs:
-			delete_file(_path + "/" + d) ## Recursivly remove directories...
-
-
-## Opens a file, with only the name and type required, the method will append the correct file type.
-## @param _name: the name of the file to open.
-## @param _type: the type of file it is, IE. Level or template, see FileManager->LevelTypes
-## @param _access: The mode to open it in, IE, FileAccess.WRITE, see FilAccess for more modes
-## @param _status: An optional array that will contain any Errors from the operation.
-## @return opened file or null if the operation failed.
-func open_file(_name : String, _type : FileType, _access : FileAccess.ModeFlags, _status = []) -> FileAccess:
-	var _file : FileAccess
-	var _path : String
-	match _type:
-		FileType.LEVEL:
-			_file = _open_level_by_name(_name, _access)
-		FileType.TEMPLATE:
-			_file = _open_template_by_name(_name, _access)
-
-	if not _file:
-		_status.append(FileAccess.get_open_error()) ## If opening failed, return the error
-		return null
-
-	return _file
-
-func _open_level_by_name(_name, access) -> FileAccess:
-	var path = get_level_by_name(_name)
-	return FileAccess.open(path, access)
-
-func _open_template_by_name(_name, access) -> FileAccess:
-	var path = get_template_by_name(_name)
-	return FileAccess.open(path, access)
-
-## Saves the given data to a file of a relevant file type given the enum _type. Will create the file if it doesn't already exist.
-## @param _name: the name of the file to save.
-## @param _type: the type of the file to save.
-## @param _data: the contents to save to the file.
-## @return Error: OK, on success, or cant acquire resource if data was null, or the open_error that was experienced.
-func save_file(_name : String, _type : FileType, _data) -> Error:
-	## If the data is null, return out.
-	if not _data:
-		return ERR_CANT_ACQUIRE_RESOURCE
-
-	## Open it for writing
-	var _status = []
-	var _file = open_file(_name, _type, FileAccess.WRITE, _status)
-	# If we have a file with no errors.
-	if _file:
-		## TODO: Change this to json and encrypt it, this isn't safe.
-		_file.store_var(_data)
-		_file.close()
-		return OK
-	else:
-		print(error_string(_status[0]))
-		return FileAccess.get_open_error()
-
-
-## Loads a file with given name and type to disk if it exists and returns a dictionary of the contents of the file.
-## @param _file_name: the name of the file to load.
-## @param _type: the type of file to load.
-## @param _status: this array will contain any error's that might have taken place, will contain OK, if the operation was successful
-## @return contents: contents of the file if the operation was successful, otherwise empty dictionary
-func load_file_by_name(_file_name : String, _type : FileType, _status) -> Dictionary[StringName, Variant]:
-	var contents : Dictionary[StringName, Variant] = {}
-	if file_exists(_file_name, _type):
-		var _file = open_file(_file_name, _type, FileAccess.READ)
-		if _file:
-			contents = _file.get_var()
-			contents["name"] = _file_name ## If the file has been renamed since it's last open.
-			on_level_load_request.emit(contents)
-		else:
-			_status.append(FileAccess.get_open_error())
-			return {}
-	else:
-		_status.append(ERR_DOES_NOT_EXIST)
-		return {}
-	_status.append(OK)
-	return contents
-
-
-## Loads a file by it's path, internally checks it's type by the file's suffix.
-func load_file_by_path(_path : String):
-	##TODO: Add type checking from paths, a contains reverse search would be best.
-	var _file = FileAccess.open(_path, FileAccess.READ)
-	if _file:
-		## TODO: Change this to json and encrypt it, this isn't safe.
-		var _data = _file.get_var()
-		## Get the name of the file and store it, if the file has been renamed since it's last open and save.
-		_data["name"] = _path.substr(_path.rfind("/") + 1, _path.rfind("."))
-		on_level_load_request.emit(_data)
-		_file.close()
-	else:
-		return FileAccess.get_open_error()
-
-
-## Checks if a file of a given type with given name already exists
-func file_exists(_name : String, _type : FileType) -> bool:
-	var _path : String
-	## If the name doesn't have the type appended already, append it.
-	match _type:
-		FileType.LEVEL:
-			_path = get_level_by_name(_name)
-		FileType.TEMPLATE:
-			_path = get_template_by_name(_name)
-	return FileAccess.file_exists(_path)
-
-func file_exists_by_path(_path : String, _name) -> bool:
-	var path : String = _path.substr(0, _path.rfind("/") + 1) + _name
-	match get_type_by_path(_path):
-		FileType.LEVEL:
-			path = path + ".%s" % LEVEL_FILE_TYPE
-		FileType.TEMPLATE:
-			pass ## TODO: add template check...
-	return FileAccess.file_exists(path)
 
 func open_project(project_path : String) -> Error:
 	##Already open
@@ -214,15 +72,6 @@ func get_level_by_name(level_name : String) -> String:
 		return "%s/%s" % [get_levels_directory(), level_name]
 	return "%s/%s.%s" % [get_levels_directory(), level_name, LEVEL_FILE_TYPE]
 
-## Returns the path of the templates directory
-func get_templates_directory():
-	return "%s/templates" % _current_project_dir
-
-func get_template_by_name(_name : String) -> String:
-	if _name.contains(TEMPLATE_FILE_TYPE):
-		return "%s/%s" % [get_templates_directory(), _name]
-	return "%s/%s.%s" % [get_templates_directory(), _name, TEMPLATE_FILE_TYPE]
-
 ## Returns the path of the story.project file
 func get_project_file():
 	return "%s/story.project" % _current_project_dir
@@ -234,13 +83,6 @@ func set_application_title():
 func create_directory(_path : String, _name : StringName = "New Folder"):
 	_path = _path + "/%s" % _name
 	DirAccess.make_dir_recursive_absolute(_path)
-
-func move_file(_from_path : String, _to_path : String):
-	var err = DirAccess.copy_absolute(_from_path, _to_path)
-	assert(err == OK, "move file failed: " + error_string(err))
-	if err == OK:
-		if DirAccess.dir_exists_absolute(_from_path):
-			DirAccess.remove_absolute(_from_path)
 
 func rename_directory(_from : String, _to : String) -> int:
 	return DirAccess.rename_absolute(_from, _to)

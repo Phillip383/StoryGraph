@@ -8,6 +8,9 @@ const ROOT_NAME : String = "Content"
 ## SIGNALS
 signal menu_selection(id : int, thumbnail)
 signal clear_thumbnail_focus()
+signal level_deleted(_name : String)
+signal enum_deleted(_name : String)
+signal Template_deleted(_name : String)
 
 @onready var tree : Tree = $MarginContainer/HSplitContainer/ScrollContainer/Tree
 @onready var grid : GridContainer = $MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/MarginContainer2/ScrollContainer/GridContainer
@@ -145,15 +148,29 @@ func on_directory_added(dir_name : StringName) -> void:
 	new_dir.set_meta("abs_path", abs_path)
 
 ## Remove the directory from the tree
-func on_directory_removed() -> void:
+func on_thumbnail_removed(_resource_path : String) -> void:
 	tree.clear()
 	create_tree()
+	notify_delete(_resource_path)
+
+func notify_delete(path : String):
+	var _name = path.substr(path.rfind("/") + 1).get_slice(".", 0)
+	var ext = "." + path.get_extension()
+	match ext:
+		FileIO.LEVEL_EXT:
+			level_deleted.emit(_name)
+		FileIO.ENUM_EXT:
+			enum_deleted.emit(_name)
+		FileIO.TEMPLATE_EXT:
+			Template_deleted.emit(_name)
+		".json":
+			pass
 
 ## Connects various signals for to handle actions on the thumbnails
 func connect_thumbnail(thumbnail):
 	thumbnail.thumbnail_menu_requested.connect(show_thumbnail_menu)
 	thumbnail.thumbnail_hover_end.connect(destory_thumbnail_menu)
-	thumbnail.thumbnail_deleted.connect(on_directory_removed)
+	thumbnail.thumbnail_deleted.connect(on_thumbnail_removed)
 	menu_selection.connect(thumbnail.on_menu_selection)
 	clear_thumbnail_focus.connect(thumbnail._rename_canceled)
 
@@ -208,6 +225,6 @@ func does_thumbnail_exist(_name : String) -> bool:
 	return false
 
 func _on_levels_level_created(level: Level) -> void:
-	var lvl_name = level.get_resource_path().substr(level.get_resource_path().rfind("/") + 1).split(".")[0]
+	var lvl_name = level.get_resource_path().substr(level.get_resource_path().rfind("/") + 1)
 	var path = level.get_resource_path().substr(0, level.get_resource_path().rfind("/"))
 	create_level_thumbnail(path, lvl_name)

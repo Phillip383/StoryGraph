@@ -19,12 +19,52 @@ static func rename_file(path : String, to_name : String) -> String:
 	DirAccess.rename_absolute(path, new_path)
 	return new_path
 
+static func does_file_exist(_path : String, _name) -> bool:
+	var ext = _path.get_extension()
+	var path : String = _path.substr(0, _path.rfind("/") + 1) + _name + "." + ext
+	return FileAccess.file_exists(path)
+
+static func move_file(from_path : String, to_path : String):
+	var err = DirAccess.copy_absolute(from_path, to_path)
+	assert(err == OK, "move file failed: " + error_string(err))
+	if err == OK:
+		## Ensure the copy was successful
+		if DirAccess.dir_exists_absolute(from_path) and DirAccess.dir_exists_absolute(to_path):
+			DirAccess.remove_absolute(from_path)
+
+## Full feature delete method, recursive delete directories.
+## Returns the name of the file deleted.
+func delete_file(path : String) -> String:
+	## If the file being delete is a directory...
+	if DirAccess.dir_exists_absolute(path):
+		_recurse_remove_dirs(path)
+		DirAccess.remove_absolute(path) # Delete the root parent directory
+		return ""
+
+	var err = DirAccess.remove_absolute(path)
+	var _name : String
+	if err == OK:
+		var ext = path.get_extension()
+		match ext:
+			LEVEL_EXT:
+				_name = path.substr(path.rfind("/") + 1)
+	return _name
+
+func _recurse_remove_dirs(_path : String):
+	var dir = DirAccess.open(_path)
+	var contents = dir.get_directories() + dir.get_files()
+	if contents.size() > 0:
+		for content in contents:
+			delete_file(_path + "/" + content) ## Recursivly remove directories and their contents
+
+
 func create_file(path : String):
 	var file = FileAccess.open(path, FileAccess.WRITE)
 	var err = FileAccess.get_open_error()
 	assert(err == OK, "File Creation Failed:: " + error_string(err))
 	file.close()
 	GraphEditor.file_added.emit(path)
+
 
 func open_file(path : String):
 	if FileAccess.get_file_as_string(path).is_empty():
@@ -60,12 +100,6 @@ func save_file(path : String, data : Variant):
 		file.close()
 	else:
 		save_file(await show_save_window(), "")
-
-func delete_file(path : String):
-	pass
-
-func move_file(path : String):
-	pass
 
 
 ## Returns the path entered in the save window.

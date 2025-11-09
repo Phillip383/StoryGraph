@@ -3,7 +3,7 @@ class_name ThumbnailBase
 
 signal thumbnail_menu_requested(thumbnail)
 signal thumbnail_hover_end()
-signal thumbnail_deleted()
+signal thumbnail_deleted(_resource_path)
 
 ## The path to the file this thumbnail represents.
 var _resource_path : String
@@ -93,8 +93,9 @@ func _rename_file(_new_name : StringName):
 	command_invoker.set_command(rename_command).execute_command()
 
 func _delete_file():
-	FileManager.delete_file(_resource_path)
-	thumbnail_deleted.emit()
+	var delete_command : DeleteFileCommand = DeleteFileCommand.new(_resource_path)
+	command_invoker.set_command(delete_command).execute_command()
+	thumbnail_deleted.emit(_resource_path)
 	queue_free()
 
 func _rename_canceled():
@@ -102,7 +103,7 @@ func _rename_canceled():
 	_name_label.editable = false
 
 func _on_name_text_submitted(new_text: String) -> void:
-	if not FileManager.file_exists_by_path(_resource_path, new_text):
+	if not FileIO.does_file_exist(_resource_path, new_text):
 		_rename_file(new_text)
 
 func _get_drag_data(at_position: Vector2) -> Variant:
