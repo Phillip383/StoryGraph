@@ -152,7 +152,9 @@ func on_directory_added(dir_name : StringName) -> void:
 
 ## Remove the directory from the tree
 func on_thumbnail_removed(_resource_path : String) -> void:
-	create_tree()
+	var tree_item = find_tree_item(root, _resource_path)
+	if tree_item:
+		tree_item.free()
 	notify_delete(_resource_path)
 
 func notify_delete(path : String):
@@ -199,7 +201,7 @@ func create_dir_thumbnail(selected_dir_path : String, _name : String) -> DirThum
 
 
 func _on_dir_thumbnail_opened(_path : String):
-	var selected_dir = select_active_directory(tree.get_root(), _path)
+	var selected_dir = find_tree_item(tree.get_root(), _path)
 	if selected_dir != null:
 		tree.set_selected(selected_dir, 0)
 		tree.queue_redraw()
@@ -212,17 +214,17 @@ func _on_directory_moved(from : String, to : String):
 
 ## Returns the directory at which the directory was moved to.
 func update_tree(from : String, to : String) -> TreeItem:
-	var from_item = select_active_directory(tree.get_root(), from)
+	var from_item = find_tree_item(tree.get_root(), from)
 	from_item.set_meta("abs_path", to)
-	return select_active_directory(from_item, to)
+	return find_tree_item(from_item, to)
 
-func select_active_directory(item: TreeItem, dir_path : String) -> TreeItem:
+func find_tree_item(item: TreeItem, dir_path : String) -> TreeItem:
 	var current_child = item.get_first_child()
 	while current_child:
 		if current_child.get_meta("abs_path") == dir_path:
 			return current_child
 
-		var found_item = select_active_directory(current_child, dir_path)
+		var found_item = find_tree_item(current_child, dir_path)
 		if found_item:
 			return found_item
 
