@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://dld0uhok1cub8"]
+[gd_scene load_steps=8 format=3 uid="uid://dld0uhok1cub8"]
 
 [ext_resource type="Script" uid="uid://bdwieva6houra" path="res://scripts/editor/file_system/file_system.gd" id="1_bref1"]
 [ext_resource type="PackedScene" uid="uid://chh5caygrmqp1" path="res://scenes/Editor/file_system/dir_thumbnail.tscn" id="2_07mp2"]
 [ext_resource type="PackedScene" uid="uid://bjk0rmj702kfu" path="res://scenes/Editor/file_system/file_system_menu.tscn" id="2_u1x8l"]
+[ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://themes/story_graph_theme.tres" id="3_3h4vx"]
+[ext_resource type="Texture2D" uid="uid://bli02dwmfpsxb" path="res://assets/Textures/Icons/32/arrow_long_left.png" id="3_s6fbv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u1x8l"]
 bg_color = Color(0.23921569, 0.23921569, 0.23921569, 1)
@@ -76,6 +78,24 @@ theme_override_constants/margin_bottom = 15
 layout_mode = 2
 placeholder_text = "search"
 
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/HSplitContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="BackDir" type="Button" parent="MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/MarginContainer3"]
+custom_minimum_size = Vector2(35, 25)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme = ExtResource("3_3h4vx")
+icon = ExtResource("3_s6fbv")
+icon_alignment = 1
+expand_icon = true
+
 [node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/HSplitContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -93,3 +113,5 @@ size_flags_horizontal = 3
 columns = 7
 
 [node name="FileSystemMenu" parent="." instance=ExtResource("2_u1x8l")]
+
+[connection signal="pressed" from="MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/MarginContainer3/BackDir" to="." method="_on_back_dir_pressed"]

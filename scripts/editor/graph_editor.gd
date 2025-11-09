@@ -4,8 +4,9 @@ var unsaved_levels : Array[Level]
 
 @export var PROJECT_HUB : PackedScene = preload("res://scenes/Project_System/project_hub.tscn")
 
-##SIGNALS
-signal file_added(path : String) ## Used when a file is added to inform various components of the editor. For example if a new level is created from the button or shortcut, this signal will inform the file system of that change in state. Passes the path of the newly created file.
+#SIGNALS
+signal project_changed()
+
 
 ## Const string literals for storing the state of the editor upon closing and opening.
 const LAST_OPEN_PROJ_KEY = "last_open_project"
@@ -29,6 +30,36 @@ func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		on_application_close()
 
+## The path to the currently open project
+var _current_project_dir := ""
+
+##@return current project directory path
+func get_current_project_dir():
+	return _current_project_dir
+
+func is_in_active_project():
+	return FileAccess.file_exists(get_project_file())
+
+func open_project(project_path : String) -> Error:
+	##Already open
+	if project_path == _current_project_dir:
+		return ERR_ALREADY_IN_USE
+	#if the project file is present.
+	if FileAccess.file_exists(project_path + "/story.project"):
+		_current_project_dir = project_path
+		## Set the window name to the project directory name
+		set_application_title()
+		project_changed.emit()
+		return OK
+	return ERR_DOES_NOT_EXIST
+
+## Returns the path of the story.project file
+func get_project_file():
+	return "%s/story.project" % _current_project_dir
+
+func set_application_title():
+	var tokens = _current_project_dir.split("/")
+	get_tree().root.title = "%s - Project - %s" % [ProjectSettings.get_setting("application/config/name"), tokens[tokens.size() - 1]]
 
 ##Save the current state of the editor for next launch.
 func on_application_close():
@@ -38,7 +69,7 @@ func on_application_close():
 			return
 		PromptSelection.SAVE:
 			for level in unsaved_levels:
-				FileManager.save_file(level.name, FileManager.FileType.LEVEL, level.save())
+				pass ## TODO: Implement this
 
 	## Save the current project to open on the next launch...
 	persistent_project()
@@ -121,7 +152,8 @@ func get_project_list():
 
 func unsaved_progress():
 	if unsaved_levels.size() > 0:
-		var save_win = load("res://scenes/UI/Popups/unsaved_close_prompt.tscn").instantiate()
+		##TODO: Fix this!!!
+		var save_win = load("res://scenes/Popups/unsaved_close_prompt.tscn").instantiate()
 		get_tree().current_scene.add_child(save_win)
 		var unsaved_level_names = ""
 		for level in unsaved_levels:
@@ -136,7 +168,7 @@ func persistent_project():
 	var _state = JSON.parse_string(FileAccess.get_file_as_string(editor_config_path))
 	var editor_config = FileAccess.open(editor_config_path, FileAccess.WRITE)
 	if editor_config:
-		_state = {LAST_OPEN_PROJ_KEY : FileManager.get_current_project_dir()}
+		_state = {LAST_OPEN_PROJ_KEY : GraphEditor.get_current_project_dir()}
 		_state.get_or_add(LAST_OPEN_LEVELS, persistent_levels())
 		_state.get_or_add(PROJECT_LIST, _proj_list)
 		var state_string = JSON.stringify(_state)
@@ -158,11 +190,11 @@ func load_persistent_project():
 	var editor_config = FileAccess.open(editor_config_path, FileAccess.READ)
 	if editor_config:
 		var _last_state = JSON.parse_string(editor_config.get_as_text())
-		FileManager.open_project(_last_state[LAST_OPEN_PROJ_KEY])
+		open_project(_last_state[LAST_OPEN_PROJ_KEY])
 		await get_tree().create_timer(1.0).timeout ## Give the scene tree time to load.
 		if _last_state.get(LAST_OPEN_LEVELS):
 			for level in _last_state[LAST_OPEN_LEVELS]:
-				var _status = []
-				FileManager.load_file_by_name(level, FileManager.FileType.LEVEL, _status)
+				pass
+				## TODO: Implement this
 	else:
 		return FileAccess.get_open_error()

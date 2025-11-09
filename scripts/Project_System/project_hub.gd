@@ -28,7 +28,7 @@ func _on_import_pressed() -> void:
 	var window = IMPORT_WINDOW.instantiate()
 	add_child(window)
 	var project = await window.on_successful_selection
-	FileManager.add_project_to_list(project)
+	GraphEditor.add_project_to_list(project)
 	var element : ProjectListElement = PROJECT_LIST_ELEMENT.instantiate()
 	element.on_selection.connect(project_selected)
 	_project_list_container.add_child(element)
@@ -36,7 +36,7 @@ func _on_import_pressed() -> void:
 	element.set_project_path(project.values()[0])
 
 func _on_close_pressed() -> void:
-	if FileManager.is_in_active_project():
+	if GraphEditor.is_in_active_project():
 		queue_free()
 
 func add_projects():
@@ -53,9 +53,9 @@ func add_projects():
 
 func project_selected(project):
 	on_selection.emit(project)
-	FileManager.open_project(project)
+	GraphEditor.open_project(project)
 	queue_free()
 
 func on_close_request():
-	if FileManager.is_in_active_project():
+	if GraphEditor.is_in_active_project():
 		queue_free()

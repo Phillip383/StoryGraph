@@ -24,7 +24,7 @@ var root : TreeItem = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	FileManager.project_changed.connect(on_project_directory_changed)
+	GraphEditor.project_changed.connect(on_project_directory_changed)
 	tree.item_selected.connect(on_item_selected)
 	menu.id_pressed.connect(on_menu_item_selected)
 
@@ -52,7 +52,7 @@ func destory_thumbnail_menu():
 	menu.visible = false
 
 func open_project_directory() -> DirAccess:
-	_project_directory_path = FileManager.get_current_project_dir()
+	_project_directory_path = GraphEditor.get_current_project_dir()
 	return DirAccess.open(_project_directory_path)
 
 ## Creates the root item of the file tree.
@@ -83,13 +83,10 @@ func create_file(parent : TreeItem, item_name: StringName) -> TreeItem:
 
 ## Create a tree list of the project root directory.
 func create_tree() -> void:
-	tree.clear()
 	root = create_root()
-
 	var dirs : PackedStringArray = _project_directory.get_directories()
 	for directory in dirs:
 		create_tree_item(root, directory)
-
 	tree.set_selected(root, 0)
 
 ## Create thumbnails of directories and files within the grid container based on the active directory.
@@ -97,7 +94,9 @@ func create_thumbnails(selected_dir_path : String) -> void:
 	clear_thumbnails()
 	var files = DirAccess.get_files_at(selected_dir_path)
 	for file in files:
-		create_level_thumbnail(selected_dir_path, file)
+		var ext = "." + file.get_extension()
+		if ext == FileIO.LEVEL_EXT:
+			create_level_thumbnail(selected_dir_path, file)
 
 	for dir in DirAccess.get_directories_at(selected_dir_path):
 		create_dir_thumbnail(selected_dir_path, dir)
@@ -242,3 +241,7 @@ func _on_levels_level_created(level: Level) -> void:
 	var lvl_name = level.get_resource_path().substr(level.get_resource_path().rfind("/") + 1)
 	var path = level.get_resource_path().substr(0, level.get_resource_path().rfind("/"))
 	create_level_thumbnail(path, lvl_name)
+
+
+func _on_back_dir_pressed() -> void:
+	pass # Replace with function body.

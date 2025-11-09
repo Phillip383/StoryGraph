@@ -5,3 +5,8 @@ assets/
 build/
 addons/
 test_create/
+.github/
+Demos/
+LICENSE
+images/
+*.svg*

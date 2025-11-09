@@ -28,13 +28,13 @@ func open_level():
 	var open_proj_window : FileDialog = OPEN_LEVEL_DIALOG.instantiate()
 	open_proj_window.title = "Open Level"
 	open_proj_window.file_mode = FileDialog.FILE_MODE_OPEN_FILE
-	open_proj_window.root_subfolder = FileManager.get_levels_directory()
-	open_proj_window.add_filter("*.%s" % FileManager.LEVEL_FILE_TYPE)
+	open_proj_window.root_subfolder = GraphEditor.get_current_project_dir()
+	open_proj_window.add_filter("*%s" % FileIO.LEVEL_EXT)
 	open_proj_window.file_selected.connect(on_level_opened)
 	get_tree().current_scene.add_child(open_proj_window)
 
 func on_level_opened(path : String):
-	FileManager.load_file_by_path(path)
+	command_invoker.set_command(OpenFileCommand.new(path)).execute_command()
 
 ## Connection from the new level window in the level's container.
 func _on_open_existing_level_pressed() -> void:

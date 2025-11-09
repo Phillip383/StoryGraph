@@ -11,12 +11,12 @@ signal on_save(path : String)
 
 var _file_name : String
 var _file_path : String
-var _file_type : FileManager.FileType
+var _file_type : FileTypes.Types
 
 func _ready() -> void:
 	close_requested.connect(queue_free)
 
-func set_file_type(_type : FileManager.FileType):
+func set_file_type(_type : FileTypes.Types):
 	_file_type = _type
 
 func _on_filename_text_changed(new_text: String) -> void:

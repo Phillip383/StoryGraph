@@ -150,8 +150,8 @@ func _on_cancel_pressed() -> void:
 ## Only destroys the create project window if it was successful
 func _on_create_pressed() -> void:
 	if create_project() == OK:
-		FileManager.open_project(intermediate_project_path)
-		FileManager.add_project_to_list({project_name : intermediate_project_path})
+		GraphEditor.open_project(intermediate_project_path)
+		GraphEditor.add_project_to_list({project_name : intermediate_project_path})
 		on_successful_creation.emit()
 		queue_free()
 

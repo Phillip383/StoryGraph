@@ -21,6 +21,7 @@ config/icon="uid://duqsok6xitndw"
 
 FileManager="*res://scripts/Save_Load_System/file_manager.gd"
 GraphEditor="*res://scripts/editor/graph_editor.gd"
+Signal_Debugger="*res://addons/SignalVisualizer/Debugger/SignalDebugger.gd"
 
 [display]
 
@@ -38,7 +39,7 @@ version_control/autoload_on_startup=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/gut/plugin.cfg")
+enabled=PackedStringArray("res://addons/SignalVisualizer/plugin.cfg", "res://addons/gut/plugin.cfg")
 
 [global_group]
 

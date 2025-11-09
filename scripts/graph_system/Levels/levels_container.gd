@@ -72,8 +72,8 @@ func clear_levels():
 func on_tab_closed(tab : int):
 	if get_child_count() == 1: ## Always need a level open.
 		return
-	var level = get_tab_control(tab)
-	if level.get_current_state() == GraphManager.GraphState.EDITING and FileManager.file_exists(level.name, FileManager.FileType.LEVEL):
+	var level : Level = get_tab_control(tab)
+	if level.get_current_state() == GraphManager.GraphState.EDITING and FileIO.does_file_exist(level.get_resource_path(), level.name):
 		var prompt = CLOSE_UNSAVED_PROMPT.instantiate()
 		add_child(prompt)
 		var selection = await prompt.on_selection
