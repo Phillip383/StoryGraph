@@ -17,10 +17,15 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.double_click:
 		directory_selected.emit(_resource_path)
 
+func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
+	return true
+
+##TODO: Probably do need to pass the whole thumbnail so I can update the resource path on move and destroy the old thumbnail.
 func _drop_data(at_position: Vector2, data: Variant) -> void:
-	if _can_drop_data(at_position, data):
-		var move_to = _resource_path + data._resource_path.substr(data._resource_path.size(), data._resource_path.rfind("/"))
-		FileIO.move_file(data._resource_path, move_to)
+	var dragged_thumbnail = data as ThumbnailBase
+	var move_to = _resource_path + "/" + dragged_thumbnail.get_resource_path().substr(dragged_thumbnail.get_resource_path().rfind("/") + 1)
+	FileIO.move_file(dragged_thumbnail.get_resource_path(), move_to)
+	dragged_thumbnail.queue_free()
 
 func name_new_dir() -> String:
 	_name_label.editable = true

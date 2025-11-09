@@ -29,8 +29,7 @@ static func move_file(from_path : String, to_path : String):
 	assert(err == OK, "move file failed: " + error_string(err))
 	if err == OK:
 		## Ensure the copy was successful
-		if DirAccess.dir_exists_absolute(from_path) and DirAccess.dir_exists_absolute(to_path):
-			DirAccess.remove_absolute(from_path)
+		DirAccess.remove_absolute(from_path)
 
 ## Full feature delete method, recursive delete directories.
 ## Returns the name of the file deleted.

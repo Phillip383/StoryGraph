@@ -110,4 +110,4 @@ func _get_drag_data(at_position: Vector2) -> Variant:
 	print("drag started: ", at_position)
 	var drag_preview = self.duplicate()
 	set_drag_preview(drag_preview)
-	return _resource_path
+	return self
