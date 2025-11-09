@@ -57,12 +57,14 @@ func show_menu():
 	_is_menu_open = true
 	thumbnail_menu_requested.emit(self)
 
-func on_menu_selection(id : int, thumbnail):
+func on_menu_selection(id : int, _thumbnail):
+	if not _active:
+		return
 	match id:
 		FileOptions.RENAME:
-			thumbnail._rename_active()
+			_rename_active()
 		FileOptions.DELETE:
-			thumbnail._delete_file()
+			_delete_file()
 
 func turn_off_menu():
 	var mouse_pos = get_global_mouse_position()
