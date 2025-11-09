@@ -15,6 +15,7 @@ signal Template_deleted(_name : String)
 @onready var tree : Tree = $MarginContainer/HSplitContainer/ScrollContainer/Tree
 @onready var grid : GridContainer = $MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/MarginContainer2/ScrollContainer/GridContainer
 @onready var menu : FileContextMenu = $FileSystemMenu
+@onready var back_dir : Button = $MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/MarginContainer3/BackDir
 
 var _project_directory_path : String
 var _project_directory : DirAccess
@@ -203,6 +204,7 @@ func _on_dir_thumbnail_opened(_path : String):
 	var selected_dir = find_tree_item(tree.get_root(), _path)
 	if selected_dir != null:
 		tree.set_selected(selected_dir, 0)
+		_set_back_dir_button_enable(_path)
 		tree.queue_redraw()
 
 	create_thumbnails(_path)
@@ -244,4 +246,20 @@ func _on_levels_level_created(level: Level) -> void:
 
 
 func _on_back_dir_pressed() -> void:
-	pass # Replace with function body.
+	var parent = tree.get_selected().get_parent()
+	tree.set_selected(parent, 0)
+	_set_back_dir_button_enable(parent.get_meta("abs_path"))
+	tree.queue_redraw()
+
+## Checks if the current directory has a parent directory and it's not the root directory, set's the back buttons disabled property.
+func _set_back_dir_button_enable(path : String):
+	if not path or path.length() == 0:
+		back_dir.release_focus()
+		back_dir.disabled = true
+		return
+	var parent_dir = path.substr(0, path.rfind("/") - 1)
+	if DirAccess.dir_exists_absolute(parent_dir) or path != _project_directory_path:
+		back_dir.disabled = false
+	else:
+		back_dir.release_focus()
+		back_dir.disabled = true
