@@ -3,7 +3,7 @@ extends CenterContainer
 class_name PropertyEditor
 
 ## This widget is used for container types values
-var CONTAINER_VALUE_SCENE : PackedScene = load("res://scenes/UI/Property_Editor/Add_Property/add_property_default_values_widget.tscn")
+var CONTAINER_VALUE_SCENE : PackedScene = load("res://scenes/Property_Editor/Add_Property/add_property_default_values_widget.tscn")
 
 ## SIGNALS
 signal property_added(active_node : Node) ## Emitted when a property is successfully added to the active node.
@@ -46,7 +46,7 @@ func add_button_state():
 
 func on_property_named(_text : String):
 	add_button_state()
-		
+
 ## Updates the number of visible default values for the container type property.
 func on_container_size_change(value : float):
 	var current_count = container_values.get_child_count()

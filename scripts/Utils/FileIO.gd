@@ -28,10 +28,11 @@ static func move_file(from_path : String, to_path : String):
 	var err = DirAccess.rename_absolute(from_path, to_path)
 	assert(err == OK, "move file failed: " + error_string(err))
 
+
 ## Full feature delete method, recursive delete directories.
 ## Returns the name of the file deleted.
 func delete_file(path : String) -> String:
-	## If the file being delete is a directory...
+	## If the file being deleted is a directory...
 	if DirAccess.dir_exists_absolute(path):
 		_recurse_remove_dirs(path)
 		DirAccess.remove_absolute(path) # Delete the root parent directory
@@ -100,5 +101,5 @@ func save_file(path : String, data : Variant):
 ## Returns the path entered in the save window.
 func show_save_window() -> String:
 	var save_window : SaveWindow = load(SAVE_WINDOW).instantiate()
-	Engine.get_main_loop().add_child(save_window)
+	Engine.get_main_loop().root.add_child(save_window)
 	return await save_window.on_save

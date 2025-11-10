@@ -64,5 +64,6 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_bba8y")
 text = "name"
 alignment = 1
 editable = false
+expand_to_text_length = true
 context_menu_enabled = false
 emoji_menu_enabled = false

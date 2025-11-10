@@ -114,7 +114,7 @@ theme_override_constants/margin_bottom = 9
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/MarginContainer2"]
 layout_mode = 2
 script = ExtResource("6_a43s3")
-box_select_color = Color(0.5176471, 0.67058825, 1, 0.41960785)
+box_select_color = Color(0.52156866, 0.6784314, 1, 0.4392157)
 
 [node name="GridContainer" type="GridContainer" parent="MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/MarginContainer2/ScrollContainer"]
 layout_mode = 2
@@ -128,3 +128,4 @@ columns = 7
 [connection signal="focus_exited" from="MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/MarginContainer/LineEdit" to="." method="_on_line_edit_focus_exited"]
 [connection signal="text_changed" from="MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/MarginContainer/LineEdit" to="." method="_on_search_text_changed"]
 [connection signal="pressed" from="MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/MarginContainer3/BackDir" to="." method="_on_back_dir_pressed"]
+[connection signal="child_entered_tree" from="MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/MarginContainer2/ScrollContainer/GridContainer" to="MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/MarginContainer2/ScrollContainer" method="_on_thumbnail_entered_tree"]

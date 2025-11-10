@@ -4,6 +4,8 @@ class_name ThumbnailBase
 signal thumbnail_menu_requested(thumbnail)
 signal thumbnail_hover_end()
 signal thumbnail_deleted(_resource_path)
+signal thumbnail_activated(thumbnail)
+signal thumbnail_clicked(thumbnail)
 
 ## The path to the file this thumbnail represents.
 var _resource_path : String
@@ -30,6 +32,8 @@ func _process(_delta: float) -> void:
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
 		show_menu()
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		thumbnail_clicked.emit(self)
 
 	if event.is_action_pressed("ui_cancel"):
 		_rename_canceled()
@@ -47,13 +51,14 @@ func get_thumbnail_name():
 func set_thumbnail_name(_name : String):
 	_name_label.text = _name.get_slice(".", 0) ## Name without extension
 
-func get_resource_path():
+func get_resource_path() -> String:
 	return _resource_path
 
 func set_resource_path(_path : String):
 	_resource_path = _path
 
 func _on_mouse_entered():
+	thumbnail_activated.emit(self)
 	selected()
 
 func _on_mouse_exited():
@@ -112,12 +117,12 @@ func _rename_canceled():
 	release_focus()
 	_name_label.editable = false
 
+func _can_drop_data(_at_position: Vector2, _data: Variant) -> bool:
+	return false
+
+func _drop_data(_at_position: Vector2, _data: Variant) -> void:
+	pass
+
 func _on_name_text_submitted(new_text: String) -> void:
 	if not FileIO.does_file_exist(_resource_path, new_text):
 		_rename_file(new_text)
-
-func _get_drag_data(at_position: Vector2) -> Variant:
-	var drag_preview = self.duplicate()
-	drag_preview.deselect()
-	set_drag_preview(drag_preview)
-	return self
