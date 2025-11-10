@@ -2,6 +2,10 @@ extends PanelContainer
 
 const ROOT_NAME : String = "Content"
 
+@export_category("Tree Icon")
+@export var tree_icon : Texture2D
+@export var tree_icon_color : Color
+@export_category("File Thumbnails")
 @export_file var level_thumbnail
 @export var dir_thumbnail : PackedScene
 
@@ -57,12 +61,18 @@ func open_project_directory() -> DirAccess:
 	_project_directory_path = GraphEditor.get_current_project_dir()
 	return DirAccess.open(_project_directory_path)
 
+func set_tree_icon(item : TreeItem):
+	item.set_icon(0, tree_icon)
+	item.set_icon_modulate(0, tree_icon_color)
+	item.set_icon_max_width(0, 16)
+
 ## Creates the root item of the file tree.
 func create_root() -> TreeItem:
 	_project_directory = open_project_directory()
 	var root_item : TreeItem = tree.create_item()
 	root_item.set_text(0, ROOT_NAME)
 	root_item.set_meta("abs_path", _project_directory_path)
+	set_tree_icon(root_item)
 	tree.hide_root = false
 	return root_item
 
@@ -72,6 +82,7 @@ func create_tree_item(parent : TreeItem, item_name : StringName) -> TreeItem:
 	var new_dir : TreeItem = parent.create_child()
 	new_dir.set_meta("abs_path", parent_path + "/" + item_name)
 	new_dir.set_text(0, item_name.substr(item_name.rfind("/") + 1, item_name.length()))
+	set_tree_icon(new_dir)
 	if dir:
 		var dirs : PackedStringArray = dir.get_directories()
 		for dir_name in dirs:
