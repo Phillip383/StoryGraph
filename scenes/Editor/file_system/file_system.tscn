@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dld0uhok1cub8"]
+[gd_scene load_steps=10 format=3 uid="uid://dld0uhok1cub8"]
 
 [ext_resource type="Script" uid="uid://bdwieva6houra" path="res://scripts/editor/file_system/file_system.gd" id="1_bref1"]
 [ext_resource type="PackedScene" uid="uid://chh5caygrmqp1" path="res://scenes/Editor/file_system/dir_thumbnail.tscn" id="2_07mp2"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bjk0rmj702kfu" path="res://scenes/Editor/file_system/file_system_menu.tscn" id="2_u1x8l"]
 [ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://themes/story_graph_theme.tres" id="3_3h4vx"]
 [ext_resource type="Texture2D" uid="uid://bli02dwmfpsxb" path="res://assets/Textures/Icons/32/arrow_long_left.png" id="3_s6fbv"]
+[ext_resource type="Script" uid="uid://bynrm45asdce7" path="res://scripts/editor/file_system/thumbnail_container.gd" id="6_a43s3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u1x8l"]
 bg_color = Color(0.23921569, 0.23921569, 0.23921569, 1)
@@ -112,10 +113,13 @@ theme_override_constants/margin_bottom = 9
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/MarginContainer2"]
 layout_mode = 2
+script = ExtResource("6_a43s3")
+box_select_color = Color(0.5176471, 0.67058825, 1, 0.41960785)
 
 [node name="GridContainer" type="GridContainer" parent="MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/MarginContainer2/ScrollContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
 columns = 7
 
 [node name="FileSystemMenu" parent="." instance=ExtResource("2_u1x8l")]

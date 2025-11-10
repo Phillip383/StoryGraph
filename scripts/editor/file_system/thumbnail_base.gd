@@ -7,7 +7,8 @@ signal thumbnail_deleted(_resource_path)
 
 ## The path to the file this thumbnail represents.
 var _resource_path : String
-var _active : bool = false
+var _hovered : bool = false
+var _selected : bool = false
 var _is_menu_open : bool = false
 
 @onready var _name_label : LineEdit = $HBox/Name
@@ -33,6 +34,13 @@ func _gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		_rename_canceled()
 
+func set_selected(state : bool):
+	_selected = state
+	if _selected == true:
+		selected()
+	else:
+		deselect()
+
 func get_thumbnail_name():
 	return _name_label.text
 
@@ -49,7 +57,7 @@ func _on_mouse_entered():
 	selected()
 
 func _on_mouse_exited():
-	if not _is_menu_open:
+	if not _is_menu_open and not _selected:
 		deselect()
 
 func show_menu():
@@ -58,7 +66,7 @@ func show_menu():
 	thumbnail_menu_requested.emit(self)
 
 func on_menu_selection(id : int, _thumbnail):
-	if not _active:
+	if not _hovered:
 		return
 	match id:
 		FileOptions.RENAME:
@@ -75,12 +83,12 @@ func turn_off_menu():
 		thumbnail_hover_end.emit()
 
 func selected():
-	_active = true
+	_hovered = true
 	var style = get_theme_stylebox("Hover")
 	add_theme_stylebox_override("panel", style)
 
 func deselect():
-	_active = false
+	_hovered = false
 	var style = get_theme_stylebox("Panel")
 	add_theme_stylebox_override("panel", style)
 

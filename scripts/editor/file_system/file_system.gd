@@ -38,8 +38,8 @@ func _ready() -> void:
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
 		show_menu()
-	if event is InputEventMouseButton:
-		clear_thumbnail_focus.emit()
+	#if event is InputEventMouseButton:
+		#clear_thumbnail_focus.emit()
 
 func show_menu():
 	var mouse_pos = get_viewport().get_mouse_position()
