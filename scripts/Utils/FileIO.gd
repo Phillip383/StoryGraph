@@ -59,7 +59,6 @@ func create_file(path : String):
 	var err = FileAccess.get_open_error()
 	assert(err == OK, "File Creation Failed:: " + error_string(err))
 	file.close()
-	GraphEditor.file_added.emit(path)
 
 
 func open_file(path : String):

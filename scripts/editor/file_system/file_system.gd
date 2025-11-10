@@ -7,6 +7,7 @@ const ROOT_NAME : String = "Content"
 @export var tree_icon_color : Color
 @export_category("File Thumbnails")
 @export_file var level_thumbnail
+@export_file var template_thumbnail
 @export var dir_thumbnail : PackedScene
 
 ## SIGNALS
@@ -109,7 +110,9 @@ func create_thumbnails(selected_dir_path : String) -> void:
 	for file in files:
 		var ext = "." + file.get_extension()
 		if ext == FileIO.LEVEL_EXT:
-			create_level_thumbnail(selected_dir_path, file)
+			create_file_thumbnail(selected_dir_path, file, level_thumbnail)
+		elif ext == FileIO.TEMPLATE_EXT:
+			create_file_thumbnail(selected_dir_path, file, template_thumbnail)
 
 	for dir in DirAccess.get_directories_at(selected_dir_path):
 		create_dir_thumbnail(selected_dir_path, dir)
@@ -121,14 +124,14 @@ func on_item_selected() -> void:
 func on_menu_item_selected(id : int):
 	match id:
 		FileOptions.CREATE_TEMPLATE:
-			_create_template()
+			var file_name = await _create_file(FileTypes.Types.TEMPLATE)
+			var selected_path = tree.get_selected().get_meta("abs_path")
+			create_file_thumbnail(selected_path, file_name, template_thumbnail)
 		FileOptions.CREATE_DIR:
 			_create_directory()
 		FileOptions.CREATE_LEVEL:
-			await _create_level()
+			await _create_file(FileTypes.Types.LEVEL)
 
-func _create_template():
-	pass
 
 func _create_directory():
 	var path : String = tree.get_selected().get_meta("abs_path")
@@ -139,9 +142,13 @@ func _create_directory():
 	new_dir.set_resource_path(path)
 	_command_invoker.set_command(NewDirectoryCommand.new(path)).execute_command()
 
-func _create_level():
-	var new_lvl_cmd = NewLevelCommand.new()
-	_command_invoker.set_command(new_lvl_cmd).execute_command()
+## Returns the name of the file created
+func _create_file(type : FileTypes.Types) -> String:
+	var selected_path : String = tree.get_selected().get_meta("abs_path")
+	var new_file_command := NewFileCommand.new(type, selected_path)
+	_command_invoker.set_command(new_file_command).execute_command()
+	var path = await new_file_command.file_created
+	return path.substr(path.rfind("/") + 1).get_slice(".", 0)
 
 
 func clear_thumbnails() -> void:
@@ -190,6 +197,14 @@ func connect_thumbnail(thumbnail):
 	menu_selection.connect(thumbnail.on_menu_selection)
 	clear_thumbnail_focus.connect(thumbnail._rename_canceled)
 
+func create_file_thumbnail(selected_dir_path : String, file : String, type : String):
+	if selected_dir_path != tree.get_selected().get_meta("abs_path"):
+		return
+	var thumbnail = load(type).instantiate()
+	grid.add_child(thumbnail)
+	thumbnail.set_thumbnail_name(file)
+	thumbnail.set_resource_path(selected_dir_path + "/" + file)
+	connect_thumbnail(thumbnail)
 
 func create_level_thumbnail(selected_dir_path : String, file : String):
 	if selected_dir_path != tree.get_selected().get_meta("abs_path"):

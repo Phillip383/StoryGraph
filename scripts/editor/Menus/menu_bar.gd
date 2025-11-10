@@ -42,5 +42,6 @@ func _on_open_existing_level_pressed() -> void:
 
 ## Sends the signal to the level container to create a new level.
 func _on_create_new_pressed() -> void:
-	command_invoker.set_command(NewLevelCommand.new())
-	command_invoker.execute_command()
+	var new_file_command = NewFileCommand.new(FileTypes.Types.LEVEL)
+	command_invoker.set_command(new_file_command).execute_command()
+	await new_file_command.file_created

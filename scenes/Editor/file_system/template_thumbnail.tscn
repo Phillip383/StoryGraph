@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://da0cwasbfa10n"]
+
+[ext_resource type="PackedScene" uid="uid://b2jonllgikwpk" path="res://scenes/Editor/file_system/thumbnail_base.tscn" id="1_mbdkm"]
+[ext_resource type="Texture2D" uid="uid://1j5pboh0p2vl" path="res://assets/Icons/template_file_thumbnail.svg" id="2_qj7se"]
+
+[node name="Panel" instance=ExtResource("1_mbdkm")]
+
+[node name="Icon" parent="HBox" index="0"]
+texture = ExtResource("2_qj7se")

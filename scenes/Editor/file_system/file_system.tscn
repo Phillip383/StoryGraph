@@ -38,6 +38,7 @@ script = ExtResource("1_bref1")
 tree_icon = ExtResource("2_oo43u")
 tree_icon_color = Color(1, 0.7921569, 0, 1)
 level_thumbnail = "uid://c1b04l3kgkbvy"
+template_thumbnail = "uid://da0cwasbfa10n"
 dir_thumbnail = ExtResource("2_07mp2")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
