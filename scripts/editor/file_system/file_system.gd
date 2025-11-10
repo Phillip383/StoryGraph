@@ -20,6 +20,7 @@ signal Template_deleted(_name : String)
 var _project_directory_path : String
 var _project_directory : DirAccess
 var root : TreeItem = null
+var search_regex : RegEx
 
 @onready var _command_invoker : CommandInvoker = CommandInvoker.new()
 
@@ -263,3 +264,19 @@ func _set_back_dir_button_enable(path : String):
 	else:
 		back_dir.release_focus()
 		back_dir.disabled = true
+
+
+func _on_search_text_changed(new_text: String) -> void:
+	## Use a regex to search the current directory for matching names
+	search_regex.compile("%s" % new_text.to_lower())
+	var files = grid.get_children()
+	for file in files:
+		if search_regex.search_all(file.get_thumbnail_name().to_lower()):
+			file.visible = true
+		else:
+			file.visible = false
+
+
+func _on_search_focus_entered() -> void:
+	if !search_regex:
+		search_regex = RegEx.new()

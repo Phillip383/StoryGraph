@@ -116,4 +116,7 @@ columns = 7
 
 [node name="FileSystemMenu" parent="." instance=ExtResource("2_u1x8l")]
 
+[connection signal="focus_entered" from="MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/MarginContainer/LineEdit" to="." method="_on_search_focus_entered"]
+[connection signal="focus_exited" from="MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/MarginContainer/LineEdit" to="." method="_on_line_edit_focus_exited"]
+[connection signal="text_changed" from="MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/MarginContainer/LineEdit" to="." method="_on_search_text_changed"]
 [connection signal="pressed" from="MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/MarginContainer3/BackDir" to="." method="_on_back_dir_pressed"]
