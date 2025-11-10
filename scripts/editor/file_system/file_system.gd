@@ -120,6 +120,8 @@ func create_thumbnails(selected_dir_path : String) -> void:
 func on_item_selected() -> void:
 	var path = tree.get_selected().get_meta("abs_path")
 	create_thumbnails(path)
+	_set_back_dir_button_enable(path)
+
 
 func on_menu_item_selected(id : int):
 	match id:
