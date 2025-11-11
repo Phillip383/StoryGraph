@@ -16,11 +16,14 @@ func execute() -> void:
 			export_csv()
 
 func export_json() -> void:
-	var data = _package_data()
+	var levels = _get_level_paths()
+	print(levels)
+	#var data = _package_data()
 	## For every top level dictionary, IE, level, stringify the data and write it to a json file using the current key name as the file name. The file should be saved to the export path given. I would also like to format the JSON file with correct whitespace for readability.
 
 func export_csv() -> void:
 	var data = _package_data()
+
 
 
 func _get_level_paths() -> PackedStringArray:
