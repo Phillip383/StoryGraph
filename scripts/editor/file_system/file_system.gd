@@ -239,6 +239,11 @@ func create_dir_thumbnail(selected_dir_path : String, _name : String) -> DirThum
 
 
 func _on_dir_thumbnail_opened(_path : String):
+	## If the selected directory is the root, select the root.
+	if _path == root.get_meta(TREE_ITEM_META):
+		tree.set_selected(root, 0)
+		tree.queue_redraw()
+
 	var selected_dir = find_tree_item(tree.get_root(), _path)
 	if selected_dir != null:
 		tree.set_selected(selected_dir, 0)
