@@ -18,9 +18,6 @@ func execute() -> void:
 
 func create_template() -> void:
 	var io = FileIO.new()
-	## if data is empty, store something so the json parse doesn't fail.
-	if _data.is_empty():
-		_data["empty"] = {} ## TODO: Fix this in save file, gracefully handle null data there
 	io.create_file(_path)
 	io.save_file(_path, _data)
 	template_created.emit(_path)

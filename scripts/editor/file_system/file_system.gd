@@ -1,6 +1,7 @@
 extends PanelContainer
 
 const ROOT_NAME : String = "Content"
+const TREE_ITEM_META : String = "abs_path"
 
 @export_category("Tree Icon")
 @export var tree_icon : Texture2D
@@ -72,16 +73,16 @@ func create_root() -> TreeItem:
 	_project_directory = open_project_directory()
 	var root_item : TreeItem = tree.create_item()
 	root_item.set_text(0, ROOT_NAME)
-	root_item.set_meta("abs_path", _project_directory_path)
+	root_item.set_meta(TREE_ITEM_META, _project_directory_path)
 	set_tree_icon(root_item)
 	tree.hide_root = false
 	return root_item
 
 func create_tree_item(parent : TreeItem, item_name : StringName) -> TreeItem:
-	var parent_path : String = parent.get_meta("abs_path")
+	var parent_path : String = parent.get_meta(TREE_ITEM_META)
 	var dir : DirAccess = DirAccess.open(parent_path + "/" + item_name)
 	var new_dir : TreeItem = parent.create_child()
-	new_dir.set_meta("abs_path", parent_path + "/" + item_name)
+	new_dir.set_meta(TREE_ITEM_META, parent_path + "/" + item_name)
 	new_dir.set_text(0, item_name.substr(item_name.rfind("/") + 1, item_name.length()))
 	set_tree_icon(new_dir)
 	if dir:
@@ -118,7 +119,7 @@ func create_thumbnails(selected_dir_path : String) -> void:
 		create_dir_thumbnail(selected_dir_path, dir)
 
 func on_item_selected() -> void:
-	var path = tree.get_selected().get_meta("abs_path")
+	var path = tree.get_selected().get_meta(TREE_ITEM_META)
 	create_thumbnails(path)
 	_set_back_dir_button_enable(path)
 
@@ -127,7 +128,7 @@ func on_menu_item_selected(id : int):
 	match id:
 		FileOptions.CREATE_TEMPLATE:
 			var file_name = await _create_file(FileTypes.Types.TEMPLATE)
-			var selected_path = tree.get_selected().get_meta("abs_path")
+			var selected_path = tree.get_selected().get_meta(TREE_ITEM_META)
 			create_file_thumbnail(selected_path, file_name, template_thumbnail)
 		FileOptions.CREATE_DIR:
 			_create_directory()
@@ -136,7 +137,7 @@ func on_menu_item_selected(id : int):
 
 
 func _create_directory():
-	var path : String = tree.get_selected().get_meta("abs_path")
+	var path : String = tree.get_selected().get_meta(TREE_ITEM_META)
 	var new_dir : DirThumbnail = create_dir_thumbnail(path, "New Folder")
 	var new_dir_name = await new_dir.name_new_dir()
 	on_directory_added(new_dir_name)
@@ -146,7 +147,7 @@ func _create_directory():
 
 ## Returns the name of the file created
 func _create_file(type : FileTypes.Types) -> String:
-	var selected_path : String = tree.get_selected().get_meta("abs_path")
+	var selected_path : String = tree.get_selected().get_meta(TREE_ITEM_META)
 	var new_file_command := NewFileCommand.new(type, selected_path)
 	_command_invoker.set_command(new_file_command).execute_command()
 	var path = await new_file_command.file_created
@@ -166,10 +167,7 @@ func on_project_directory_changed() -> void:
 func on_directory_added(dir_name : StringName) -> void:
 	## Add the tree element to the path.
 	var parent = tree.get_selected()
-	var abs_path = parent.get_meta("abs_path") + "/" + dir_name
-	var new_dir : TreeItem = parent.create_child()
-	new_dir.set_text(0, dir_name)
-	new_dir.set_meta("abs_path", abs_path)
+	create_tree_item(parent, dir_name)
 
 ## Remove the directory from the tree
 func on_thumbnail_removed(_resource_path : String) -> void:
@@ -200,7 +198,7 @@ func connect_thumbnail(thumbnail):
 	clear_thumbnail_focus.connect(thumbnail._rename_canceled)
 
 func create_file_thumbnail(selected_dir_path : String, file : String, type : String):
-	if selected_dir_path != tree.get_selected().get_meta("abs_path"):
+	if selected_dir_path != tree.get_selected().get_meta(TREE_ITEM_META):
 		return
 	var thumbnail = load(type).instantiate()
 	grid.add_child(thumbnail)
@@ -209,7 +207,7 @@ func create_file_thumbnail(selected_dir_path : String, file : String, type : Str
 	connect_thumbnail(thumbnail)
 
 func create_level_thumbnail(selected_dir_path : String, file : String):
-	if selected_dir_path != tree.get_selected().get_meta("abs_path"):
+	if selected_dir_path != tree.get_selected().get_meta(TREE_ITEM_META):
 		return
 	var thumbnail : LevelThumbnail = load(level_thumbnail).instantiate()
 	grid.add_child(thumbnail)
@@ -240,18 +238,19 @@ func _on_dir_thumbnail_opened(_path : String):
 
 func _on_directory_moved(from : String, to : String):
 	update_tree(from, to)
+	tree.clear()
 	create_tree()
 
 ## Returns the directory at which the directory was moved to.
 func update_tree(from : String, to : String) -> TreeItem:
 	var from_item = find_tree_item(tree.get_root(), from)
-	from_item.set_meta("abs_path", to)
+	from_item.set_meta(TREE_ITEM_META, to)
 	return find_tree_item(from_item, to)
 
 func find_tree_item(item: TreeItem, dir_path : String) -> TreeItem:
 	var current_child = item.get_first_child()
 	while current_child:
-		if current_child.get_meta("abs_path") == dir_path:
+		if current_child.get_meta(TREE_ITEM_META) == dir_path:
 			return current_child
 
 		var found_item = find_tree_item(current_child, dir_path)
@@ -277,7 +276,7 @@ func _on_levels_level_created(level: Level) -> void:
 func _on_back_dir_pressed() -> void:
 	var parent = tree.get_selected().get_parent()
 	tree.set_selected(parent, 0)
-	_set_back_dir_button_enable(parent.get_meta("abs_path"))
+	_set_back_dir_button_enable(parent.get_meta(TREE_ITEM_META))
 	tree.queue_redraw()
 
 ## Checks if the current directory has a parent directory and it's not the root directory, set's the back buttons disabled property.
