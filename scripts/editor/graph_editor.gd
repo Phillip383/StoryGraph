@@ -13,6 +13,8 @@ const LAST_OPEN_PROJ_KEY = "last_open_project"
 const LAST_OPEN_LEVELS = "open_levels"
 const PROJECT_LIST = "project_list"
 
+
+
 ## TODO: use this level id for levels, make it unique! A level can be a table, and the composite key between a unique level id and a unique node id will ensure the correct linking of nodes between levels. Increment this when a level is created, decrement when a level is deleted.
 var _level_id : int
 

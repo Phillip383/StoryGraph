@@ -1,0 +1,92 @@
+[gd_scene load_steps=4 format=3 uid="uid://y13gx6ok53ha"]
+
+[ext_resource type="Script" uid="uid://23wbqdf1hnif" path="res://scripts/editor/export_system/export_window.gd" id="1_ccf1i"]
+[ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://themes/story_graph_theme.tres" id="1_s0mx0"]
+[ext_resource type="Texture2D" uid="uid://cdxsj8rowihyu" path="res://assets/Icons/Folder_Icon.svg" id="2_ke87n"]
+
+[node name="ExportWindow" type="Window"]
+oversampling_override = 1.0
+title = "Export"
+initial_position = 1
+size = Vector2i(600, 400)
+wrap_controls = true
+transient = true
+exclusive = true
+theme = ExtResource("1_s0mx0")
+script = ExtResource("1_ccf1i")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(600, 400)
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CenterContainer" type="CenterContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/CenterContainer"]
+layout_mode = 2
+
+[node name="ExportPath" type="HBoxContainer" parent="PanelContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 10
+
+[node name="PathEdit" type="LineEdit" parent="PanelContainer/CenterContainer/VBoxContainer/ExportPath"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+placeholder_text = "Path"
+
+[node name="PathSelector" type="TextureButton" parent="PanelContainer/CenterContainer/VBoxContainer/ExportPath"]
+self_modulate = Color(0.93869394, 0.9263845, 0, 1)
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+action_mode = 0
+texture_normal = ExtResource("2_ke87n")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="PanelContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "Format: "
+
+[node name="ExportFormat" type="OptionButton" parent="PanelContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 25
+
+[node name="Buttons" type="HBoxContainer" parent="PanelContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 100
+
+[node name="Cancel" type="Button" parent="PanelContainer/CenterContainer/VBoxContainer/Buttons"]
+custom_minimum_size = Vector2(65, 25)
+layout_mode = 2
+text = "Cancel"
+
+[node name="Export" type="Button" parent="PanelContainer/CenterContainer/VBoxContainer/Buttons"]
+custom_minimum_size = Vector2(65, 25)
+layout_mode = 2
+text = "Export"
+
+[connection signal="text_submitted" from="PanelContainer/CenterContainer/VBoxContainer/ExportPath/PathEdit" to="." method="_on_path_edit_text_submitted"]
+[connection signal="pressed" from="PanelContainer/CenterContainer/VBoxContainer/ExportPath/PathSelector" to="." method="_on_path_selector_pressed"]
+[connection signal="pressed" from="PanelContainer/CenterContainer/VBoxContainer/Buttons/Cancel" to="." method="_on_cancel_pressed"]
+[connection signal="pressed" from="PanelContainer/CenterContainer/VBoxContainer/Buttons/Export" to="." method="_on_export_pressed"]

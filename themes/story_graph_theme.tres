@@ -271,4 +271,3 @@ Tree/styles/selected_focus = null
 VBoxContainer/constants/separation = 6
 VSplitContainer/constants/minimum_grab_thickness = 3
 VSplitContainer/constants/separation = 3
-Window/colors/title_color = Color(0, 0.6901961, 1, 1)

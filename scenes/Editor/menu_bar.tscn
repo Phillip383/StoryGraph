@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dve5m4oenyl6c" path="res://scenes/Project_System/create_project_menu.tscn" id="2_3mfyf"]
 [ext_resource type="PackedScene" uid="uid://bhc6x433xunet" path="res://scenes/Project_System/project_hub.tscn" id="3_uteul"]
 [ext_resource type="PackedScene" uid="uid://cyrnjdcvfxucg" path="res://scenes/Project_System/open_project_dialog.tscn" id="4_31a45"]
-[ext_resource type="PackedScene" uid="uid://cggmw6ca6tru6" path="res://scenes/Popups/create_new_file.tscn" id="5_twkp2"]
+[ext_resource type="PackedScene" uid="uid://y13gx6ok53ha" path="res://scenes/Editor/export_system/export_window.tscn" id="5_twkp2"]
 
 [node name="PanelContainer" type="PanelContainer"]
 custom_minimum_size = Vector2(0, 25)
@@ -19,7 +19,7 @@ script = ExtResource("1_hemlw")
 PROJECT_CREATION_WINDOW = ExtResource("2_3mfyf")
 OPEN_PROJECT_WINDOW = ExtResource("3_uteul")
 OPEN_LEVEL_DIALOG = ExtResource("4_31a45")
-CREATE_FILE_WINDOW = ExtResource("5_twkp2")
+EXPORT_WINDOW = ExtResource("5_twkp2")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2

@@ -4,9 +4,11 @@ const NEW_LEVEL_ID = 0
 const CREATE_PROJECT_ID = 1
 const OPEN_PROJECT_ID = 2
 const OPEN_LEVEL_ID = 3
+const EXPORT_ID = 6
 @export var PROJECT_CREATION_WINDOW : PackedScene
 @export var OPEN_PROJECT_WINDOW : PackedScene
 @export var OPEN_LEVEL_DIALOG : PackedScene
+@export var EXPORT_WINDOW : PackedScene
 
 @onready var command_invoker : CommandInvoker = CommandInvoker.new()
 
@@ -23,6 +25,8 @@ func _on_file_id_pressed(id: int) -> void:
 		get_tree().current_scene.add_child(open_project_dialog)
 	elif id == OPEN_LEVEL_ID:
 		open_level()
+	elif id == EXPORT_ID:
+		_open_export_window()
 
 func open_level():
 	var open_proj_window : FileDialog = OPEN_LEVEL_DIALOG.instantiate()
@@ -45,3 +49,7 @@ func _on_create_new_pressed() -> void:
 	var new_file_command = NewFileCommand.new(FileTypes.Types.LEVEL)
 	command_invoker.set_command(new_file_command).execute_command()
 	await new_file_command.file_created
+
+func _open_export_window() -> void:
+	var export_window = EXPORT_WINDOW.instantiate()
+	add_child(export_window)
