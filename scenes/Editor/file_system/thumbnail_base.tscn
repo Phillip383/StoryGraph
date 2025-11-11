@@ -57,11 +57,13 @@ stretch_mode = 5
 
 [node name="Name" type="LineEdit" parent="HBox"]
 layout_mode = 2
+theme = ExtResource("1_nb5q8")
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_bba8y")
 theme_override_styles/read_only = SubResource("StyleBoxFlat_udytr")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_bba8y")
 text = "name"
+placeholder_text = "../"
 alignment = 1
 editable = false
 expand_to_text_length = true

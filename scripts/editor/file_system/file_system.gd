@@ -107,6 +107,11 @@ func create_tree() -> void:
 ## Create thumbnails of directories and files within the grid container based on the active directory.
 func create_thumbnails(selected_dir_path : String) -> void:
 	clear_thumbnails()
+	## Add a back directory if the parent directory is not the project root.
+	var parent_dir = selected_dir_path.substr(0, selected_dir_path.rfind("/"))
+	if parent_dir.begins_with(_project_directory_path):
+		create_back_dir_thumbnail(parent_dir)
+
 	var files = DirAccess.get_files_at(selected_dir_path)
 	for file in files:
 		var ext = "." + file.get_extension()
@@ -215,6 +220,12 @@ func create_level_thumbnail(selected_dir_path : String, file : String):
 	thumbnail.set_resource_path(selected_dir_path + "/" + file)
 	connect_thumbnail(thumbnail)
 
+func create_back_dir_thumbnail(parent_dir_path : String):
+	var new_dir : DirThumbnail = dir_thumbnail.instantiate()
+	grid.add_child(new_dir)
+	new_dir.set_thumbnail_name("...")
+	new_dir.set_resource_path(parent_dir_path)
+	new_dir.directory_selected.connect(_on_dir_thumbnail_opened)
 
 func create_dir_thumbnail(selected_dir_path : String, _name : String) -> DirThumbnail:
 	var new_dir : DirThumbnail = dir_thumbnail.instantiate()
