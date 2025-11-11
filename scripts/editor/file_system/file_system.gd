@@ -226,6 +226,7 @@ func create_back_dir_thumbnail(parent_dir_path : String):
 	new_dir.set_thumbnail_name("...")
 	new_dir.set_resource_path(parent_dir_path)
 	new_dir.directory_selected.connect(_on_dir_thumbnail_opened)
+	new_dir.directory_moved.connect(_on_directory_moved)
 
 func create_dir_thumbnail(selected_dir_path : String, _name : String) -> DirThumbnail:
 	var new_dir : DirThumbnail = dir_thumbnail.instantiate()
@@ -239,10 +240,6 @@ func create_dir_thumbnail(selected_dir_path : String, _name : String) -> DirThum
 
 
 func _on_dir_thumbnail_opened(_path : String):
-	## If the selected directory is the root, select the root.
-	if _path == root.get_meta(TREE_ITEM_META):
-		tree.set_selected(root, 0)
-		tree.queue_redraw()
 
 	var selected_dir = find_tree_item(tree.get_root(), _path)
 	if selected_dir != null:
@@ -258,12 +255,15 @@ func _on_directory_moved(from : String, to : String):
 
 func update_tree(from : String, to : String):
 	var from_item = find_tree_item(tree.get_root(), from)
-	var to_item = find_tree_item(tree.get_root(), to.substr(0, to.rfind("/")))
+	var to_path = to.substr(0, to.rfind("/"))
+	var to_item = find_tree_item(tree.get_root(), to_path)
 	create_tree_item(to_item, from_item.get_text(0))
 	from_item.free()
 	tree.queue_redraw()
 
 func find_tree_item(item: TreeItem, dir_path : String) -> TreeItem:
+	if root.get_meta(TREE_ITEM_META) == dir_path:
+		return root
 	var current_child = item.get_first_child()
 	while current_child:
 		if current_child.get_meta(TREE_ITEM_META) == dir_path:
