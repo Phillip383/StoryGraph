@@ -14,12 +14,20 @@ signal on_edited(level : Level) ## A signal that will emit when any change occur
 signal on_story_line_added(node : BaseStoryNode)
 signal on_story_lines_removed(_name : Array[StringName])
 
+## Keys for the saving and loading dictionary.
+const NAME = "name"
+const ID = "id"
+const NODE_ID = "node_id"
+const CONNECTIONS = "con"
+const NODES = "nodes"
+
+
 @onready var context_menu = $"GraphNodeMenu"
 @onready var manager = $GraphManager ## Handles the state of the level.
 
 var node_details : NodeDetailsInspector
 
-var node_connections
+var node_connections : Array
 
 var level_id : int = -1
 var _resource_path : String
@@ -133,15 +141,15 @@ func save(_file_name = name) -> Dictionary[StringName, Variant]:
 	manager._change_state(GraphManager.GraphState.SAVING)
 	name = _file_name
 	var _state : Dictionary[StringName, Variant]
-	_state["name"] = _file_name
-	_state["id"] = level_id
-	_state["node_id"] = _node_id if _node_id else -1
-	_state["con"] = node_connections
-	_state["nodes"] = []
+	_state[NAME] = _file_name
+	_state[ID] = level_id
+	_state[NODE_ID] = _node_id if _node_id else -1
+	_state[CONNECTIONS] = node_connections
+	_state[NODES] = []
 
 	for node in get_children():
 		if node.is_in_group("Story Node"):
-			_state["nodes"].append(node.save_node())
+			_state[NODES].append(node.save_node())
 
 	manager._change_state(GraphManager.GraphState.IDLE)
 	return _state
@@ -151,11 +159,11 @@ func save(_file_name = name) -> Dictionary[StringName, Variant]:
 ##@param _file - the level file to load.
 func load_level(_data):
 	manager._change_state(GraphManager.GraphState.LOADING)
-	name = _data["name"]
-	level_id = _data["id"]
-	_node_id = _data["node_id"] if _data.get("node_id") else -1
-	node_connections = _data["con"]
-	var nodes = _data["nodes"]
+	name = _data[NAME]
+	level_id = _data[ID]
+	_node_id = _data[NODE_ID] if _data.get("node_id") else -1
+	node_connections = _data[CONNECTIONS] if _data[CONNECTIONS] else []
+	var nodes = _data[NODES]
 
 	## Maps node's title to their new instance name.
 	var node_map : Dictionary[String, String]
