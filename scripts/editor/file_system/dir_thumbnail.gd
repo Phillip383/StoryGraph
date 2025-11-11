@@ -18,10 +18,10 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.double_click:
 		directory_selected.emit(_resource_path)
 
-func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
+func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 	if typeof(data) == TYPE_ARRAY and data.size() > 0 and not data.has(self):
 		return true
-	elif data != self:
+	elif typeof(data) != TYPE_ARRAY and data != self:
 		return true
 	return false
 
@@ -35,6 +35,8 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 
 func _drop_thumbnail(data):
 	var dragged_thumbnail = data
+	if dragged_thumbnail == null:
+		return
 	var move_to = _resource_path + "/" + dragged_thumbnail.get_resource_path().substr(dragged_thumbnail.get_resource_path().rfind("/") + 1)
 	FileIO.move_file(dragged_thumbnail.get_resource_path(), move_to)
 	if dragged_thumbnail.has_method("name_new_dir"):
