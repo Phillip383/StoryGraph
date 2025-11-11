@@ -238,14 +238,14 @@ func _on_dir_thumbnail_opened(_path : String):
 
 func _on_directory_moved(from : String, to : String):
 	update_tree(from, to)
-	tree.clear()
-	create_tree()
 
-## Returns the directory at which the directory was moved to.
-func update_tree(from : String, to : String) -> TreeItem:
+
+func update_tree(from : String, to : String):
 	var from_item = find_tree_item(tree.get_root(), from)
-	from_item.set_meta(TREE_ITEM_META, to)
-	return find_tree_item(from_item, to)
+	var to_item = find_tree_item(tree.get_root(), to.substr(0, to.rfind("/")))
+	create_tree_item(to_item, from_item.get_text(0))
+	from_item.free()
+	tree.queue_redraw()
 
 func find_tree_item(item: TreeItem, dir_path : String) -> TreeItem:
 	var current_child = item.get_first_child()
