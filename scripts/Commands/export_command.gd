@@ -42,6 +42,7 @@ func export_json() -> void:
 				## Add the node to output
 				output[NODE_KEY_NAME].append(output_node)
 
+			output[NODE_KEY_NAME].sort_custom(func(a, b): return a["id"] < b["id"])
 			output_file.store_string(JSON.stringify(output, "\t", false))
 			output_file.close()
 		else:
