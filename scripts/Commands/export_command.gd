@@ -16,14 +16,11 @@ func execute() -> void:
 			export_csv()
 
 func export_json() -> void:
-	var levels = _get_level_paths()
-	print(levels)
-	#var data = _package_data()
+	var data = _package_data()
 	## For every top level dictionary, IE, level, stringify the data and write it to a json file using the current key name as the file name. The file should be saved to the export path given. I would also like to format the JSON file with correct whitespace for readability.
 
 func export_csv() -> void:
 	var data = _package_data()
-
 
 
 func _get_level_paths() -> PackedStringArray:
@@ -44,6 +41,7 @@ func _get_level_paths() -> PackedStringArray:
 		print("Failed to open: %s", project_path, " Error Code: ", error_string(DirAccess.get_open_error()))
 	return levels
 
+
 func _scan_directory(path : String, levels : PackedStringArray) -> void:
 	var files = DirAccess.get_files_at(path)
 	for file in files:
@@ -62,11 +60,11 @@ func _package_data() -> Dictionary:
 	for level in levels:
 		var file = FileAccess.open(level, FileAccess.READ)
 		if file:
-			print(level, " opened")
+			var contents = file.get_as_text()
+			print(level, " opened\n", contents)
 		else:
 			print("Failed to open: %s", file, " Error Code: ", error_string(FileAccess.get_open_error()))
 		file.close()
-		##TODO: Should I await and process the frame here, so the system has time to close the file before the next iteration?
 	return data
 
 func _connect_node():

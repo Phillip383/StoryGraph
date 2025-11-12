@@ -95,7 +95,7 @@ func delete_nodes(nodes : Array[StringName]):
 		if node.node_data.node_type == NodeData.NodeType.ENTRY:
 			story_lines.append(node.title)
 		## remove the connections to the deleted node
-		node_connections = node_connections.filter( func(p) : return p["from_node"] != node.title and p["to_node"] != node.title)
+		node_connections = node_connections.filter( func(p) : return p["from_node"] != node.get_node_id() and p["to_node"] != node.get_node_id())
 		node.queue_free()
 
 	if story_lines.size() > 0:
@@ -104,14 +104,16 @@ func delete_nodes(nodes : Array[StringName]):
 ##Listens for the connection request of the graph.
 func _on_connection(from_node: StringName, from_port: int, to_node: StringName, to_port: int):
 	## Get the node's being connected names
-	var f_node = get_node("%s" % from_node).title
-	var t_node = get_node("%s" % to_node).title
+	var f_node : BaseStoryNode = get_node("%s" % from_node)
+	var t_node : BaseStoryNode = get_node("%s" % to_node)
+	var f_id : int = f_node.get_node_id()
+	var t_id : int = t_node.get_node_id()
 
 	## Save the connections by node title, not instance name..
 	node_connections.append({
-		"from_node" : f_node,
+		"from_node" : f_id,
 		"from_port": from_port,
-		"to_node" : t_node,
+		"to_node" : t_id,
 		"to_port" : to_port
 	})
 
@@ -166,21 +168,29 @@ func load_level(_data):
 	var nodes = _data[NODES]
 
 	## Maps node's title to their new instance name.
-	var node_map : Dictionary[String, String]
+	var node_map : Dictionary[int, StringName]
 	# Add the nodes
 	for node_data in nodes:
 		var loaded_node : BaseStoryNode = NODE_SCENE.instantiate()
 		add_child(loaded_node)
 		loaded_node.load_node(node_data)
-		node_map.get_or_add(loaded_node.title, loaded_node.name)
+		_adapt_connections(loaded_node)
+		node_map.get_or_add(loaded_node.get_node_id(), loaded_node.name)
 		loaded_node.on_data_changed.connect(on_node_changed) ## Need to reconnect to the signal for updates to the node.
 
-	## Add the connections, using the nodes titles
+	## Add the connections, using the nodes id
 	if node_connections:
 		for connection in node_connections:
 			connect_node(node_map[connection["from_node"]], connection["from_port"], node_map[connection["to_node"]], connection["to_port"])
 
 	manager._change_state(GraphManager.GraphState.IDLE)
+
+func _adapt_connections(node):
+	for connection in node_connections:
+		if typeof(connection["from_node"]) == TYPE_STRING and node.title == connection["from_node"]:
+			connection["from_node"] = node.get_node_id()
+		elif typeof(connection["to_node"]) == TYPE_STRING and node.title == connection["to_node"]:
+			connection["to_node"] = node.get_node_id()
 
 func on_node_changed(_data):
 	manager._change_state(GraphManager.GraphState.EDITING)
