@@ -1,6 +1,12 @@
 extends Command
 class_name ExportCommand
 
+const EXPORT_LEVEL_DIR = "/levels"
+const EXPORT_ENUM_DIR = "/enums"
+
+##EXPORT_KEYS TODO: Make these customizable for the user's needs.
+var NODE_KEY_NAME = "Quests" ## The name for the nodes the level contains.
+
 var _export_type : ExportTypes.Types
 var _export_path : String
 
@@ -16,11 +22,37 @@ func execute() -> void:
 			export_csv()
 
 func export_json() -> void:
-	var data = _package_data()
-	## For every top level dictionary, IE, level, stringify the data and write it to a json file using the current key name as the file name. The file should be saved to the export path given. I would also like to format the JSON file with correct whitespace for readability.
+	var levels = _get_level_paths()
+	if levels.size() == 0:
+		print("Found no levels within the project.")
+	DirAccess.make_dir_absolute(_export_path + EXPORT_LEVEL_DIR) ## TODO: Change this to create the same directory structure as the project in the export path.
+	for level in levels:
+		var data = _package_data(level)
+		var file_path = _export_path + EXPORT_LEVEL_DIR + "/" + level.substr(level.rfind("/") + 1).get_slice(".", 0) + ".json"
+		var output_file = FileAccess.open(file_path, FileAccess.WRITE)
+		var output : Dictionary = {}
+		output[Level.get_ID_key()] = data[Level.get_ID_key()]
+		output[NODE_KEY_NAME] = []
+		if output_file:
+			for node in data[Level.get_nodes_key()]:
+				## Build the node with only data meant for external use.
+				var output_node = _construct_node(node)
+				## Add the connection's to the node...
+				_connect_node(output_node, data[Level.get_connection_key()])
+				## Add the node to output
+				output[NODE_KEY_NAME].append(output_node)
+
+			output_file.store_string(JSON.stringify(output, "\t", false))
+			output_file.close()
+		else:
+			print("Failed to open: ", file_path + " Error: ", error_string(FileAccess.get_open_error()))
 
 func export_csv() -> void:
-	var data = _package_data()
+	var levels = _get_level_paths()
+	if levels.size() == 0:
+		print("Found no levels within the project.")
+	for level in levels:
+		var data = _package_data(level)
 
 
 func _get_level_paths() -> PackedStringArray:
@@ -52,23 +84,36 @@ func _scan_directory(path : String, levels : PackedStringArray) -> void:
 		_scan_directory(path + "/" + dir, levels)
 
 ## Packages all of the level and node data into a dictionary and returns it.
-func _package_data() -> Dictionary:
-	var levels = _get_level_paths()
-	if levels.size() == 0:
-		print("Found no levels within the project.")
+func _package_data(level) -> Dictionary:
 	var data = {}
-	for level in levels:
-		var file = FileAccess.open(level, FileAccess.READ)
-		if file:
-			var contents = file.get_as_text()
-			print(level, " opened\n", contents)
-		else:
-			print("Failed to open: %s", file, " Error Code: ", error_string(FileAccess.get_open_error()))
-		file.close()
+	var file = FileAccess.open(level, FileAccess.READ)
+	if file:
+		data = JSON.parse_string(file.get_as_text())
+	else:
+		print("Failed to open: %s", file, " Error Code: ", error_string(FileAccess.get_open_error()))
+	file.close()
 	return data
 
-func _connect_node():
-	pass
+## Takes in the node's data, and only add's the required data for export, returns the built node.
+func _construct_node(node) -> Dictionary:
+	var out_node = {
+	BaseStoryNode.get_name_key() : node[BaseStoryNode.get_name_key()],
+	BaseStoryNode.get_ID_key() : node[BaseStoryNode.get_ID_key()],
+	BaseStoryNode.get_prerquisites_key() : [], ## Add the prerequisites as an empty key. The connection export operation will add to it.
+	}
+	var node_properties = node[BaseStoryNode.get_data_key()]
+	if node_properties:
+		for property in node_properties:
+			out_node[property] = node_properties[property]
+	return out_node
+
+## Adds the from connections of the given node as prerquisites.. The connections are saved as the quest id.
+func _connect_node(output_node, connections):
+	for con in connections:
+		## if the current node is equal to the to_node of the connection
+		if con["to_node"] == output_node[BaseStoryNode.get_ID_key()]:
+			## Add it's from connection.
+			output_node[BaseStoryNode.get_prerquisites_key()].append(con["from_node"])
 
 func _link_level():
 	pass
