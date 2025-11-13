@@ -1,4 +1,5 @@
 extends CenterContainer
+class_name CustomizeProperty
 
 @export_file var VALUE_EDITOR_RESOURCE = "res://scenes/Property_Editor/Add_Property/add_property_default_values_widget.tscn"
 

@@ -3,13 +3,21 @@ class_name UpdatePropertyStrat
 
 @export_file var _widget = "res://scenes/Property_Editor/Customize_Property/customize_property.tscn"
 
-@export_file var _value_widget = "res://scenes/Property_Editor/Add_Property/add_property_default_values_widget.tscn"
+var _parent
+var _node
+var _property_name
+var _editor : CustomizeProperty
 
 func _init(parent_container : Container, node : BaseStoryNode, property_name : String) -> void:
-	pass
+	_parent = parent_container
+	_node = node
+	_property_name = property_name
 
 func execute() -> void:
-	pass
+	_editor = load(_widget).instantiate()
+	_parent.add_child(_editor)
+	_editor.populate_values(_property_name, _node)
 
 func destroy() -> void:
-	pass
+	if _editor:
+		_editor.queue_free()

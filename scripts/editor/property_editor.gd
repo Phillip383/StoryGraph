@@ -30,5 +30,5 @@ func _on_level_changed(_level: Level) -> void:
 	if _level and not _level.node_deselected.is_connected(_on_graph_node_deselected):
 		_level.node_deselected.connect(_on_graph_node_deselected)
 
-func _on_graph_node_deselected(node):
+func _on_graph_node_deselected(_node):
 	_strat_context.destroy()
