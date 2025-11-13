@@ -1,7 +1,9 @@
 extends InspectorChildBase
 class_name PropertyEditorControl
 
-var _active_node : BaseStoryNode
+signal property_added(node)
+signal edit_canceled()
+
 @onready var _strat_context : StrategyContext = StrategyContext.new()
 @onready var _editor_container : PanelContainer = $Value_Editor_C
 
@@ -16,13 +18,21 @@ func _on_property_selected(property_name : String, node : BaseStoryNode):
 		strat = EditLinkStrat.new(_editor_container, node)
 	else:
 		strat = UpdatePropertyStrat.new(_editor_container, node, property_name)
+		strat.edit_canceled.connect(func() : edit_canceled.emit())
 
 	_strat_context.set_strategy(strat).execute()
 
 
 func _on_add_property_button_pressed(node : Node) -> void:
-	var add_strat : AddPropertyStrat = AddPropertyStrat.new(_editor_container, node)
-	_strat_context.set_strategy(add_strat).execute()
+	var type = node.get_node_type()
+	var strat : Strategy
+	if type == NodeData.NodeType.LINK:
+		strat = EditLinkStrat.new(_editor_container, node)
+	else:
+		strat = AddPropertyStrat.new(_editor_container, node)
+		strat.property_added.connect(func(_node) : property_added.emit(_node))
+
+	_strat_context.set_strategy(strat).execute()
 
 # Clears the previously edited properties when the level is changed.
 func _on_level_changed(_level: Level) -> void:

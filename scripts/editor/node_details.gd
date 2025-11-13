@@ -29,6 +29,7 @@ func _on_graph_node_deselected():
 	_clear_node_properties()
 
 func _on_add_property_request():
+	_property_list.deselect_all()
 	add_property.emit(_active_node)
 
 func _on_property_selected(index : int):
@@ -50,6 +51,10 @@ func _clear_node_properties():
 
 func _on_property_edit_canceled() -> void:
 	_property_list.deselect_all()
+
+func _on_property_added(_node) -> void:
+	_clear_node_properties()
+	_display_node_properties()
 
 ## Clears the currently active node, and node properties from the inspector.
 func _on_level_changed(_level: Level) -> void:

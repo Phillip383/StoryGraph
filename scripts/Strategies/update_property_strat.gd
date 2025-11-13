@@ -3,6 +3,9 @@ class_name UpdatePropertyStrat
 
 @export_file var _widget = "res://scenes/Property_Editor/Customize_Property/customize_property.tscn"
 
+signal edit_confirmed()
+signal edit_canceled()
+
 var _parent
 var _node
 var _property_name
@@ -17,6 +20,8 @@ func execute() -> void:
 	_editor = load(_widget).instantiate()
 	_parent.add_child(_editor)
 	_editor.populate_values(_property_name, _node)
+	_editor.on_edit_confirmed.connect(func() : edit_confirmed.emit())
+	_editor.on_edit_canceled.connect(func() : edit_canceled.emit())
 
 func destroy() -> void:
 	if _editor:
