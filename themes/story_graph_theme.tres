@@ -205,7 +205,7 @@ corner_radius_bottom_left = 4
 [resource]
 Button/colors/font_color = Color(1, 1, 1, 1)
 Button/colors/icon_hover_color = Color(0, 0.6901961, 1, 1)
-Button/colors/icon_normal_color = Color(0.7649756, 0.7476026, 0.7223924, 1)
+Button/colors/icon_normal_color = Color(0.9372549, 0.9254902, 0, 0.5019608)
 Button/styles/hover = SubResource("StyleBoxFlat_vx0gl")
 Button/styles/normal = SubResource("StyleBoxFlat_jrdvp")
 FileDialog/font_sizes/title_font_size = 30
