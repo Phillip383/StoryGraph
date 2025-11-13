@@ -14,7 +14,6 @@ const LAST_OPEN_LEVELS = "open_levels"
 const PROJECT_LIST = "project_list"
 
 
-##TODO: Save this to the current project on application close and save.
 var current_level_id : int
 
 ## The path to the currently open project
