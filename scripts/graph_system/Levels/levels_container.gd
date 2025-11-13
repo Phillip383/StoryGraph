@@ -110,7 +110,7 @@ func on_child_added(child : Node):
 			on_level_changed.connect(level.on_level_changed)
 
 ## Creates a new level, sets it's resource path and name, and add's it to the level's container.
-func create_new_level(_path : String):
+func create_new_level(_path : String, id : int):
 	var new_level : Level = LEVEL_SCENE.instantiate()
 	add_child(new_level)
 	new_level.set_resource_path(_path)

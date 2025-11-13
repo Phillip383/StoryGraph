@@ -33,7 +33,6 @@ var level_id : int = -1
 var _resource_path : String
 
 func _ready() -> void:
-	level_id = GraphEditor.increment_current_level_id() ## Set the level's id to the next when it's created.
 	name = DEFAULT_NAME
 	popup_request.connect(_on_popup_request)
 	connection_request.connect(_on_connection)
@@ -182,7 +181,7 @@ func load_level(_data):
 	## Add the connections, using the nodes id
 	if node_connections:
 		for connection in node_connections:
-			connect_node(node_map[connection["from_node"]], connection["from_port"], node_map[connection["to_node"]], connection["to_port"])
+			connect_node(node_map[connection["from_node"] as int], connection["from_port"], node_map[connection["to_node"] as int], connection["to_port"])
 
 	manager._change_state(GraphManager.GraphState.IDLE)
 

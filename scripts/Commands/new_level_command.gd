@@ -14,5 +14,6 @@ func execute() -> void:
 	## Add the level to the level's container.
 	var scene_tree : SceneTree = Engine.get_main_loop()
 	var level_container : LevelContainer = scene_tree.get_first_node_in_group("Level Container")
-	level_container.create_new_level(_path)
+	var level_id : int = GraphEditor.increment_current_level_id()
+	level_container.create_new_level(_path, level_id)
 	creation_completed.emit(_path)
