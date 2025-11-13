@@ -14,9 +14,13 @@ const LAST_OPEN_LEVELS = "open_levels"
 const PROJECT_LIST = "project_list"
 
 
+##TODO: Save this to the current project on application close and save.
+var current_level_id : int
 
-## TODO: use this level id for levels, make it unique! A level can be a table, and the composite key between a unique level id and a unique node id will ensure the correct linking of nodes between levels. Increment this when a level is created, decrement when a level is deleted.
-var _level_id : int
+## The path to the currently open project
+var _current_project_dir := ""
+
+@onready var _command_invoker : CommandInvoker = CommandInvoker.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -24,16 +28,18 @@ func _ready() -> void:
 	OS.low_processor_usage_mode = true
 	await on_application_open()
 
-func increment_level_id():
-	_level_id += 1
+## Increments the current level id and writes it the project file.
+func increment_current_level_id() -> int:
+	current_level_id += 1
+	var save_command : SaveCommand = SaveCommand.new(self)
+	_command_invoker.set_command(save_command).execute_command()
+	return current_level_id
 
 ##Handles the close request.
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		on_application_close()
 
-## The path to the currently open project
-var _current_project_dir := ""
 
 ##@return current project directory path
 func get_current_project_dir():
@@ -42,13 +48,29 @@ func get_current_project_dir():
 func is_in_active_project():
 	return FileAccess.file_exists(get_project_file())
 
+## Returns the path to the project file, wrapper function so the save command will work for the project also.
+func get_resource_path():
+	return get_project_file()
+
+func save():
+	var contents = JSON.parse_string(FileAccess.get_file_as_string(get_project_file()))
+	contents["current_level_id"] = current_level_id
+	return contents
+
+##TODO: Recovery method to find the highest id in the level's and restore it, this is just incase the project file get's deleted or corrupts.
+func recover_current_level_id_state():
+	pass
+
 func open_project(project_path : String) -> Error:
 	##Already open
 	if project_path == _current_project_dir:
 		return ERR_ALREADY_IN_USE
 	#if the project file is present.
-	if FileAccess.file_exists(project_path + "/story.project"):
+	if FileAccess.file_exists(project_path + "/" + "story.project"):
 		_current_project_dir = project_path
+		var contents = JSON.parse_string(FileAccess.get_file_as_string(get_project_file()))
+		if contents:
+			current_level_id = contents["current_level_id"]
 		## Set the window name to the project directory name
 		set_application_title()
 		project_changed.emit()

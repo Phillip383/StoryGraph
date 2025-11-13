@@ -28,17 +28,18 @@ func export_json() -> void:
 	DirAccess.make_dir_absolute(_export_path + EXPORT_LEVEL_DIR) ## TODO: Change this to create the same directory structure as the project in the export path.
 	for level in levels:
 		var data = _package_data(level)
+		##TODO: use the level's path from the root of the project directory appended to the export path.
 		var file_path = _export_path + EXPORT_LEVEL_DIR + "/" + level.substr(level.rfind("/") + 1).get_slice(".", 0) + ".json"
 		var output_file = FileAccess.open(file_path, FileAccess.WRITE)
 		var output : Dictionary = {}
-		output[Level.get_ID_key()] = data[Level.get_ID_key()]
+		output[Level.ID] = data[Level.ID]
 		output[NODE_KEY_NAME] = []
 		if output_file:
-			for node in data[Level.get_nodes_key()]:
+			for node in data[Level.NODES]:
 				## Build the node with only data meant for external use.
 				var output_node = _construct_node(node)
 				## Add the connection's to the node...
-				_connect_node(output_node, data[Level.get_connection_key()])
+				_connect_node(output_node, data[Level.CONNECTIONS])
 				## Add the node to output
 				output[NODE_KEY_NAME].append(output_node)
 
@@ -74,6 +75,8 @@ func _get_level_paths() -> PackedStringArray:
 		print("Failed to open: %s", project_path, " Error Code: ", error_string(DirAccess.get_open_error()))
 	return levels
 
+func _create_directories() -> Error:
+	return OK
 
 func _scan_directory(path : String, levels : PackedStringArray) -> void:
 	var files = DirAccess.get_files_at(path)
@@ -98,11 +101,11 @@ func _package_data(level) -> Dictionary:
 ## Takes in the node's data, and only add's the required data for export, returns the built node.
 func _construct_node(node) -> Dictionary:
 	var out_node = {
-	BaseStoryNode.get_name_key() : node[BaseStoryNode.get_name_key()],
-	BaseStoryNode.get_ID_key() : node[BaseStoryNode.get_ID_key()],
-	BaseStoryNode.get_prerquisites_key() : [], ## Add the prerequisites as an empty key. The connection export operation will add to it.
+	BaseStoryNode.NAME : node[BaseStoryNode.NAME],
+	BaseStoryNode.ID : node[BaseStoryNode.ID],
+	BaseStoryNode.PRERQUISITES : [], ## Add the prerequisites as an empty key. The connection export operation will add to it.
 	}
-	var node_properties = node[BaseStoryNode.get_data_key()]
+	var node_properties = node[BaseStoryNode.DATA]
 	if node_properties:
 		for property in node_properties:
 			out_node[property] = node_properties[property]
@@ -112,9 +115,9 @@ func _construct_node(node) -> Dictionary:
 func _connect_node(output_node, connections):
 	for con in connections:
 		## if the current node is equal to the to_node of the connection
-		if con["to_node"] == output_node[BaseStoryNode.get_ID_key()]:
+		if con["to_node"] == output_node[BaseStoryNode.ID]:
 			## Add it's from connection.
-			output_node[BaseStoryNode.get_prerquisites_key()].append(con["from_node"])
+			output_node[BaseStoryNode.PRERQUISITES].append(con["from_node"])
 
 func _link_level():
 	pass

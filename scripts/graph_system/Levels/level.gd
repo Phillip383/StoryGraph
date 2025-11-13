@@ -21,20 +21,6 @@ const NODE_ID = "node_id"
 const CONNECTIONS = "con"
 const NODES = "nodes"
 
-static func get_name_key():
-	return NAME
-
-static func get_ID_key():
-	return ID
-
-static func get_node_ID_key():
-	return NODE_ID
-
-static func get_connection_key():
-	return CONNECTIONS
-
-static func get_nodes_key():
-	return NODES
 
 @onready var context_menu = $"GraphNodeMenu"
 @onready var manager = $GraphManager ## Handles the state of the level.
@@ -47,6 +33,7 @@ var level_id : int = -1
 var _resource_path : String
 
 func _ready() -> void:
+	level_id = GraphEditor.increment_current_level_id() ## Set the level's id to the next when it's created.
 	name = DEFAULT_NAME
 	popup_request.connect(_on_popup_request)
 	connection_request.connect(_on_connection)

@@ -17,6 +17,8 @@ var project_path := ""
 var project_name := ""
 var description := ""
 
+##TODO: Refactor the business logic out of the GUI...
+
 ## This is the actual path we will use, we need to retain the original path to go back to a better state after a failure.
 var intermediate_project_path
 
@@ -101,10 +103,9 @@ func create_file(path : String) -> Error:
 ## Will store project setting's as well.
 ## Returns true if the operation was successful
 func create_project_file(_file : FileAccess) -> bool:
-	var successful
-	successful = _file.store_string("Project Name: " + project_name + "\n")
-	if description.length() > 0:
-		successful = _file.store_string("description: " + description + "\n")
+	var dict = {"Project Name" : project_name, "Description" : description}
+	var contents = JSON.stringify(dict, "\t", false)
+	var successful = _file.store_string(contents)
 	_file.close()
 	return successful
 

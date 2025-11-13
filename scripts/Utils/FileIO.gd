@@ -92,7 +92,7 @@ func _open_enum(data, path):
 func save_file(path : String, data : Variant):
 	if FileAccess.file_exists(path):
 		var file = FileAccess.open(path, FileAccess.WRITE)
-		file.store_string(JSON.stringify(data))
+		file.store_string(JSON.stringify(data, "\t", false))
 		file.close()
 	else:
 		save_file(await show_save_window(), "")
