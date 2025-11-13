@@ -27,23 +27,6 @@ const LINK_COLOR : Color = Color.YELLOW
 const UNI_COLOR : Color = Color.DARK_SALMON ## The node can accept input's from any node, except LINK.
 const EXIT_COLOR : Color = Color.DARK_RED ## Can accepts from Entry and Transit, not LINK
 
-static func get_ID_key():
-	return ID
-
-static func get_name_key():
-	return NAME
-
-static func get_type_key():
-	return TYPE
-
-static func get_position_key():
-	return POSITION
-
-static func get_prerquisites_key():
-	return PRERQUISITES
-
-static func get_data_key():
-	return DATA
 
 func _ready() -> void:
 	node_data = NodeData.new()

@@ -25,7 +25,7 @@ const NODES = "nodes"
 @onready var context_menu = $"GraphNodeMenu"
 @onready var manager = $GraphManager ## Handles the state of the level.
 
-var node_details : NodeDetailsInspector
+var node_details : NodeDetails
 
 var node_connections : Array
 
@@ -204,7 +204,7 @@ func on_node_selected(node : Node):
 	node_details._on_graph_node_selected(node)
 
 func on_node_deselected(node : Node):
-	node_details._on_graph_node_deselected(node)
+	node_details._on_graph_node_deselected()
 
 func on_level_changed(node : Node):
 	if node == self:

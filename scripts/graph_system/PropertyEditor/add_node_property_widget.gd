@@ -2,6 +2,7 @@ extends CenterContainer
 
 class_name PropertyEditor
 
+
 ## This widget is used for container types values
 var CONTAINER_VALUE_SCENE : PackedScene = load("res://scenes/Property_Editor/Add_Property/add_property_default_values_widget.tscn")
 
@@ -28,6 +29,9 @@ func _ready() -> void:
 	container_options.on_size_change.connect(on_container_size_change)
 	type_options.item_selected.connect(on_type_select)
 	property_name.text_changed.connect(on_property_named)
+
+func set_active_node(node : BaseStoryNode):
+	_active_node = node
 
 func add_button_state():
 	var prop_name = property_name.text
