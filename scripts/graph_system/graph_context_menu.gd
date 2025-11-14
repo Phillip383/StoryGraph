@@ -1,29 +1,27 @@
 extends PopupMenu
 
-
-"""
-The responsibilities of this class is to add nodes of various types to the graph as well as other options that might be added in time.
-"""
-
-"""
-The id for the Add node option. These option will probably be moved to an enum at a later time and the items be generated on func _ready
-instead of via the editor.
-"""
-var ADD_NODE_ID := 0
-
-@export var NEW_NODE_MENU : PackedScene
+enum {
+	ADD_TEMPLATE,
+	CREATE_TEMPLATE,
+	RENAME_NODE,
+	DELETE_NODE,
+	ADD_NODE,
+	RENAME_LEVEL,
+	DELETE_LEVEL
+}
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	id_pressed.connect(_on_selection)
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
 	pass
 
-func _on_selection(id : int):
-	match id:
-		ADD_NODE_ID:
-			var menu = NEW_NODE_MENU.instantiate()
-			menu.position = position - menu.size / 2
-			get_parent().add_child(menu)
+
+func add_node_options():
+	add_item("Add Template", ADD_TEMPLATE)
+	add_item("Create Template", CREATE_TEMPLATE)
+	add_item("Rename", RENAME_NODE)
+	add_item("Delete", DELETE_NODE)
+
+func add_graph_options():
+	add_item("Add Node", ADD_NODE)
+	add_item("Rename Level", RENAME_LEVEL)
+	add_item("Delete Level", DELETE_LEVEL)

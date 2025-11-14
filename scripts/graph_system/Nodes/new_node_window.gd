@@ -1,9 +1,7 @@
 extends Window
+class_name NewNodeWindow
 
-"""
-The types of graph nodes that can be added to the graph
-"""
-@export var node_scene : PackedScene
+signal add_node_requested(node_name, node_type)
 
 const REQUIRED_NAME_LENGTH = 2
 const NAME_LENGTH_MESSAGE = "The required length for node names is %d" % REQUIRED_NAME_LENGTH
@@ -32,11 +30,9 @@ func _on_type_selected(ID : int) -> void:
 func _on_cancel_pressed() -> void:
 	queue_free()
 
-## creates a node of selected type and names the node; add's it to the parent graph of the window. Destroys itself once done.
+## creates a node of selected type and names the node; add's it to the parent graph of the window. Destroys itself once done. TODO: Move this to level, the level should add the node.
 func _on_confirm_pressed() -> void:
-	var new_node : BaseStoryNode = node_scene.instantiate()
-	new_node.set_node_title(_name)
-	get_parent().add_node(new_node, _selected_type)
+	add_node_requested.emit(_name, _selected_type)
 	queue_free()
 
 ## TODO: Check the graph for any node's with existing name, disable confirm button.

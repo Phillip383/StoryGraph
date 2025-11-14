@@ -2,6 +2,7 @@ extends GraphEdit
 
 class_name Level
 
+@export_file var NEW_NODE_WINDOW = "res://scenes/Graph/Nodes/new_node.tscn"
 @export var NODE_SCENE : PackedScene
 const DEFAULT_NAME = "(unsaved)"
 
@@ -67,17 +68,22 @@ func _init_connection_types():
 
 ##Listens for the popup request of the graph. Used primarily to make the context menu visible at the mouse location
 func _on_popup_request(_location : Vector2):
+	context_menu.clear() ## clear the context of the previous request.
 	var clicked_node : BaseStoryNode = get_node_at_position(_location)
 	if is_instance_valid(clicked_node):
-		print(clicked_node) ## TODO: Add node rename.
+		context_menu.add_node_options()
 	else:
-		context_menu.position = get_viewport().get_mouse_position()
-		context_menu.show()
+		context_menu.add_graph_options()
+
+	context_menu.position = get_viewport().get_mouse_position()
+	context_menu.show()
 
 
 ##Listens for the add node request from the context menu.
-func add_node(node : GraphNode, _type : NodeData.NodeType = 0):
+func add_node(node_name, _type : NodeData.NodeType = 0):
+	var node : BaseStoryNode = NODE_SCENE.instantiate()
 	add_child(node)
+	node.set_node_title(node_name)
 	node.on_data_changed.connect(on_node_changed)
 	node.position_offset = (get_local_mouse_position() + scroll_offset) / zoom + - node.size / 2
 	node.set_node_id(get_next_node_id())
@@ -185,6 +191,7 @@ func load_level(_data):
 
 	manager._change_state(GraphManager.GraphState.IDLE)
 
+## A conversion function from previous versions of the application. Alter, this method to adapt the way connections were saved, so they can be converted to the newer version.
 func _adapt_connections(node):
 	for connection in node_connections:
 		if typeof(connection["from_node"]) == TYPE_STRING and node.title == connection["from_node"]:
@@ -212,3 +219,12 @@ func on_level_changed(node : Node):
 	else:
 		manager._change_state(GraphManager.GraphState.IDLE)
 		set_selected(null)
+
+
+func _on_context_menu_id_pressed(id: int) -> void:
+	match id:
+		context_menu.ADD_NODE:
+			var menu : NewNodeWindow = load(NEW_NODE_WINDOW).instantiate()
+			menu.position = position - Vector2(menu.size) / 2
+			get_parent().add_child(menu)
+			menu.add_node_requested.connect(add_node)

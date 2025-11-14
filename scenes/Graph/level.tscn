@@ -26,3 +26,5 @@ script = ExtResource("1_8ctcl")
 initial_position = 0
 position = Vector2i(940, 490)
 visible = false
+
+[connection signal="id_pressed" from="GraphNodeMenu" to="." method="_on_context_menu_id_pressed"]
