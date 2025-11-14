@@ -2,7 +2,6 @@ extends GraphEdit
 
 class_name Level
 
-@export_file var NEW_NODE_WINDOW = "res://scenes/Graph/Nodes/new_node.tscn"
 @export var NODE_SCENE : PackedScene
 const DEFAULT_NAME = "(unsaved)"
 
@@ -25,6 +24,7 @@ const NODES = "nodes"
 
 @onready var context_menu = $"GraphNodeMenu"
 @onready var manager = $GraphManager ## Handles the state of the level.
+@onready var _command_invoker = CommandInvoker.new()
 
 var node_details : NodeDetails
 
@@ -222,9 +222,10 @@ func on_level_changed(node : Node):
 
 
 func _on_context_menu_id_pressed(id: int) -> void:
+	var command
 	match id:
 		context_menu.ADD_NODE:
-			var menu : NewNodeWindow = load(NEW_NODE_WINDOW).instantiate()
-			menu.position = position - Vector2(menu.size) / 2
-			get_parent().add_child(menu)
-			menu.add_node_requested.connect(add_node)
+			command = NewNodeCommand.new()
+			command.add_node_requested.connect(add_node)
+
+	_command_invoker.set_command(command).execute_command()
