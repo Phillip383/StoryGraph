@@ -1,4 +1,5 @@
 extends PopupMenu
+class_name GraphContextMenu
 
 enum {
 	ADD_TEMPLATE,

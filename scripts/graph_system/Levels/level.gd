@@ -22,7 +22,7 @@ const CONNECTIONS = "con"
 const NODES = "nodes"
 
 
-@onready var context_menu = $"GraphNodeMenu"
+@onready var context_menu : GraphContextMenu = $"GraphNodeMenu"
 @onready var manager = $GraphManager ## Handles the state of the level.
 @onready var _command_invoker = CommandInvoker.new()
 
@@ -71,6 +71,7 @@ func _on_popup_request(_location : Vector2):
 	context_menu.clear() ## clear the context of the previous request.
 	var clicked_node : BaseStoryNode = get_node_at_position(_location)
 	if is_instance_valid(clicked_node):
+		set_selected(clicked_node) ##TODO: Extend engine so I can add to the already selected nodes
 		context_menu.add_node_options()
 	else:
 		context_menu.add_graph_options()
@@ -227,5 +228,25 @@ func _on_context_menu_id_pressed(id: int) -> void:
 		context_menu.ADD_NODE:
 			command = NewNodeCommand.new()
 			command.add_node_requested.connect(add_node)
+		context_menu.DELETE_NODE:
+			_delete_node_context_action()
+		context_menu.RENAME_NODE:
+			pass
+		context_menu.ADD_TEMPLATE:
+			pass
+		context_menu.CREATE_TEMPLATE:
+			pass
+		context_menu.RENAME_LEVEL:
+			pass
+		context_menu.DELETE_LEVEL:
+			pass
 
-	_command_invoker.set_command(command).execute_command()
+	if is_instance_valid(command): ## Not all options require a command
+		_command_invoker.set_command(command).execute_command()
+
+## Pushes the graph delete action when the context menu delete node option is selected.
+func _delete_node_context_action():
+	var delete_action : InputEventAction = InputEventAction.new()
+	delete_action.action = "ui_graph_delete"
+	delete_action.pressed = true
+	Input.parse_input_event(delete_action)
