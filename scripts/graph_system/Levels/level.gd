@@ -42,6 +42,7 @@ func _ready() -> void:
 	node_selected.connect(on_node_selected)
 	begin_node_move.connect(on_node_begin_move)
 	delete_nodes_request.connect(delete_nodes)
+	context_menu.template_selected.connect(_on_template_added)
 	## Add the additional valid connection types.
 	_init_connection_types()
 	## Have to do this in _ready for every graph spawned, signals connected in the editor, are unique.

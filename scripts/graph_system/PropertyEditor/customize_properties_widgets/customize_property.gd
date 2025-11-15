@@ -32,7 +32,12 @@ func cancel_property():
 func populate_values(key, _active_node : BaseStoryNode):
 	clear_widget(true)
 	active_node = _active_node
-	var data = _active_node.get_story_data()[key]
+	var data
+	if _active_node.get_story_data().has(key):
+		data = _active_node.get_story_data()[key]
+	else:
+		data = _active_node.get_template_component().get_templates()[key]
+
 	property_name.text = key ## Set the name of the currently selected property
 	## Create the top level value widget, then create the widget's for the children.
 	value_editor = load(VALUE_EDITOR_RESOURCE).instantiate()

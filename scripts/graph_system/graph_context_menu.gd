@@ -38,7 +38,7 @@ func add_template_submenu():
 	var submenu : PopupMenu = PopupMenu.new()
 	add_child(submenu)
 	add_submenu_node_item("Add Template", submenu, ADD_TEMPLATE)
-	submenu.id_pressed.emit(func(id) : template_selected.emit(template_map[id]))
+	submenu.id_pressed.connect(func(id) : template_selected.emit(template_map[id]))
 
 	var paths = GraphEditor.get_template_paths()
 	var id_counter : int = 0
