@@ -10,3 +10,4 @@ func set_command(command : Command) -> CommandInvoker:
 
 func execute_command():
 	_command.execute()
+	return _command

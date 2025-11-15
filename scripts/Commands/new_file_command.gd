@@ -7,12 +7,14 @@ signal file_created(path)
 
 var _type : FileTypes.Types
 var _path : String
+var _context_data : Dictionary = {}
 
 ## @param type - optional type to set as the seleted type for the spawned create file window.
 ## @param path - optional start path to set for the spawned create file window.
-func _init(type : FileTypes.Types = FileTypes.Types.NONE, path : String = ""):
+func _init(type : FileTypes.Types = FileTypes.Types.NONE, path : String = "", context_data : Dictionary = {}):
 	_type = type
 	_path = path
+	_context_data = context_data
 
 func execute() -> void:
 	await spawn_window()
@@ -22,5 +24,6 @@ func spawn_window():
 	Engine.get_main_loop().root.add_child(new_file_win)
 	new_file_win.set_path(_path)
 	new_file_win.set_selected_type(_type)
+	new_file_win.set_file_data(_context_data)
 	var path = await new_file_win.submitted
 	file_created.emit(path)

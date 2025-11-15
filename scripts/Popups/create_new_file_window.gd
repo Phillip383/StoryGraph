@@ -11,6 +11,7 @@ signal submitted(path : String)
 var _file_name : String
 var _file_path : String
 var _selected_type : FileTypes.Types
+var _file_data : Dictionary = {}
 
 @onready var _path_field : LineEdit = $PanelContainer/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/FilePath
 @onready var type_option : OptionButton = $PanelContainer/MarginContainer/CenterContainer/VBoxContainer/OptionButton
@@ -19,6 +20,10 @@ var _selected_type : FileTypes.Types
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	close_requested.connect(queue_free)
+
+## Set the data to write to the newly created file.
+func set_file_data(data : Dictionary):
+	_file_data = data
 
 func set_selected_type(type : FileTypes.Types):
 	var index = type_option.get_item_index(type)
@@ -53,7 +58,7 @@ func _on_save_pressed() -> void:
 				FileIO.LEVEL_EXT:
 					_command_invoker.set_command(NewLevelCommand.new(path)).execute_command()
 				FileIO.TEMPLATE_EXT:
-					_command_invoker.set_command(NewTemplateCommand.new(path)).execute_command()
+					_command_invoker.set_command(NewTemplateCommand.new(path, _file_data)).execute_command()
 				FileIO.ENUM_EXT:
 					pass ## TODO: add the enum logic when ready...
 			submitted.emit(path)

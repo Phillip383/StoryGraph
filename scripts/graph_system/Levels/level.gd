@@ -32,6 +32,7 @@ var node_connections : Array
 
 var level_id : int = -1
 var _resource_path : String
+var _selected_node : BaseStoryNode
 
 func _ready() -> void:
 	name = DEFAULT_NAME
@@ -209,6 +210,7 @@ func on_node_begin_move():
 	on_edited.emit(self)
 
 func on_node_selected(node : Node):
+	_selected_node = node
 	node_details._on_graph_node_selected(node)
 
 func on_node_deselected(node : Node):
@@ -231,14 +233,18 @@ func _on_context_menu_id_pressed(id: int) -> void:
 		context_menu.DELETE_NODE:
 			_delete_node_context_action()
 		context_menu.RENAME_NODE:
+			## TODO: Fire a rename node command...
 			pass
 		context_menu.ADD_TEMPLATE:
 			pass
 		context_menu.CREATE_TEMPLATE:
-			pass
+			var new_file_command = NewFileCommand.new(FileTypes.Types.TEMPLATE, "", _selected_node.get_story_data())
+			_command_invoker.set_command(new_file_command).execute_command()
 		context_menu.RENAME_LEVEL:
+			## TODO: Fire a rename file command.
 			pass
 		context_menu.DELETE_LEVEL:
+			## TODO: Fire a delete file command.
 			pass
 
 	if is_instance_valid(command): ## Not all options require a command
