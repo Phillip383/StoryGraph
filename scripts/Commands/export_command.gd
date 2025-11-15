@@ -54,7 +54,7 @@ func export_csv() -> void:
 	if levels.size() == 0:
 		print("Found no levels within the project.")
 	for level in levels:
-		var data = _package_data(level)
+		var _data = _package_data(level)
 
 
 func _get_level_paths() -> PackedStringArray:

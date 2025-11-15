@@ -213,7 +213,7 @@ func on_node_selected(node : Node):
 	_selected_node = node
 	node_details._on_graph_node_selected(node)
 
-func on_node_deselected(node : Node):
+func on_node_deselected(_node : Node):
 	node_details._on_graph_node_deselected()
 
 func on_level_changed(node : Node):

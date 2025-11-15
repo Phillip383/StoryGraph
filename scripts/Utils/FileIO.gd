@@ -86,10 +86,10 @@ func _open_level(data, path):
 	var level_container : LevelContainer = scene_tree.get_first_node_in_group("Level Container")
 	level_container.load_level(data, path)
 
-func _open_template(data, path):
+func _open_template(_data, _path):
 	pass
 
-func _open_enum(data, path):
+func _open_enum(_data, _path):
 	pass
 
 func save_file(path : String, data : Variant):

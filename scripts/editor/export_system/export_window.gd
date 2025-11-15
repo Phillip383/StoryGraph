@@ -50,7 +50,7 @@ func _on_path_selector_pressed() -> void:
 	_path_edit.text = await file_dialog.dir_selected
 
 
-func _on_path_edit_text_submitted(new_text: String) -> void:
+func _on_path_edit_text_submitted(_new_text: String) -> void:
 	_on_export_pressed()
 
 func _set_export_button_state(state : bool):
