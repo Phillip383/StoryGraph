@@ -6,6 +6,8 @@ class_name TemplateComponent
 
 @export var _templates : Dictionary = {}
 
+signal template_added(template)
+
 func get_templates():
 	return _templates
 
@@ -15,6 +17,7 @@ func set_templates(templates):
 func add_template(template_name : String, template : Dictionary) -> void:
 	if _check_template_key_integrity(template) == OK:
 		_templates[template_name] = template
+		template_added.emit(template)
 	else:
 		##TODO: Tell the user why the operation failed.
 		pass

@@ -35,6 +35,7 @@ const EXIT_COLOR : Color = Color.DARK_RED ## Can accepts from Entry and Transit,
 
 func _ready() -> void:
 	node_data = NodeData.new()
+	_template_comp.template_added.connect(func(template) : on_data_changed.emit(template))
 
 ## Set's the valid connection types and active slots based on the NodeType enum. The addtional allowed connection types are added in level.gd, as the graph handles the connections.
 func _set_slots_by_type():

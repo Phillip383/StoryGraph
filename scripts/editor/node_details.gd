@@ -21,6 +21,8 @@ func _ready() -> void:
 
 func _on_graph_node_selected(node : BaseStoryNode):
 	_active_node = node
+	if not _active_node.on_data_changed.is_connected(_on_property_added):
+		_active_node.on_data_changed.connect(_on_property_added)
 	_add_button_state(true)
 	_display_node_properties()
 
