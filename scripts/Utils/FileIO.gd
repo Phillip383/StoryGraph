@@ -41,10 +41,13 @@ func delete_file(path : String) -> String:
 	var err = DirAccess.remove_absolute(path)
 	var _name : String
 	if err == OK:
-		var ext = path.get_extension()
+		var ext = "." + path.get_extension()
 		match ext:
 			LEVEL_EXT:
 				_name = path.substr(path.rfind("/") + 1)
+				GraphEditor.remove_project_data(GraphEditor.LEVEL_KEY, path)
+			TEMPLATE_EXT:
+				GraphEditor.remove_project_data(GraphEditor.TEMPLATE_KEY, path)
 	return _name
 
 func _recurse_remove_dirs(_path : String):

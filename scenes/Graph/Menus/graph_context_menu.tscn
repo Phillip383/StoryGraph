@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://c7xdg8k5bdgco"]
+[gd_scene load_steps=2 format=3 uid="uid://c7xdg8k5bdgco"]
 
 [ext_resource type="Script" uid="uid://b7d4weic6eoos" path="res://scripts/graph_system/graph_context_menu.gd" id="1_l675i"]
-[ext_resource type="PackedScene" uid="uid://b6r5vcqluu23c" path="res://scenes/Graph/Nodes/new_node.tscn" id="2_8fl0t"]
 
 [node name="GraphNodeMenu" type="PopupMenu"]
 oversampling_override = 1.0
@@ -11,4 +10,3 @@ item_count = 1
 item_0/text = "add node"
 item_0/id = 0
 script = ExtResource("1_l675i")
-NEW_NODE_MENU = ExtResource("2_8fl0t")

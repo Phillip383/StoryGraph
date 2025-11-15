@@ -117,6 +117,7 @@ func create_new_level(_path : String, id : int):
 	var new_level_name = _path.substr(_path.rfind("/") + 1) ## Get the name between the extension and directory.
 	new_level_name = new_level_name.get_slice(".", 0)
 	new_level.name = new_level_name
+	new_level.level_id = id
 	var new_level_index = get_tab_idx_from_control(new_level)
 	current_tab = new_level_index
 	set_tab_title(new_level_index, new_level_name)

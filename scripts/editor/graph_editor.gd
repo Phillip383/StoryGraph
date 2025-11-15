@@ -7,6 +7,13 @@ var unsaved_levels : Array[Level]
 #SIGNALS
 signal project_changed()
 
+## const string literals for storing project data
+const TEMPLATE_KEY = "templates"
+const LEVEL_KEY = "levels"
+const ENUM_KEY = "enums"
+const TEMPLATE_REFRENCES = "template_refrences" ## This keeps track of the node's that need to be updated when templates are edited.
+const LEVEL_ID = "current_level_id"
+
 
 ## Const string literals for storing the state of the editor upon closing and opening.
 const LAST_OPEN_PROJ_KEY = "last_open_project"
@@ -14,12 +21,12 @@ const LAST_OPEN_LEVELS = "open_levels"
 const PROJECT_LIST = "project_list"
 
 
-var current_level_id : int
+var current_level_id : int = -1
 
 ## The path to the currently open project
 var _current_project_dir := ""
 
-@onready var _command_invoker : CommandInvoker = CommandInvoker.new()
+var _project_data : Dictionary
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -27,12 +34,48 @@ func _ready() -> void:
 	OS.low_processor_usage_mode = true
 	await on_application_open()
 
+## Function to recover project if the .project file becomes corrupt.
+func _recover(current_dir):
+	var dirs := DirAccess.get_directories_at(current_dir)
+	var files := DirAccess.get_files_at(current_dir)
+	var items = dirs + files
+	for item in items:
+		var current_path = current_dir + "/" + item
+		if DirAccess.dir_exists_absolute(current_path):
+			_recover(current_path)
+		match item.get_extension():
+			"level":
+				var level_id : int = JSON.parse_string(FileAccess.get_file_as_string(current_path))[Level.ID] as int
+				if level_id > current_level_id:
+					current_level_id = level_id
+					_project_data[LEVEL_ID] = current_level_id
+				if _project_data.has(LEVEL_KEY):
+					_project_data[LEVEL_KEY].append(current_path)
+				else:
+					_project_data[LEVEL_KEY] = [current_path]
+			"template":
+				if _project_data.has(TEMPLATE_KEY):
+					_project_data[TEMPLATE_KEY].append(current_path)
+				else:
+					_project_data[TEMPLATE_KEY] = [current_path]
+
+
+
 ## Increments the current level id and writes it the project file.
 func increment_current_level_id() -> int:
-	current_level_id += 1
-	var save_command : SaveCommand = SaveCommand.new(self)
-	_command_invoker.set_command(save_command).execute_command()
+	current_level_id = current_level_id + 1
+	_project_data[LEVEL_ID] = current_level_id
 	return current_level_id
+
+func _read_project_data() -> Error:
+	var project_file := FileAccess.open(get_project_file(), FileAccess.READ)
+	if project_file:
+		_project_data = JSON.parse_string(project_file.get_as_text())
+		current_level_id = _project_data[LEVEL_ID]
+	else:
+		return FileAccess.get_open_error()
+	project_file.close()
+	return OK
 
 ##Handles the close request.
 func _notification(what: int) -> void:
@@ -44,6 +87,34 @@ func _notification(what: int) -> void:
 func get_current_project_dir():
 	return _current_project_dir
 
+func get_project_data() -> Dictionary:
+	return _project_data
+
+## Appends the data on to an array within the project data dictionary. Will add the key to the dictionary if it doesn't already exist with an array value containing the data as an element.
+func get_or_add_project_data(key : String, data = null) -> void:
+	var items = _project_data.get(key)
+	if items:
+		items.append(data)
+	else:
+		_project_data[key] = [data]
+	_write_project_data()
+
+## Expects the item to be an array held in the project data dictionary with the given key
+func remove_project_data(key : String, item):
+	var items : Array = _project_data[key]
+	items.erase(item)
+	_write_project_data()
+
+## Keeps the project data and the project file in sync. Call after a change to the file structure, and when the application is closed.
+func _write_project_data() -> Error:
+	var file = FileAccess.open(get_project_file(), FileAccess.WRITE)
+	if file:
+		file.store_string(JSON.stringify(_project_data, "\t", false))
+	else:
+		return FileAccess.get_open_error()
+	file.close()
+	return OK
+
 func is_in_active_project():
 	return FileAccess.file_exists(get_project_file())
 
@@ -52,13 +123,7 @@ func get_resource_path():
 	return get_project_file()
 
 func save():
-	var contents = JSON.parse_string(FileAccess.get_file_as_string(get_project_file()))
-	contents["current_level_id"] = current_level_id
-	return contents
-
-##TODO: Recovery method to find the highest id in the level's and restore it, this is just incase the project file get's deleted or corrupts.
-func recover_current_level_id_state():
-	pass
+	_write_project_data()
 
 func open_project(project_path : String) -> Error:
 	##Already open
@@ -67,11 +132,9 @@ func open_project(project_path : String) -> Error:
 	#if the project file is present.
 	if FileAccess.file_exists(project_path + "/" + "story.project"):
 		_current_project_dir = project_path
-		var contents = JSON.parse_string(FileAccess.get_file_as_string(get_project_file()))
-		if contents:
-			current_level_id = contents["current_level_id"]
 		## Set the window name to the project directory name
 		set_application_title()
+		_read_project_data()
 		project_changed.emit()
 		return OK
 	return ERR_DOES_NOT_EXIST
@@ -96,6 +159,7 @@ func on_application_close():
 
 	## Save the current project to open on the next launch...
 	persistent_project()
+	_write_project_data()
 	get_tree().quit()
 
 
@@ -106,8 +170,10 @@ func on_application_open():
 		var config = FileAccess.open(get_editor_conf_path(), FileAccess.WRITE)
 		config.close()
 
-	var hub= PROJECT_HUB.instantiate()
+	var hub : ProjectHub = PROJECT_HUB.instantiate()
 	get_tree().current_scene.add_child(hub)
+	var _path = await hub.on_selection
+
 	## TODO: Enable this when editor settings are complete.
 	##load_persistent_project()
 

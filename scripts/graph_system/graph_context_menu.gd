@@ -26,3 +26,7 @@ func add_graph_options():
 	add_item("Add Node", ADD_NODE)
 	add_item("Rename Level", RENAME_LEVEL)
 	add_item("Delete Level", DELETE_LEVEL)
+
+func create_template_submenu():
+	##TODO: Add a list of the templates that can be added.
+	pass

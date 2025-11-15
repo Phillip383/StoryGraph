@@ -42,6 +42,9 @@ func _add_button_state(state : bool):
 
 func _display_node_properties():
 	var node_properties = _active_node.get_story_data_key()
+	var node_templates = _active_node.get_template_component().get_templates()
+	for key in node_templates:
+		_property_list.add_item(key)
 	for key in node_properties:
 		_property_list.add_item(key)
 

@@ -14,7 +14,6 @@ config/name="StoryGraph"
 config/version="0.0.1"
 run/main_scene="uid://bjq3ex5xqh4to"
 config/features=PackedStringArray("4.5", "Forward Plus")
-boot_splash/image="uid://cba1slu1cc8yc"
 config/icon="uid://duqsok6xitndw"
 
 [autoload]

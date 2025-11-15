@@ -1,4 +1,5 @@
 extends Window
+class_name ProjectHub
 
 @export var NEW_PROJECT_WINDOW : PackedScene
 @export var IMPORT_WINDOW : PackedScene
