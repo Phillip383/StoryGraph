@@ -236,6 +236,7 @@ func _on_context_menu_id_pressed(id: int) -> void:
 			## TODO: Fire a rename node command...
 			pass
 		context_menu.ADD_TEMPLATE:
+			##TODO: Add a template to the node.
 			pass
 		context_menu.CREATE_TEMPLATE:
 			var new_file_command = NewFileCommand.new(FileTypes.Types.TEMPLATE, "", _selected_node.get_story_data())

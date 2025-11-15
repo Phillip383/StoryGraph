@@ -11,6 +11,7 @@ signal on_data_changed(data) ## Emitted when a property is added, removed, or it
 @export_category("Story Data")
 @export var story_data : Dictionary
 
+
 @export_category("Node Data")
 @export var node_data : NodeData ## Helpful data for saving the node and keeping track of their id's, it is unique per node, any default values will be erased at runtime.
 
@@ -21,12 +22,16 @@ const TYPE : StringName = "type"
 const POSITION : StringName = "pos"
 const DATA : StringName = "data"
 const PRERQUISITES : StringName = "prerequisites" ## TODO: Make this settable from the project settings.
+const TEMPLATES : StringName = "templates"
 
 ## SLOT COLORS
 const LINK_COLOR : Color = Color.YELLOW
 const UNI_COLOR : Color = Color.DARK_SALMON ## The node can accept input's from any node, except LINK.
 const EXIT_COLOR : Color = Color.DARK_RED ## Can accepts from Entry and Transit, not LINK
 
+##PRIVATE MEMBERS
+## This component house's the functionality for adding/removing/updating templates on the node.
+@onready var _template_comp : TemplateComponent = TemplateComponent.new()
 
 func _ready() -> void:
 	node_data = NodeData.new()
@@ -70,6 +75,10 @@ func get_node_id() -> int:
 
 func set_node_id(id : int) -> void:
 	node_data.node_id = id
+
+
+func get_template_component() -> TemplateComponent:
+	return _template_comp
 
 
 ## @return story_data: the properties currently on this node.
@@ -135,6 +144,7 @@ func save_node() -> Dictionary:
 	_state[TYPE] = node_data.node_type
 	_state[POSITION] = position_offset
 	_state[DATA] = story_data
+	_state[TEMPLATES] = get_template_component().get_templates()
 	return _state
 
 ## Loads a nodes previous state
@@ -150,6 +160,8 @@ func load_node(_state) -> void:
 	node_data.node_type = _state[TYPE] as int
 	position_offset = parse_position( _state[POSITION])
 	story_data = _state[DATA]
+	var templates = _state.get_or_add(TEMPLATES, {})
+	get_template_component().set_templates(templates)
 	_set_slots_by_type()
 
 func parse_position(pos : String) -> Vector2:
@@ -157,9 +169,3 @@ func parse_position(pos : String) -> Vector2:
 	pos = pos.trim_suffix(")")
 	var pos_parts : Array = pos.split(",")
 	return Vector2(pos_parts[0] as float, pos_parts[1] as float)
-
-## Packs the node into a dictionary format of {name : data} and add's the node's incoming connections from other node's.
-## @param prerequisites - takes the node's incoming connections and adds them to story data with a const string literal as the key, the key can be set in the project settings.
-#@return {name : data}
-func export_node(prerequisites : Array[int] = []):
-	return {title : story_data.get_or_add(PRERQUISITES, prerequisites)}
