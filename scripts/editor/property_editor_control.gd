@@ -13,7 +13,6 @@ func _ready() -> void:
 
 func _on_property_selected(property_name : String, node : BaseStoryNode):
 	visible = true
-	grab_focus()
 	var type = node.get_node_type()
 	var strat : Strategy
 	if type == NodeData.NodeType.LINK:
@@ -27,7 +26,6 @@ func _on_property_selected(property_name : String, node : BaseStoryNode):
 
 func _on_add_property_button_pressed(node : Node) -> void:
 	visible = true
-	grab_focus()
 	var type = node.get_node_type()
 	var strat : Strategy
 	if type == NodeData.NodeType.LINK:

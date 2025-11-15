@@ -24,7 +24,7 @@ const NODES = "nodes"
 
 @onready var context_menu : GraphContextMenu = $"GraphNodeMenu"
 @onready var manager = $GraphManager ## Handles the state of the level.
-@onready var _command_invoker = CommandInvoker.new()
+@onready var _command_invoker : CommandInvoker = CommandInvoker.new()
 
 var node_details : NodeDetails
 
@@ -223,6 +223,8 @@ func on_level_changed(node : Node):
 		manager._change_state(GraphManager.GraphState.IDLE)
 		set_selected(null)
 
+func _on_template_added(path : String):
+	_command_invoker.set_command(AddTemplateCommand.new(_selected_node, path)).execute_command()
 
 func _on_context_menu_id_pressed(id: int) -> void:
 	var command
@@ -235,8 +237,6 @@ func _on_context_menu_id_pressed(id: int) -> void:
 		context_menu.RENAME_NODE:
 			## TODO: Fire a rename node command...
 			pass
-		context_menu.ADD_TEMPLATE:
-			command = AddTemplateCommand.new(_selected_node)
 		context_menu.CREATE_TEMPLATE:
 			## Creates a template file with the node's current properties..
 			command = NewFileCommand.new(FileTypes.Types.TEMPLATE, "", _selected_node.get_story_data())

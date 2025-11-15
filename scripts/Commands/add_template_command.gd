@@ -9,11 +9,10 @@ var _template : Dictionary
 var _template_name : String
 ##@param - node: The node that the template should be added too.
 ##@param - file_path: The absolute path to the template file to add.
-func _init(node : BaseStoryNode) -> void:
-	var file_path = "" ## TODO: Spawn a window to select the template, get it's file path from there.
+func _init(node : BaseStoryNode, template_path : String) -> void:
 	_node = node
-	_template = JSON.parse_string(FileAccess.get_file_as_string(file_path))
-	_template_name = file_path.substr(file_path.rfind("/") + 1).get_slice(".", 0)
+	_template = JSON.parse_string(FileAccess.get_file_as_string(template_path))
+	_template_name = template_path.get_file().get_slice(".", 0)
 
 func execute() -> void:
 	_add_template()

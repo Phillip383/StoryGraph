@@ -90,6 +90,12 @@ func get_current_project_dir():
 func get_project_data() -> Dictionary:
 	return _project_data
 
+func get_template_paths():
+	return _project_data[TEMPLATE_KEY]
+
+func get_level_paths():
+	return _project_data[LEVEL_KEY]
+
 ## Appends the data on to an array within the project data dictionary. Will add the key to the dictionary if it doesn't already exist with an array value containing the data as an element.
 func get_or_add_project_data(key : String, data = null) -> void:
 	var items = _project_data.get(key)
