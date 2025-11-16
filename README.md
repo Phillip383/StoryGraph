@@ -70,7 +70,7 @@ Templates can be created in multiple areas across the project. However, I have n
 
 During the export process templates will not added to the node as they are handled in within story graph. Instead, the properties of the template are added directly to the node, as if they we're static node specific properties, this comes with benefits to the end user's exported data, such that it's not going to have multiple abstraction layers in their exported data, that was there solely for the modeling process. This has halted my process on the export operation.
 
-[Templates](docs/images/AddingTemplateToNode.svg)
+![Templates](docs/images/AddingTemplateToNode.svg)
 
 ### Level Layers
 
