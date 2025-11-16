@@ -10,19 +10,25 @@ Story Graph aims to make forming data relationships less taxing by adding a visu
 
 This window allows for project management. Selecting a project, deleting projects, renaming or creating a new project. It lists all of the recent project's associated with Story Graph, if you move a project, it will need to be reimported.
 
-![Project Hub](docs/images/ProjectHub.svg)
+![Project Hub](docs/images/ProjectHub.png)
 
 ### File System
 
 Story Graph has a file system, it is simple in nature and only allows for common file operations. Creating/Renaming/Moving. The file tree only displays directories at the moment but I plan to allow for file's to be viewed in the file tree with a setting. Also, thumbnails are only supported at the minute. I plan to implement a list view in the future. The file system context menu is aware of what requested the context menu, and the selections are only available for the appropriate context.
 
-![File System](docs/images/FileSystem.svg)
+![File System](docs/images/FileSystem.png)
 
 ### Opening Levels
 
 The file system supports opening level's and will open templates later. I have not implemented that as of yet, but double clicking a level thumbnail will load it and add it to the editor. You can also open level's via the menu bar->file->open level option, or with open level button at the top of the editor. Multiple level's can be open, a tab will be added to the editor for the level.
 
-![Open Level](docs/images/OpenLevels.svg)
+![Open Level](docs/images/OpenLevels.png)
+
+### Navigating Levels
+
+There is an inspector on the left side of the level editor called "story lines." This inspector tracks the start node's within the level. You can click on a node and the level editor will select and focus the clicked tree item.
+
+![Focus Node](docs/images/FocusStoryLine.png)
 
 ### Node Properties
 
@@ -32,25 +38,25 @@ Node properties are the data contained on that node. Property types range from p
 
 When a node is selected in the graph; the node details inspector will populate with all of the properties for that node. You can select the property to edit it's value's, this includes template value's, as well as node specific data.
 
-![Selected Node](docs/images/ViewProperties.svg)
+![Selected Node](docs/images/ViewProperties.png)
 
 #### Adding Properties
 
 Adding a node specific property can be accomplished by clicking the button on the node detail panel, this will focus the Property editor and allow to customize the property to add. Upon adding the property the node details will update with the added property. I plan to add the option in the node context menu when right clicked as well, but have not done so yet. A node must be selected in order for the add property button to be active.
 
-![Add Property Editor](docs/images/AddProperty.svg)
+![Add Property Editor](docs/images/AddProperty.png)
 
 #### Updating properties
 
 Updating a property value, is as easy as selecting the property in the node details, this will focus the Property Editor and open the Update Window, which is similar to the Add property window, but does not allow for renaming the property. I plan to add the ability for this, as it wouldn't be to complicated to do. It's a low priority as of right now during development, but this feature will be available in the future.
 
-![Updating Property](docs/images/UpdateProperty.svg)
+![Updating Property](docs/images/UpdateProperty.png)
 
 ### A Story Node
 
 There are at the time of this readme update four types of Nodes. A link node, which is used to link a node from another level, to a node in the current level. A Start node, this node handles marking the beginning of a story line, which could be used to mark the beginning of a campaign, or a quest chain. A Transient node, which is just a flow node, from one node to another to represent a logical flow in your story. The last node is an End node. This could be used to mark the end of a campaign or quest chain. Internally, it hold's no significance, it is there solely for the user to say, "ah, this is the end," but special properties could be added for event's in your game.
 
-![Node Types](docs/images/NodeTypes.svg)
+![Node Types](docs/images/NodeTypes.png)
 
 ### Node Connections
 
@@ -58,7 +64,7 @@ Node Connections are handled internally to keep track of relationships you creat
 
 There are limitations to the type's of connections that can be created, at the time of this read me update. A link node has no input connections, this will be handled via a gui editor to select the level, and node(s) from that level. Link nodes can connect to Start node's and Transit node's but not end node's. However, I might change this limitation, as after thinking of some World of Warcraft quest's, there are plenty of 'end' quest's that happen outside of the level they started in. Also, the only incoming connection a start node accepts is from a link node.
 
-![Node Connections](docs/images/Connections.svg)
+![Node Connections](docs/images/Connections.png)
 
 ### Exporting
 
@@ -70,7 +76,7 @@ Templates can be created in multiple areas across the project. However, I have n
 
 During the export process templates will not added to the node as they are handled in within story graph. Instead, the properties of the template are added directly to the node, as if they we're static node specific properties, this comes with benefits to the end user's exported data, such that it's not going to have multiple abstraction layers in their exported data, that was there solely for the modeling process. This has halted my process on the export operation.
 
-![Templates](docs/images/AddingTemplateToNode.svg)
+![Templates](docs/images/AddingTemplateToNode.png)
 
 ### Level Layers
 
