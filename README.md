@@ -4,18 +4,6 @@
 
 Story Graph aims to make forming data relationships less taxing by adding a visual graphical element between the narrative designer and data modelled. Build in Godot version 4.5, as Godot has amazing capabilities when comes to building user interfaces. The engine also came with functionality such as a graph and node system that greatly saved me time and increased my agility. The godot documentation is also extremely friendly, as when I first started this project i was using Qt and QML. That was cumbersome, as the Qt documentation is harder to navigate than Godot's. The GDScripting language, offers reasonable speed for most task's and its simplistic design and how it's coupled with the editor offers great agility and dev experience. That is my reasoning for choosing the Godot Engine for this project.
 
-## Project Features
-
-Below I will include a snapshot of the project's backlog to give an overview of the features I am to implement in this application.
-
-![Project Backlog](docs/images/project_backlog.jpeg)
-
-## Current Progress
-
-The snapshot belows show's the current progress I have made on the project, and the overall task's needing to be completed. I have gotten most of the back bone done already, such as serializing data from node's and level's, saving and loading data, and creating a project structure. It is almost ready for alpha because the bare minimum use case of modeling level contained narratives for video games is nearly complete and ready for testing.
-
-![Project Summary](docs/images/project_summary.jpeg)
-
 ## Project Showcase
 
 ### The Project Hub
