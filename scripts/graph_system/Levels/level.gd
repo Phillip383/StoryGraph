@@ -228,19 +228,25 @@ func _on_template_added(path : String):
 	_command_invoker.set_command(AddTemplateCommand.new(_selected_node, path)).execute_command()
 
 func _on_context_menu_id_pressed(id: int) -> void:
-	var command
+
 	match id:
 		context_menu.ADD_NODE:
-			command = NewNodeCommand.new()
+			var command : NewNodeCommand = NewNodeCommand.new()
 			command.add_node_requested.connect(add_node)
+			_command_invoker.set_command(command).execute_command()
 		context_menu.DELETE_NODE:
 			_delete_node_context_action()
 		context_menu.RENAME_NODE:
 			## TODO: Fire a rename node command...
 			pass
 		context_menu.CREATE_TEMPLATE:
-			## Creates a template file with the node's current properties..
-			command = NewFileCommand.new(FileTypes.Types.TEMPLATE, "", _selected_node.get_story_data())
+			## Creates a template file with the node's current properties.. Adds the template to the node, clears the properties used to create the template.
+			var command :NewFileCommand = NewFileCommand.new(FileTypes.Types.TEMPLATE, "", _selected_node.get_story_data())
+			_command_invoker.set_command(command).execute_command()
+			var path = await command.file_created
+			var add_command : AddTemplateCommand = AddTemplateCommand.new(_selected_node, path, true)
+			_command_invoker.set_command(add_command).execute_command()
+
 		context_menu.RENAME_LEVEL:
 			## TODO: Fire a rename file command.
 			pass
@@ -248,8 +254,6 @@ func _on_context_menu_id_pressed(id: int) -> void:
 			## TODO: Fire a delete file command.
 			pass
 
-	if is_instance_valid(command): ## Not all options require a command
-		_command_invoker.set_command(command).execute_command()
 
 ## Pushes the graph delete action when the context menu delete node option is selected.
 func _delete_node_context_action():

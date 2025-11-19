@@ -91,6 +91,9 @@ func get_story_data() -> Dictionary:
 func get_story_data_key() -> Array:
 	return story_data.keys()
 
+func clear_story_data() -> void:
+	story_data.clear()
+	on_data_changed.emit(story_data)
 
 ## @return: returns true if a property already exists and false otherwise.
 func does_property_exist(key : StringName) -> bool:
