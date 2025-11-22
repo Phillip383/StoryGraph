@@ -131,6 +131,19 @@ func get_resource_path():
 func save():
 	_write_project_data()
 
+## Returns the node references for a given template node, returns an empty array if none exists.
+func get_template_refs(template_name : String) -> Array:
+	return _project_data.get_or_add(TEMPLATE_REFRENCES, {}).get_or_add(template_name, [])
+
+## Adds a node to a template reference in the .project file.
+func add_template_node_ref(template_name: String, node_id : int):
+	_project_data.get_or_add(TEMPLATE_REFRENCES, {}).get_or_add(template_name, []).append(node_id)
+	_write_project_data()
+
+## Removes a node from the templates reference list, effectivly breaking the link.
+func remove_node_from_template_ref():
+	pass
+
 func open_project(project_path : String) -> Error:
 	##Already open
 	if project_path == _current_project_dir:

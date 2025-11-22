@@ -23,6 +23,7 @@ func execute() -> void:
 
 func _add_template() -> void:
 	_node.get_template_component().add_template(_template_name, _template)
+	GraphEditor.add_template_node_ref(_template_name, _node.get_node_id())
 	if _remove:
 		_node.clear_story_data()
 	template_added.emit()
