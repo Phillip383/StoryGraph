@@ -71,7 +71,7 @@ func _read_project_data() -> Error:
 	var project_file := FileAccess.open(get_project_file(), FileAccess.READ)
 	if project_file:
 		_project_data = JSON.parse_string(project_file.get_as_text())
-		current_level_id = _project_data[LEVEL_ID]
+		current_level_id = _project_data.get_or_add(LEVEL_ID, -1)
 	else:
 		return FileAccess.get_open_error()
 	project_file.close()
@@ -91,10 +91,10 @@ func get_project_data() -> Dictionary:
 	return _project_data
 
 func get_template_paths():
-	return _project_data[TEMPLATE_KEY]
+	return _project_data.get_or_add(TEMPLATE_KEY, [])
 
 func get_level_paths():
-	return _project_data[LEVEL_KEY]
+	return _project_data.get_or_add(LEVEL_KEY, [])
 
 ## Appends the data on to an array within the project data dictionary. Will add the key to the dictionary if it doesn't already exist with an array value containing the data as an element.
 func get_or_add_project_data(key : String, data = null) -> void:
@@ -107,9 +107,10 @@ func get_or_add_project_data(key : String, data = null) -> void:
 
 ## Expects the item to be an array held in the project data dictionary with the given key
 func remove_project_data(key : String, item):
-	var items : Array = _project_data[key]
-	items.erase(item)
-	_write_project_data()
+	var items : Array = _project_data.get_or_add(key, [])
+	if items.size() > 0:
+		items.erase(item)
+		_write_project_data()
 
 ## Keeps the project data and the project file in sync. Call after a change to the file structure, and when the application is closed.
 func _write_project_data() -> Error:
@@ -136,13 +137,22 @@ func get_template_refs(template_name : String) -> Array:
 	return _project_data.get_or_add(TEMPLATE_REFRENCES, {}).get_or_add(template_name, [])
 
 ## Adds a node to a template reference in the .project file.
-func add_template_node_ref(template_name: String, node_id : int):
-	_project_data.get_or_add(TEMPLATE_REFRENCES, {}).get_or_add(template_name, []).append(node_id)
+##@param - template_name, the template to add the reference to.
+##@param - A compound key built from the level_id-node_id, using that format respectivly.
+func add_template_node_ref(template_name: String, id : String):
+	_project_data.get_or_add(TEMPLATE_REFRENCES, {}).get_or_add(template_name, []).append(id)
 	_write_project_data()
 
 ## Removes a node from the templates reference list, effectivly breaking the link.
-func remove_node_from_template_ref():
-	pass
+##@param - template_name, The template to remove the reference from.
+##@param - id, The node reference to remove
+func remove_node_from_template_ref(template_name : String, id : String):
+	var refs : Dictionary = _project_data.get(TEMPLATE_REFRENCES)
+	if refs:
+		var ref : Array = refs.get(template_name)
+		if ref.size() > 0:
+			ref.erase(id)
+			_write_project_data()
 
 func open_project(project_path : String) -> Error:
 	##Already open

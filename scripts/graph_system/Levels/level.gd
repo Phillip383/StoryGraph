@@ -30,7 +30,7 @@ var node_details : NodeDetails
 
 var node_connections : Array
 
-var level_id : int = -1
+var _level_id : int = -1
 var _resource_path : String
 var _selected_node : BaseStoryNode
 
@@ -60,6 +60,9 @@ func get_resource_path() -> String:
 
 func set_resource_path(path : String):
 	_resource_path = path
+
+func get_level_id():
+	return _level_id
 
 func _init_connection_types():
 	add_valid_connection_type(NodeData.NodeType.ENTRY, NodeData.NodeType.EXIT)
@@ -153,7 +156,7 @@ func save(_file_name = name) -> Dictionary[StringName, Variant]:
 	name = _file_name
 	var _state : Dictionary[StringName, Variant]
 	_state[NAME] = _file_name
-	_state[ID] = level_id
+	_state[ID] = _level_id
 	_state[NODE_ID] = _node_id if _node_id else -1
 	_state[CONNECTIONS] = node_connections
 	_state[NODES] = []
@@ -171,7 +174,7 @@ func save(_file_name = name) -> Dictionary[StringName, Variant]:
 func load_level(_data):
 	manager._change_state(GraphManager.GraphState.LOADING)
 	name = _data[NAME]
-	level_id = _data[ID]
+	_level_id = _data[ID]
 	_node_id = _data[NODE_ID] if _data.get("node_id") else -1
 	node_connections = _data[CONNECTIONS] if _data[CONNECTIONS] else []
 	var nodes = _data[NODES]
@@ -225,7 +228,7 @@ func on_level_changed(node : Node):
 		set_selected(null)
 
 func _on_template_added(path : String):
-	_command_invoker.set_command(AddTemplateCommand.new(_selected_node, path)).execute_command()
+	_command_invoker.set_command(AddTemplateCommand.new(_selected_node, path, self)).execute_command()
 
 func _on_context_menu_id_pressed(id: int) -> void:
 
@@ -244,7 +247,7 @@ func _on_context_menu_id_pressed(id: int) -> void:
 			var command :NewFileCommand = NewFileCommand.new(FileTypes.Types.TEMPLATE, "", _selected_node.get_story_data())
 			_command_invoker.set_command(command).execute_command()
 			var path = await command.file_created
-			var add_command : AddTemplateCommand = AddTemplateCommand.new(_selected_node, path, true)
+			var add_command : AddTemplateCommand = AddTemplateCommand.new(_selected_node, path, self, true)
 			_command_invoker.set_command(add_command).execute_command()
 
 		context_menu.RENAME_LEVEL:
