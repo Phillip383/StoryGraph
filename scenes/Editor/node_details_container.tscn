@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://d2eujlaoqe32p"]
+[gd_scene load_steps=5 format=3 uid="uid://d2eujlaoqe32p"]
 
 [ext_resource type="Theme" uid="uid://wro5ncgxmqmq" path="res://themes/story_graph_theme.tres" id="1_7csry"]
 [ext_resource type="Script" uid="uid://bl44poq2lsc8p" path="res://scripts/editor/node_details.gd" id="1_g2m0g"]
+[ext_resource type="Texture2D" uid="uid://cw3848np8lab3" path="res://assets/Textures/Icons/32/cog.png" id="2_ljbx0"]
 [ext_resource type="Texture2D" uid="uid://72qceuth8ixa" path="res://assets/Icons/Control Icons/plus.png" id="3_ae8gc"]
 
 [node name="NodeDetailsContainer" type="MarginContainer"]
@@ -20,12 +21,22 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 
-[node name="Buttons" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="AddTempMargin" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="AddPropertyButton" type="Button" parent="VBoxContainer/HBoxContainer/Buttons"]
-modulate = Color(0.6235599, 0.62355983, 0.62355983, 1)
-custom_minimum_size = Vector2(25, 0)
+[node name="AddTemplateButton" type="Button" parent="VBoxContainer/HBoxContainer/AddTempMargin"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Add template"
+disabled = true
+icon = ExtResource("2_ljbx0")
+
+[node name="AddPropMargin" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="AddPropertyButton" type="Button" parent="VBoxContainer/HBoxContainer/AddPropMargin"]
+custom_minimum_size = Vector2(35, 0)
 layout_mode = 2
 tooltip_text = "Add property to selected node."
 theme = ExtResource("1_7csry")

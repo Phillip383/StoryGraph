@@ -9,7 +9,8 @@ signal property_selected(key : Variant, node : BaseStoryNode)
 signal add_property(active_node : Node)
 
 @onready var _property_list : ItemList = $VBoxContainer/PropertyList_SC/PropertyList
-@onready var _add_property_button : Button = $VBoxContainer/HBoxContainer/Buttons/AddPropertyButton
+@onready var _add_property_button : Button = $VBoxContainer/HBoxContainer/AddPropMargin/AddPropertyButton
+@onready var _add_template_button : Button = $VBoxContainer/HBoxContainer/AddTempMargin/AddTemplateButton
 
 var _active_node : BaseStoryNode
 
@@ -17,6 +18,7 @@ var _active_node : BaseStoryNode
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	_add_property_button.pressed.connect(_on_add_property_request)
+	_add_template_button.pressed.connect(_on_template_request)
 	_property_list.item_selected.connect(_on_property_selected)
 
 func _on_graph_node_selected(node : BaseStoryNode):
@@ -34,6 +36,10 @@ func _on_add_property_request():
 	_property_list.deselect_all()
 	add_property.emit(_active_node)
 
+func _on_template_request():
+	##TODO: Spawn a popup with a list of templates and an option to create a new one at the mouse location.
+	pass
+
 func _on_property_selected(index : int):
 	var property_name = _property_list.get_item_text(index)
 	property_selected.emit(property_name, _active_node)
@@ -41,6 +47,7 @@ func _on_property_selected(index : int):
 
 func _add_button_state(state : bool):
 	_add_property_button.disabled = !state
+	_add_template_button.disabled = !state
 
 func _display_node_properties():
 	var node_properties = _active_node.get_story_data_key()
