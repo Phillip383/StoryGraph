@@ -34,6 +34,9 @@ func _gui_input(event: InputEvent) -> void:
 		show_menu()
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		thumbnail_clicked.emit(self)
+	if event is InputEventMouseButton and event.double_click and event.button_index != MOUSE_BUTTON_RIGHT:
+		command_invoker.set_command(OpenFileCommand.new(_resource_path))
+		command_invoker.execute_command()
 
 	if event.is_action_pressed("ui_cancel"):
 		_rename_canceled()
