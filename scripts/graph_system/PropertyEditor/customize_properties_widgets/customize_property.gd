@@ -29,14 +29,8 @@ func cancel_property():
 	on_edit_canceled.emit()
 
 ## When a property is selected we call this and parse the property data passed in creating the correct GUI elements for the data types.
-func populate_values(key, _active_node : BaseStoryNode):
+func populate_values(key : String, data : Variant):
 	clear_widget(true)
-	active_node = _active_node
-	var data
-	if _active_node.get_story_data().has(key):
-		data = _active_node.get_story_data()[key]
-	else:
-		data = _active_node.get_template_component().get_templates()[key]
 
 	property_name.text = key ## Set the name of the currently selected property
 	## Create the top level value widget, then create the widget's for the children.
@@ -78,7 +72,8 @@ func create_widget(widget, data, _key = ""):
 			widget.set_data_in_editor(data)
 
 func clear_widget(retain_visibility = false):
-	property_name.text = ""
-	for child in element_container.get_children():
-		child.queue_free()
-	visible = retain_visibility
+	if property_name and element_container:
+		property_name.text = ""
+		for child in element_container.get_children():
+			child.queue_free()
+			visible = retain_visibility

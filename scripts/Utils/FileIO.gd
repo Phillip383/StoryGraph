@@ -75,7 +75,7 @@ func open_file(path : String):
 		LEVEL_EXT:
 			_open_level(data, path)
 		TEMPLATE_EXT:
-			_open_template(data, path)
+			_open_template(data, path.get_file().get_slice(".", 0))
 		ENUM_EXT:
 			_open_enum(data, path)
 		".json":
@@ -86,8 +86,14 @@ func _open_level(data, path):
 	var level_container : LevelContainer = scene_tree.get_first_node_in_group("Level Container")
 	level_container.load_level(data, path)
 
-func _open_template(_data, _path):
-	pass
+func _open_template(_data, _name):
+	var scene_tree : SceneTree = Engine.get_main_loop()
+	var editor : PropertyEditorControl = scene_tree.get_first_node_in_group("Property Editor")
+	if editor:
+		editor.template_open(_name, _data)
+		editor.visible = true
+		editor.grab_focus()
+
 
 func _open_enum(_data, _path):
 	pass

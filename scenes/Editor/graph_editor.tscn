@@ -92,11 +92,12 @@ metadata/_tab_index = 0
 layout_mode = 2
 current_tab = 0
 
-[node name="Property Editor" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Property_Editor_C" instance=ExtResource("6_nxgem")]
+[node name="Property Editor" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Property_Editor_C" groups=["Property Editor"] instance=ExtResource("6_nxgem")]
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_xmt7k")
+TEMPLATE_EDITOR = "res://scenes/Property_Editor/Customize_Property/customize_property.tscn"
 metadata/_tab_index = 0
 
 [node name="FileSystem" parent="PanelContainer/MarginContainer/Main_C/VSplitContainer/HSplitContainer/Property_Editor_C" instance=ExtResource("11_xmt7k")]

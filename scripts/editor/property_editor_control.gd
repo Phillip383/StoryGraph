@@ -1,6 +1,8 @@
 extends InspectorChildBase
 class_name PropertyEditorControl
 
+@export_file var TEMPLATE_EDITOR = "res://scenes/Property_Editor/Customize_Property/customize_property.tscn"
+
 signal property_added(node)
 signal edit_canceled()
 
@@ -10,6 +12,13 @@ signal edit_canceled()
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
+
+## Fills the property editor with the data for the template.
+func template_open(temp_name : String, data : Dictionary):
+	var editor = load(TEMPLATE_EDITOR).instantiate()
+	_editor_container.add_child(editor)
+	editor.populate_values(temp_name, data)
+
 
 func _on_property_selected(property_name : String, node : BaseStoryNode):
 	visible = true
