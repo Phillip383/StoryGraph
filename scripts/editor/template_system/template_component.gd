@@ -14,13 +14,18 @@ func get_templates():
 func set_templates(templates):
 	_templates = templates
 
-func add_template(template_name : String, template : Dictionary) -> void:
+## Adds a template to this components list.
+##@Param - template_name: The name of the template to add.
+##@Param - template: The template to add.
+##@Returns - True if the template was successfully added. False otherwise.
+func add_template(template_name : String, template : Dictionary) -> bool:
 	if _check_template_key_integrity(template) == OK:
 		_templates[template_name] = template
 		template_added.emit(template)
+		return true
 	else:
 		##TODO: Tell the user why the operation failed.
-		pass
+		return false
 
 func find_template(template_name : String) -> Dictionary:
 	return _templates.get(template_name)

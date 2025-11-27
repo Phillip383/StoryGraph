@@ -27,9 +27,10 @@ func execute() -> void:
 	_add_template()
 
 func _add_template() -> void:
-	_node.get_template_component().add_template(_template_name, _template)
-	var ref_id : String = "%d-%d" % [_level.get_level_id(), _node.get_node_id()]
-	GraphEditor.add_template_node_ref(_template_name, ref_id)
+	var result = _node.get_template_component().add_template(_template_name, _template)
+	if result:
+		var ref_id : String = "%d-%d" % [_level.get_level_id(), _node.get_node_id()]
+		GraphEditor.add_template_node_ref(_template_name, ref_id)
 	if _remove:
 		_node.clear_story_data()
 	template_added.emit()

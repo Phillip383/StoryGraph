@@ -1,15 +1,16 @@
-# Godot 4+ specific ignores
+.github/
+.gitignoreclear
 .godot/
-/android/
+.idea/
+CONTRIBUTING.md
+Demos/
+LICENSE
+READMECN.md
+addons/
 assets/
 build/
-addons/
-test_create/
-.github/
-Demos/
-.idea/
-LICENSE
+docsar/
+icon.svg
+icon.svg.import
 images/
-*.svg*
-CONTRIBUTING.md
-READMECN.md
+test_create/

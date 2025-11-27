@@ -15,6 +15,7 @@ func _ready() -> void:
 
 ## Fills the property editor with the data for the template.
 func template_open(temp_name : String, data : Dictionary):
+	#TODO: Change this, as it won't allow for adding or removing properties.
 	var editor = load(TEMPLATE_EDITOR).instantiate()
 	_editor_container.add_child(editor)
 	editor.populate_values(temp_name, data)
