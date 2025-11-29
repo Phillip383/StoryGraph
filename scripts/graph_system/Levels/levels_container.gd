@@ -110,7 +110,7 @@ func on_child_added(child : Node):
 			on_level_changed.connect(level.on_level_changed)
 
 ## Creates a new level, sets it's resource path and name, and add's it to the level's container.
-func create_new_level(_path : String, id : int):
+func create_new_level(_path : String, id : int) -> Level:
 	var new_level : Level = LEVEL_SCENE.instantiate()
 	add_child(new_level)
 	new_level.set_resource_path(_path)
@@ -123,6 +123,7 @@ func create_new_level(_path : String, id : int):
 	set_tab_title(new_level_index, new_level_name)
 	command_invoker.set_command(SaveCommand.new(new_level)).execute_command() ## Save with default data.
 	level_created.emit(new_level)
+	return new_level
 
 # When the level is edited, we flag the title to illustrate unsaved work.
 func _on_level_edited(level : Level):

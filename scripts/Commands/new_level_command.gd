@@ -1,7 +1,7 @@
 extends Command
 class_name NewLevelCommand
 
-signal creation_completed(path)
+signal creation_completed(level : Level)
 
 var _path : String
 
@@ -15,6 +15,6 @@ func execute() -> void:
 	var scene_tree : SceneTree = Engine.get_main_loop()
 	var level_container : LevelContainer = scene_tree.get_first_node_in_group("Level Container")
 	var level_id : int = GraphEditor.increment_current_level_id()
-	level_container.create_new_level(_path, level_id)
+	var new_level: Level = level_container.create_new_level(_path, level_id)
 	GraphEditor.get_or_add_project_data(GraphEditor.LEVEL_KEY, _path)
-	creation_completed.emit(_path)
+	creation_completed.emit(new_level)

@@ -40,10 +40,10 @@ func add_template_submenu():
 	add_submenu_node_item("Add Template", submenu, ADD_TEMPLATE)
 	submenu.id_pressed.connect(func(id) : template_selected.emit(template_map[id]))
 
-	var paths = GraphEditor.get_template_paths()
+	var templates: Array = GraphEditor.get_project_data()[GraphEditor.TEMPLATE_KEY]
 	var id_counter : int = 0
-	for _path in paths:
-		var _name = _path.get_file().get_slice(".", 0)
+	for _path: String in templates:
+		var _name: String = _path.get_file().get_slice(".", 0)
 		submenu.add_item(_name, id_counter)
 		template_map[id_counter] = _path
 		id_counter += 1

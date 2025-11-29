@@ -5,6 +5,9 @@ class_name NewNodeCommand
 
 signal add_node_requested(node_name, node_type)
 
+func _init() -> void:
+	pass
+
 func execute() -> void:
 	var menu : NewNodeWindow = load(NEW_NODE_WINDOW).instantiate()
 	Engine.get_main_loop().current_scene.add_child(menu)
